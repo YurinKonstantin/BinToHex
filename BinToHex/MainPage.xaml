@@ -1,0 +1,239 @@
+﻿<Page
+    x:Class="BinToHex.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BinToHex"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ 
+    mc:Ignorable="d"
+   >
+    <UserControl.Resources>
+        <local:DataConverter x:Key="Converter1"/>
+        <local:DataConverter2 x:Key="Convert2"/>
+    </UserControl.Resources>
+    <Page.Background>
+        <ThemeResource ResourceKey="AppBarItemBackgroundThemeBrush"/>
+    </Page.Background>
+    <Grid x:Name="GridMain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+           
+        </Grid.RowDefinitions>
+       
+       
+        <StackPanel BorderBrush="Indigo" BorderThickness="1" Orientation="Horizontal" Background="{ThemeResource AppBarBackgroundThemeBrush}" FocusVisualPrimaryBrush="{ThemeResource AppBarItemBackgroundThemeBrush}">
+            <AppBarButton Icon="NewFolder" Label="Новый файл" Click="OpenNewFile"/>
+            <AppBarButton Icon="OpenFile" Label="Открыть файл" Click="AppBarButton_Click"/>
+        </StackPanel>
+
+        <Pivot Grid.Row="1"
+                   x:Name="PivotItemsContainer"
+                   HorizontalAlignment="Left"
+                   ItemsSource="{x:Bind ViewModel.ColTabs}" Background="{ThemeResource AppBarItemBackgroundThemeBrush}">
+
+            <Pivot.HeaderTemplate>
+                <DataTemplate x:DataType="local:VidDoc">
+                    <Grid Width="144">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{x:Bind Name}" FontSize="14" Visibility="{x:Bind IsShow}" VerticalAlignment="Center"></TextBlock>
+                        <Button Content="x"  Grid.Column="1" Tag="{x:Bind ccc}" Click="AppBarButton_Click_1" VerticalAlignment="Top" Background="{ThemeResource AppBarItemBackgroundThemeBrush}" BorderBrush="{ThemeResource AppBarItemBackgroundThemeBrush}">
+                        </Button>
+
+                    </Grid>
+
+
+
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
+
+            <Pivot.ItemTemplate>
+                <DataTemplate x:DataType="local:VidDoc">
+                    <Grid>
+
+                        <SplitView IsPaneOpen="{x:Bind Sppan, Mode=OneWay}"
+           DisplayMode="Inline" PanePlacement="Right"
+           OpenPaneLength="280" >
+
+                            <SplitView.Pane>
+                                <StackPanel Padding="12,0,0,0" Background="Indigo"  >
+                                    <TextBlock Text="Имя файла" Style="{ThemeResource BaseTextBlockStyle}"  Foreground="White"/>
+                                    <TextBlock Text="{x:Bind Name}" TextWrapping="Wrap"  Style="{ThemeResource BaseTextBlockStyle}"   Foreground="White"/>
+                                    <TextBlock Text="Путь к файлу"  Style="{ThemeResource BaseTextBlockStyle}" Foreground="White" />
+                                    <TextBlock Text="{x:Bind Path}" TextWrapping="Wrap" Style="{ThemeResource BaseTextBlockStyle}" Foreground="White" />
+                                    <TextBlock Text="Размер (Байт)" Style="{ThemeResource BaseTextBlockStyle}" Foreground="White"/>
+                                    <TextBlock Text="{x:Bind Size}" Style="{ThemeResource BaseTextBlockStyle}" Foreground="White"  FontStyle="Oblique"/>
+
+                                </StackPanel>
+
+                            </SplitView.Pane>
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                   
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <controls:DataGrid x:Name="dataGrid1" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="6" SelectionMode="Single" IsFocusEngaged="False" AutoGenerateColumns="False"
+    ItemsSource="{x:Bind ClassDatas1}" >
+                                 
+                                    <controls:DataGrid.Columns>
+                                        <controls:DataGridTemplateColumn Header="OFFSET" >
+                                            <controls:DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBlock Text="{x:Bind offset}" />
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellTemplate>
+                                        </controls:DataGridTemplateColumn>
+
+                                        <controls:DataGridTemplateColumn Header="01" Width="58">
+                                            <controls:DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one1, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one1B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="02"  Width="58">
+                                            <controls:DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox  Text="{x:Bind one2, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one2B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                                </controls:DataGridTemplateColumn.CellTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="03"  Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox  Text="{x:Bind one3, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one3B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="04" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one4, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one4B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="05" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one5, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one5B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="06" Width="56">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one6, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one6B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="07" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one7, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one7B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="08" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one8, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one8B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="09" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one9, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one9B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="10" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one10, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one10B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="11" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one11, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one11B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="12" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one12, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one12B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="13" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one13, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one13B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="14" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one14, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one14B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="15" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one15, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one15B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="ASCII">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind oneASCII, Mode=OneWay}"  IsReadOnly="True" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
+                                    </controls:DataGrid.Columns>
+                                </controls:DataGrid>
+
+
+                                
+
+                                <StackPanel Grid.Column="1" MaxWidth="120"  Orientation="Vertical" FocusVisualPrimaryBrush="{ThemeResource AppBarItemBackgroundThemeBrush}" Background="{ThemeResource AppBarBorderThemeBrush}">
+                                    <AppBarButton  Click="AppBarButton_Click_2" Tag="{x:Bind ccc}" Icon="OpenPane" Content="Инфо" Background="{ThemeResource AppBarItemBackgroundThemeBrush}" BorderBrush="{ThemeResource AppBarItemBackgroundThemeBrush}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="2"  Background="Indigo"  Orientation="Horizontal">
+                                    <TextBlock Text="Позиция:  " FontFamily="Georgia" FontStyle="Italic" Foreground="White" xml:space="preserve"/>
+                                    <TextBlock Width="8"/>
+                                    <TextBlock  Text="{x:Bind Poz, Mode=OneWay}" FontFamily="Georgia" FontStyle="Italic" Foreground="White"/>
+                                </StackPanel>
+                                
+                            </Grid>
+
+                        </SplitView>
+
+                    </Grid>
+                </DataTemplate>
+            </Pivot.ItemTemplate>
+
+        </Pivot>
+        <ProgressRing x:Name="Ring" Grid.Row="1" IsActive="False"  Margin="0,12"  />
+
+    </Grid>
+</Page>
