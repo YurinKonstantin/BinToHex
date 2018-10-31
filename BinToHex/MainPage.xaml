@@ -91,106 +91,106 @@
                                         <controls:DataGridTemplateColumn Header="OFFSET" >
                                             <controls:DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBlock Text="{x:Bind offset}" />
+                                                    <TextBlock Text="{x:Bind offset}"  x:Phase="1" />
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
 
-                                        <controls:DataGridTemplateColumn Header="01" Width="58">
+                                        <controls:DataGridTemplateColumn Header="01" Width="58" >
                                             <controls:DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one1, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one1B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one1, Mode=OneWay, Converter={StaticResource Converter1}}"  x:Phase="2" Tag="{x:Bind one1B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Header="02"  Width="58">
+                                        <controls:DataGridTemplateColumn Header="02"  Width="58" >
                                             <controls:DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox  Text="{x:Bind one2, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one2B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox  Text="{x:Bind one2, Mode=OneWay, Converter={StaticResource Converter1}}" x:Phase="2"  Tag="{x:Bind one2B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0" HorizontalAlignment="Stretch"/>
                                                 </DataTemplate>
                                                 </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="03"  Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox  Text="{x:Bind one3, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one3B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox  Text="{x:Bind one3, Mode=OneWay, Converter={StaticResource Converter1}}"  x:Phase="2" Tag="{x:Bind one3B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="04" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one4, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one4B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one4, Mode=OneWay, Converter={StaticResource Converter1}}" x:Phase="2" Tag="{x:Bind one4B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="05" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one5, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one5B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one5, Mode=OneWay, Converter={StaticResource Converter1}}"  Tag="{x:Bind one5B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
-                                        <controls:DataGridTemplateColumn Header="06" Width="56">
+                                        <controls:DataGridTemplateColumn Header="06" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one6, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one6B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one6, Mode=OneWay, Converter={StaticResource Converter1}}"   Tag="{x:Bind one6B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="07" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one7, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one7B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one7, Mode=OneWay, Converter={StaticResource Converter1}}"   Tag="{x:Bind one7B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="08" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one8, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one8B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one8, Mode=OneWay, Converter={StaticResource Converter1}}"   Tag="{x:Bind one8B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="09" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one9, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one9B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one9, Mode=OneWay, Converter={StaticResource Converter1}}"   Tag="{x:Bind one9B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="10" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one10, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one10B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one10, Mode=OneWay, Converter={StaticResource Converter1}}"   Tag="{x:Bind one10B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="11" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one11, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one11B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one11, Mode=OneWay, Converter={StaticResource Converter1}}"   Tag="{x:Bind one11B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="12" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one12, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one12B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one12, Mode=OneWay, Converter={StaticResource Converter1}}"   Tag="{x:Bind one12B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="13" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one13, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one13B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one13, Mode=OneWay, Converter={StaticResource Converter1}}"  Tag="{x:Bind one13B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="14" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind one14, Mode=OneWay, Converter={StaticResource Converter1}}" Tag="{x:Bind one14B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind one14, Mode=OneWay, Converter={StaticResource Converter1}}"   Tag="{x:Bind one14B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
@@ -201,10 +201,17 @@
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
+                                        <controls:DataGridTemplateColumn Header="16" Width="58">
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData">
+                                                    <TextBox Text="{x:Bind one16, Mode=OneWay, Converter={StaticResource Converter1}}"  Tag="{x:Bind one16B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                </DataTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                        </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="ASCII">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind oneASCII, Mode=OneWay}"  IsReadOnly="True" BorderThickness="0"/>
+                                                    <TextBox Text="{x:Bind oneASCII, Mode=OneWay}" x:Phase="3"  IsReadOnly="True" BorderThickness="0" FontSize="12"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>

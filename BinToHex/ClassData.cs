@@ -53,6 +53,9 @@ namespace BinToHex
         public byte? one15 { get; set; }
         public int? one15B { get; set; }
 
+        public byte? one16 { get; set; }
+        public int? one16B { get; set; }
+
 
         public string one
         {
@@ -62,7 +65,7 @@ namespace BinToHex
                     + "\t" + String.Format("{0:X2}", one4) + "\t" + String.Format("{0:X2}", one5) + "\t" + String.Format("{0:X2}", one6)
                     + "\t" + String.Format("{0:X2}", one7) + "\t" + String.Format("{0:X2}", one8) + "\t" + String.Format("{0:X2}", one9)
                     + "\t" + String.Format("{0:X2}", one10) + "\t" + String.Format("{0:X2}", one11) + "\t" + String.Format("{0:X2}", one12)
-                    + "\t" + String.Format("{0:X2}", one13) + "\t" + String.Format("{0:X2}", one14) + "\t" + String.Format("{0:X2}", one15);
+                    + "\t" + String.Format("{0:X2}", one13) + "\t" + String.Format("{0:X2}", one14) + "\t" + String.Format("{0:X2}", one15) + "\t" + String.Format("{0:X2}", one16);
             }
         }
         public string oneASCII
@@ -251,7 +254,19 @@ namespace BinToHex
                         text += String.Format("{0:X2}", one15);
                     }
                 }
-           
+                if (one16 != null)
+                {
+                    Char cg = (Char)one16;
+                    if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
+                    {
+                        text += cg;
+                    }
+                    else
+                    {
+                        text += String.Format("{0:X2}", one16);
+                    }
+                }
+
                 return text; 
             }
         }

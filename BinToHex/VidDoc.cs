@@ -60,7 +60,7 @@ namespace BinToHex
             //   });
             while (i < bb1.Length)
             {
-                if (s == 15)
+                if (s == 16)
                 {
                     s = 0;
 
@@ -70,7 +70,7 @@ namespace BinToHex
 
                     ClassDatas1.Add(fd);
 
-                    ss += 15;
+                    ss += 16;
                     fd = new ClassData() { };
 
                     // await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -142,9 +142,31 @@ namespace BinToHex
                         fd.one15 = bb1[i];
                         fd.one15B = i + 1;
                         break;
+                    case 15:
+                        fd.one16 = bb1[i];
+                        fd.one16B = i + 1;
+                        break;
                 }
                 s++;
                 i++;
+            }
+            if(s!=0)
+            {
+                s = 0;
+
+                fd.oneB = ss;
+                ofs += 16;
+                //  text += "\n";
+
+                ClassDatas1.Add(fd);
+
+                ss += 16;
+               // fd = new ClassData() { };
+
+                // await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                //  {
+                //   text += String.Format("{0:X2}", ofs) + "\t";
+               // fd.offset = ofs;
             }
 
            
