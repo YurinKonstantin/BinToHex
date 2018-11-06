@@ -12,9 +12,79 @@
     <UserControl.Resources>
         <local:DataConverter x:Key="Converter1"/>
         <local:DataConverter2 x:Key="Convert2"/>
+        <Style x:Key="Button" TargetType="Button">
+            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+            <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundTransparentBrush}"/>
+            <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}"/>
+            <Setter Property="Padding" Value="4,4,4,4"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="UseSystemFocusVisuals" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="BorderCircle">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Red"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="1" Value="Black"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="BorderCircle">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundBaseMediumLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightBaseHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="BorderCircle">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseMediumLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Stroke" Storyboard.TargetName="BorderCircle">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledTransparentBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="ContentPresenter" VerticalAlignment="Center" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <Ellipse x:Name="BorderCircle" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="2" Width="20" Height="20"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
+
+ 
+
     <Page.Background>
-        <ThemeResource ResourceKey="AppBarItemBackgroundThemeBrush"/>
+        <ThemeResource ResourceKey="ApplicationPageBackgroundThemeBrush"/>
     </Page.Background>
     <Grid x:Name="GridMain">
         <Grid.RowDefinitions>
@@ -23,17 +93,20 @@
             <RowDefinition Height="auto"/>
            
         </Grid.RowDefinitions>
-       
-       
-        <StackPanel BorderBrush="Indigo" BorderThickness="1" Orientation="Horizontal" Background="{ThemeResource AppBarBackgroundThemeBrush}" FocusVisualPrimaryBrush="{ThemeResource AppBarItemBackgroundThemeBrush}">
-            <AppBarButton Icon="NewFolder" Label="Новый файл" Click="OpenNewFile"/>
-            <AppBarButton Icon="OpenFile" Label="Открыть файл" Click="AppBarButton_Click"/>
-        </StackPanel>
 
+
+        <CommandBar >
+            <AppBarButton Icon="Setting" Label="Настройка"/>
+        </CommandBar>
+        <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
+            <AppBarButton Icon="NewFolder" Label="Новый файл"  Click="OpenNewFile" />
+            <AppBarButton Icon="OpenFile" Label="Открыть файл" Click="AppBarButton_Click"/>
+        </CommandBar>
+      
         <Pivot Grid.Row="1"
                    x:Name="PivotItemsContainer"
                    HorizontalAlignment="Left"
-                   ItemsSource="{x:Bind ViewModel.ColTabs}" Background="{ThemeResource AppBarItemBackgroundThemeBrush}">
+                   ItemsSource="{x:Bind ViewModel.ColTabs}" >
 
             <Pivot.HeaderTemplate>
                 <DataTemplate x:DataType="local:VidDoc">
@@ -43,8 +116,10 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{x:Bind Name}" FontSize="14" Visibility="{x:Bind IsShow}" VerticalAlignment="Center"></TextBlock>
-                        <Button Content="x"  Grid.Column="1" Tag="{x:Bind ccc}" Click="AppBarButton_Click_1" VerticalAlignment="Top" Background="{ThemeResource AppBarItemBackgroundThemeBrush}" BorderBrush="{ThemeResource AppBarItemBackgroundThemeBrush}">
-                        </Button>
+                        <Button Content="x"  Grid.Column="1" Tag="{x:Bind ccc}" Click="AppBarButton_Click_1" VerticalAlignment="Center" Style="{StaticResource Button}"/>
+
+
+
 
                     </Grid>
 
@@ -62,13 +137,13 @@
            OpenPaneLength="280" >
 
                             <SplitView.Pane>
-                                <StackPanel Padding="12,0,0,0" Background="Indigo"  >
-                                    <TextBlock Text="Имя файла" Style="{ThemeResource BaseTextBlockStyle}"  Foreground="White"/>
-                                    <TextBlock Text="{x:Bind Name}" TextWrapping="Wrap"  Style="{ThemeResource BaseTextBlockStyle}"   Foreground="White"/>
-                                    <TextBlock Text="Путь к файлу"  Style="{ThemeResource BaseTextBlockStyle}" Foreground="White" />
-                                    <TextBlock Text="{x:Bind Path}" TextWrapping="Wrap" Style="{ThemeResource BaseTextBlockStyle}" Foreground="White" />
-                                    <TextBlock Text="Размер (Байт)" Style="{ThemeResource BaseTextBlockStyle}" Foreground="White"/>
-                                    <TextBlock Text="{x:Bind Size}" Style="{ThemeResource BaseTextBlockStyle}" Foreground="White"  FontStyle="Oblique"/>
+                                <StackPanel Padding="12,0,0,0"   >
+                                    <TextBlock Text="Имя файла" Style="{ThemeResource BaseTextBlockStyle}" />
+                                    <TextBlock Text="{x:Bind Name}" TextWrapping="Wrap"  Style="{ThemeResource BaseTextBlockStyle}"  />
+                                    <TextBlock Text="Путь к файлу"  Style="{ThemeResource BaseTextBlockStyle}"  />
+                                    <TextBlock Text="{x:Bind Path}" TextWrapping="Wrap" Style="{ThemeResource BaseTextBlockStyle}"  />
+                                    <TextBlock Text="Размер (Байт)" Style="{ThemeResource BaseTextBlockStyle}" />
+                                    <TextBlock Text="{x:Bind Size}" Style="{ThemeResource BaseTextBlockStyle}"  FontStyle="Oblique"/>
 
                                 </StackPanel>
 
@@ -219,16 +294,16 @@
                                 </controls:DataGrid>
 
 
-                                
 
-                                <StackPanel Grid.Column="1" MaxWidth="120"  Orientation="Vertical" FocusVisualPrimaryBrush="{ThemeResource AppBarItemBackgroundThemeBrush}" Background="{ThemeResource AppBarBorderThemeBrush}">
-                                    <AppBarButton  Click="AppBarButton_Click_2" Tag="{x:Bind ccc}" Icon="OpenPane" Content="Инфо" Background="{ThemeResource AppBarItemBackgroundThemeBrush}" BorderBrush="{ThemeResource AppBarItemBackgroundThemeBrush}"/>
+
+                                <StackPanel Grid.Column="1" MaxWidth="120"  Orientation="Vertical" >
+                                    <AppBarButton  Click="AppBarButton_Click_2" Tag="{x:Bind ccc}" Icon="OpenPane" Content="Инфо" />
                                 </StackPanel>
 
-                                <StackPanel Grid.Row="2"  Background="Indigo"  Orientation="Horizontal">
-                                    <TextBlock Text="Позиция:  " FontFamily="Georgia" FontStyle="Italic" Foreground="White" xml:space="preserve"/>
+                                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                    <TextBlock Text="Позиция:  " FontFamily="Georgia" FontStyle="Italic"  xml:space="preserve"/>
                                     <TextBlock Width="8"/>
-                                    <TextBlock  Text="{x:Bind Poz, Mode=OneWay}" FontFamily="Georgia" FontStyle="Italic" Foreground="White"/>
+                                    <TextBlock  Text="{x:Bind Poz, Mode=OneWay}" FontFamily="Georgia" FontStyle="Italic"/>
                                 </StackPanel>
                                 
                             </Grid>

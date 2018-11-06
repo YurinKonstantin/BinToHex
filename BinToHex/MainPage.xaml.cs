@@ -33,12 +33,14 @@ namespace BinToHex
         public MainPage()
         {
             this.InitializeComponent();
-            var t = ApplicationView.GetForCurrentView().TitleBar;
-            t.BackgroundColor = Colors.Indigo;
-            t.ForegroundColor = Colors.White;
-            t.ButtonBackgroundColor = Colors.Indigo;
-            t.ButtonForegroundColor = Colors.White;
-
+            //   var t = ApplicationView.GetForCurrentView().TitleBar;
+            // t.BackgroundColor = Colors.Indigo;
+            // t.ForegroundColor = Colors.White;
+            // t.ButtonBackgroundColor = Colors.Indigo;
+            // t.ButtonForegroundColor = Colors.White;
+            //var h = Application.Current;
+          //  h.RequestedTheme =ApplicationTheme.Dark;
+          
             this.ViewModel = new ModalViewViDoc();
             this.DataContext = this;
         }

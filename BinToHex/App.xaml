@@ -2,6 +2,7 @@
     x:Class="BinToHex.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:BinToHex">
-
+    xmlns:local="using:BinToHex"
+    >
+  
 </Application>
