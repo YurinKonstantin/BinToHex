@@ -91,51 +91,32 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
-           
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-
-        <CommandBar >
-            <AppBarButton Icon="Setting" Label="Настройка"/>
+        <CommandBar Grid.Column="1">
+            <AppBarButton Icon="Setting" Label="Настройка" Click="AppBarButton_Click_3"/>
         </CommandBar>
         <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
             <AppBarButton Icon="NewFolder" Label="Новый файл"  Click="OpenNewFile" />
             <AppBarButton Icon="OpenFile" Label="Открыть файл" Click="AppBarButton_Click"/>
         </CommandBar>
-      
-        <Pivot Grid.Row="1"
-                   x:Name="PivotItemsContainer"
-                   HorizontalAlignment="Left"
-                   ItemsSource="{x:Bind ViewModel.ColTabs}" >
-
-            <Pivot.HeaderTemplate>
-                <DataTemplate x:DataType="local:VidDoc">
-                    <Grid Width="144">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{x:Bind Name}" FontSize="14" Visibility="{x:Bind IsShow}" VerticalAlignment="Center"></TextBlock>
-                        <Button Content="x"  Grid.Column="1" Tag="{x:Bind ccc}" Click="AppBarButton_Click_1" VerticalAlignment="Center" Style="{StaticResource Button}"/>
-
-
-
-
-                    </Grid>
-
-
-
+        <controls:TabView Grid.Row="1" Grid.ColumnSpan="2" x:Name="Tabs" CanCloseTabs="True" IsCloseButtonOverlay="True" ItemsSource="{x:Bind ViewModel.ColTabs}" TabClosing="Tabs_TabClosing" Margin="0,8,0,0">
+            <controls:TabView.ItemHeaderTemplate>
+                <DataTemplate  x:DataType="local:VidDoc">
+                    <TextBlock Text="{x:Bind Name}" FontSize="14" Visibility="{x:Bind IsShow}" VerticalAlignment="Center" Tag="{x:Bind ccc}"></TextBlock>
                 </DataTemplate>
-            </Pivot.HeaderTemplate>
-
-            <Pivot.ItemTemplate>
+            </controls:TabView.ItemHeaderTemplate>
+            <controls:TabView.ItemTemplate>
                 <DataTemplate x:DataType="local:VidDoc">
                     <Grid>
 
                         <SplitView IsPaneOpen="{x:Bind Sppan, Mode=OneWay}"
            DisplayMode="Inline" PanePlacement="Right"
            OpenPaneLength="280" >
-
                             <SplitView.Pane>
                                 <StackPanel Padding="12,0,0,0"   >
                                     <TextBlock Text="Имя файла" Style="{ThemeResource BaseTextBlockStyle}" />
@@ -152,7 +133,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="auto"/>
-                                   
+
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -161,7 +142,7 @@
                                 </Grid.RowDefinitions>
                                 <controls:DataGrid x:Name="dataGrid1" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="6" SelectionMode="Single" IsFocusEngaged="False" AutoGenerateColumns="False"
     ItemsSource="{x:Bind ClassDatas1}" >
-                                 
+
                                     <controls:DataGrid.Columns>
                                         <controls:DataGridTemplateColumn Header="OFFSET" >
                                             <controls:DataGridTemplateColumn.CellTemplate>
@@ -183,7 +164,7 @@
                                                 <DataTemplate x:DataType="local:ClassData">
                                                     <TextBox  Text="{x:Bind one2, Mode=OneWay, Converter={StaticResource Converter1}}" x:Phase="2"  Tag="{x:Bind one2B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0" HorizontalAlignment="Stretch"/>
                                                 </DataTemplate>
-                                                </controls:DataGridTemplateColumn.CellTemplate>
+                                            </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="03"  Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
@@ -292,30 +273,21 @@
                                         </controls:DataGridTemplateColumn>
                                     </controls:DataGrid.Columns>
                                 </controls:DataGrid>
-
-
-
-
                                 <StackPanel Grid.Column="1" MaxWidth="120"  Orientation="Vertical" >
                                     <AppBarButton  Click="AppBarButton_Click_2" Tag="{x:Bind ccc}" Icon="OpenPane" Content="Инфо" />
                                 </StackPanel>
-
                                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                                     <TextBlock Text="Позиция:  " FontFamily="Georgia" FontStyle="Italic"  xml:space="preserve"/>
                                     <TextBlock Width="8"/>
                                     <TextBlock  Text="{x:Bind Poz, Mode=OneWay}" FontFamily="Georgia" FontStyle="Italic"/>
                                 </StackPanel>
-                                
                             </Grid>
-
                         </SplitView>
-
                     </Grid>
                 </DataTemplate>
-            </Pivot.ItemTemplate>
-
-        </Pivot>
-        <ProgressRing x:Name="Ring" Grid.Row="1" IsActive="False"  Margin="0,12"  />
+            </controls:TabView.ItemTemplate>
+        </controls:TabView>
+        <ProgressRing x:Name="Ring" Grid.Row="1" Grid.ColumnSpan="2" IsActive="False"  Margin="0,12"  />
 
     </Grid>
 </Page>

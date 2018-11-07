@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Data;
 using System.Threading.Tasks;
 using Windows.UI.Core;
+using Microsoft.Toolkit.Uwp.UI.Controls;
 
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
@@ -38,9 +39,8 @@ namespace BinToHex
             // t.ForegroundColor = Colors.White;
             // t.ButtonBackgroundColor = Colors.Indigo;
             // t.ButtonForegroundColor = Colors.White;
-            //var h = Application.Current;
-          //  h.RequestedTheme =ApplicationTheme.Dark;
-          
+         
+
             this.ViewModel = new ModalViewViDoc();
             this.DataContext = this;
         }
@@ -74,7 +74,7 @@ namespace BinToHex
                     int icol = 0;
                     if (ViewModel.ColTabs.Count > 0)
                     {
-                        icol = PivotItemsContainer.SelectedIndex;
+                        icol = Tabs.SelectedIndex;
                         ViewModel.ColTabs.RemoveAt(icol);
                         ViewModel.ColTabs.Insert(icol, new VidDoc(bb)
                         {
@@ -92,7 +92,7 @@ namespace BinToHex
 
                         });
 
-                        PivotItemsContainer.SelectedIndex = icol;
+                        Tabs.SelectedIndex = icol;
                         cout++;
 
 
@@ -116,7 +116,7 @@ namespace BinToHex
 
                         });
                         cout++;
-                        PivotItemsContainer.SelectedIndex = ViewModel.ColTabs.Count - 1;
+                        Tabs.SelectedIndex = ViewModel.ColTabs.Count - 1;
                     }
                     Ring.IsActive = false;
 
@@ -164,26 +164,38 @@ namespace BinToHex
                     Windows.Storage.FileProperties.BasicProperties basicProperties = await file.GetBasicPropertiesAsync();
 
 
-                    ViewModel.ColTabs.Add(new VidDoc(bb)
-                    {
-                        //uuu
-                        //jjj
-                        Name = file.DisplayName,
-                        Sppan = true,
-                        ccc = cout,
-                        IsShow = Visibility.Visible,
-                   
-                        Poz = 0,
-                        Path = file.Path,
-                        Size = basicProperties.Size.ToString(),
-                        //   bb1 = bb
-                        //  BiteFile=bb
+                  await  Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                         {
+                             ViewModel.ColTabs.Add(new VidDoc(bb)
+                             {
+                                 //uuu
+                                 //jjj
+                                 Name = file.DisplayName,
+                                 Sppan = true,
+                                 ccc = cout,
+                                 IsShow = Visibility.Visible,
 
-                    });
+                                 Poz = 0,
+                                 Path = file.Path,
+                                 Size = basicProperties.Size.ToString(),
+                                 //   bb1 = bb
+                                 //  BiteFile=bb
+
+                             });
+                         });
+                    if (ViewModel.ColTabs[0].Name == "Новый документ")
+                    {
+                      
+                        ViewModel.ColTabs.RemoveAt(0);
+
+                    }
 
                     cout++;
-                   
-                    PivotItemsContainer.SelectedIndex = ViewModel.ColTabs.Count - 1;
+                   await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        Tabs.SelectedIndex = ViewModel.ColTabs.Count - 1;
+                    });
+                 
                     //ViewModel.IsShowBar = Visibility.Collapsed;
                     Ring.IsActive = false;
 
@@ -204,31 +216,7 @@ namespace BinToHex
             Ring.IsActive = false;
         }
 
-        private async void AppBarButton_Click_1(object sender, RoutedEventArgs e)
-        {
 
-            Button btn = (Button)sender;
-            string Fio = (string)btn.Tag.ToString();
-            int ff = 0;
-            int x = 0;
-
-            foreach (VidDoc tes in ViewModel.ColTabs)
-            {
-                if (tes.ccc == Convert.ToInt32(Fio))
-                {
-                    x = ff;
-                    break;
-                }
-                else
-                {
-                    ff++;
-                }
-
-            }
-            //  var x = PivotItemsContainer.SelectedIndex;
-            ViewModel.ColTabs.RemoveAt(x);
-
-        }
 
         private async void AppBarButton_Click_2(object sender, RoutedEventArgs e)
         {
@@ -258,16 +246,16 @@ namespace BinToHex
             TextBlock f = (TextBlock)sender;
             f.SelectAll();
 
-            int x = PivotItemsContainer.SelectedIndex;
+           // int x = PivotItemsContainer.SelectedIndex;
 
             int ds = 0;
             foreach (var d in ViewModel.ColTabs)
             {
-                if (ds == x)
-                {
-                    d.Poz = Convert.ToInt32(f.Tag);
-                    return;
-                }
+              //  if (ds == x)
+              //  {
+                //    d.Poz = Convert.ToInt32(f.Tag);
+                 //   return;
+             //   }
                 ds++;
             }
 
@@ -569,14 +557,50 @@ namespace BinToHex
             TextBox f = (TextBox)sender;
             if (f != null & f.SelectionLength == 0)
             {
-                int x = PivotItemsContainer.SelectedIndex;
+                int x = Tabs.SelectedIndex;
                 int ds = 0;
-               // StartSelectAndPoz(f.SelectionStart, Convert.ToInt32(f.Tag), out int start, out int poz);
+                // StartSelectAndPoz(f.SelectionStart, Convert.ToInt32(f.Tag), out int start, out int poz);
 
-              //  f.Select(start, 2);
+                //  f.Select(start, 2);
                 ViewModel.poisc(x, Convert.ToInt32(f.Tag));
-
             }
+        }
+
+        private async void Tabs_TabClosing(object sender, Microsoft.Toolkit.Uwp.UI.Controls.TabClosingEventArgs e)
+        {
+            if (ViewModel.ColTabs.Count==1)
+            {
+                byte[] bb = new byte[0];
+                ViewModel.ColTabs.Add(new VidDoc(bb)
+                {
+                    Name = "Новый документ",
+                    ccc = 0
+                    //  BiteFile=bb
+
+                });
+
+                //   cout++;
+
+                Tabs.SelectedIndex = 0;
+            }
+        
+            //  var x = PivotItemsContainer.SelectedIndex;
+         //   ViewModel.ColTabs.RemoveAt(0);
+            // TabViewNotification.Show("You're closing the '" + e.Tab.Header + "' tab.", 2000);
+            //  var f = e.Tab.Tag;
+            //TabView tabs1 = (TabView)sender;
+            //    tabs1.SelectedIndex = -1;
+            //   tabs1.SelectedItem = null;
+            //   MessageDialog d = new MessageDialog(tabs1.SelectedIndex.ToString());
+            //  await d.ShowAsync();
+
+        }
+
+        private async void AppBarButton_Click_3(object sender, RoutedEventArgs e)
+        {
+
+
+
         }
     }
 }

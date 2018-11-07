@@ -40,7 +40,7 @@ namespace BinToHex
             bb1 = b;
             OpenF();
         }
-        public async void OpenF()
+        public async Task OpenF()
         {
 
             iniz();
@@ -50,6 +50,7 @@ namespace BinToHex
             int s = 0;
             var fd = new ClassData() { };
             string text;
+          
             // text = String.Format("{0:X2}", ofs) + "\t";
             // await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             // {
@@ -73,11 +74,9 @@ namespace BinToHex
                     ss += 16;
                     fd = new ClassData() { };
 
-                    // await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                    //  {
-                    //   text += String.Format("{0:X2}", ofs) + "\t";
+                   
                     fd.offset =ofs;
-                    // });
+                   
 
                 }
                 switch (s)
