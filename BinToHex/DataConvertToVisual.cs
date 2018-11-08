@@ -7,14 +7,19 @@ using Windows.UI.Xaml.Data;
 
 namespace BinToHex
 {
-   public class DataConverter:IValueConverter
+    class DataConvertToVisual : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            byte? bb = (byte?)value;
+            if(value==null)
+            {
+                return Windows.UI.Xaml.Visibility.Collapsed;
+            }
+            else
+            {
+                return Windows.UI.Xaml.Visibility.Visible;
+            }
             
-          
-            return String.Format("{0:X2}", bb);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

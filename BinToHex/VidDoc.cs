@@ -82,67 +82,67 @@ namespace BinToHex
                 switch (s)
                 {
                     case 0:
-                        fd.one1 = bb1[i];
+                        fd.One1 = bb1[i];
                         fd.one1B = i+1;
                         break;
                     case 1:
-                        fd.one2 = bb1[i];
+                        fd.One2 = bb1[i];
                         fd.one2B = i + 1;
                         break;
                     case 2:
-                        fd.one3 = bb1[i];
+                        fd.One3 = bb1[i];
                         fd.one3B = i + 1;
                         break;
                     case 3:                  
-                        fd.one4 = bb1[i];
+                        fd.One4 = bb1[i];
                         fd.one4B = i + 1;
                         break;
                     case 4:
-                        fd.one5 = bb1[i];
+                        fd.One5 = bb1[i];
                         fd.one5B = i + 1;
                         break;
                     case 5:
-                        fd.one6 = bb1[i];
+                        fd.One6 = bb1[i];
                         fd.one6B = i + 1;
                         break;
                     case 6:
-                        fd.one7 = bb1[i];
+                        fd.One7 = bb1[i];
                         fd.one7B = i + 1;
                         break;
                     case 7:
-                        fd.one8 = bb1[i];
+                        fd.One8 = bb1[i];
                         fd.one8B = i + 1;
                         break;
                     case 8:
-                        fd.one9 = bb1[i];
+                        fd.One9 = bb1[i];
                         fd.one9B = i + 1;
                         break;
                     case 9:
-                        fd.one10 = bb1[i];
+                        fd.One10 = bb1[i];
                         fd.one10B = i + 1;
                         break;
                     case 10:
-                        fd.one11 = bb1[i];
+                        fd.One11 = bb1[i];
                         fd.one11B = i + 1;
                         break;
                     case 11:
-                        fd.one12 = bb1[i];
+                        fd.One12 = bb1[i];
                         fd.one12B = i + 1;
                         break;
                     case 12:
-                        fd.one13 = bb1[i];
+                        fd.One13 = bb1[i];
                         fd.one13B = i + 1;
                         break;
                     case 13:
-                        fd.one14 = bb1[i];
+                        fd.One14 = bb1[i];
                         fd.one14B = i + 1;
                         break;
                     case 14:
-                        fd.one15 = bb1[i];
+                        fd.One15 = bb1[i];
                         fd.one15B = i + 1;
                         break;
                     case 15:
-                        fd.one16 = bb1[i];
+                        fd.One16 = bb1[i];
                         fd.one16B = i + 1;
                         break;
                 }
@@ -173,7 +173,7 @@ namespace BinToHex
         public byte[] bb1 { get; set; }
         public string Size { get; set; }
         public Visibility IsShow { get; set; }
-     
+        public Visibility IsShow1 { get; set; }
         bool sppan;
         public bool Sppan
         {

@@ -105,6 +105,7 @@
     <Compile Include="ClassData.cs" />
     <Compile Include="DataConverter.cs" />
     <Compile Include="DataConverter2.cs" />
+    <Compile Include="DataConvertToVisual.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
