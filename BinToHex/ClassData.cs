@@ -1,11 +1,27 @@
 ﻿using System;
-
+using Windows.UI.Xaml;
 
 namespace BinToHex
 {
    
     public class ClassData
     {
+        Visibility isShovACSII = Visibility.Collapsed;
+        public Visibility IsShowACSII
+        {
+            get
+            {
+                return isShovACSII;
+            }
+
+            set
+            {
+                isShovACSII = value;
+                
+            }
+        }
+
+
         byte one1;
         public byte? One1
         {

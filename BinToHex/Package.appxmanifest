@@ -28,4 +28,9 @@
       </uap:VisualElements>
     </Application>
   </Applications>
+  <Capabilities>
+    <uap:Capability Name="videosLibrary" />
+    <uap:Capability Name="picturesLibrary" />
+    <uap:Capability Name="musicLibrary" />
+  </Capabilities>
 </Package>

@@ -174,6 +174,8 @@ namespace BinToHex
         public string Size { get; set; }
         public Visibility IsShow { get; set; }
         public Visibility IsShow1 { get; set; }
+       
+        
         bool sppan;
         public bool Sppan
         {

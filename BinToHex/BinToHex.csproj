@@ -103,6 +103,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassData.cs" />
+    <Compile Include="ClassSetUpUser.cs" />
+    <Compile Include="ConvertVisualASCII.cs" />
     <Compile Include="DataConverter.cs" />
     <Compile Include="DataConverter2.cs" />
     <Compile Include="DataConvertToVisual.cs" />

@@ -13,6 +13,7 @@ using System.Data;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using Microsoft.Toolkit.Uwp.UI.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
@@ -33,13 +34,14 @@ namespace BinToHex
         public ModalViewViDoc ViewModel { get; set; }
         public MainPage()
         {
+           
             this.InitializeComponent();
             //   var t = ApplicationView.GetForCurrentView().TitleBar;
             // t.BackgroundColor = Colors.Indigo;
             // t.ForegroundColor = Colors.White;
             // t.ButtonBackgroundColor = Colors.Indigo;
             // t.ButtonForegroundColor = Colors.White;
-         
+        
 
             this.ViewModel = new ModalViewViDoc();
         
@@ -55,12 +57,26 @@ namespace BinToHex
                 //  BiteFile=bb
 
             });
-
+            Window.Current.Activated += Current_Activated;
             //   cout++;
 
-           // Tabs.SelectedIndex = 0;
+            // Tabs.SelectedIndex = 0;
         }
-        
+        private async void Current_Activated(object sender, WindowActivatedEventArgs e)
+        {
+            ClassSetUpUser.SetPush();
+            if (ClassSetUpUser.Application=="Dark")
+            {
+                rb2.IsChecked = true;
+            }
+            else
+            {
+                rb1.IsChecked = true;
+            }
+          //  RadioButton_Checked(null, null);
+
+
+        }
         private async void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             
@@ -660,11 +676,63 @@ namespace BinToHex
 
         }
 
-        private async void AppBarButton_Click_3(object sender, RoutedEventArgs e)
+
+        private void AppBarButton_Click_1(object sender, RoutedEventArgs e)
         {
+            ClassSetUpUser.saveUseSet();
+        }
+
+        private async void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+           
+           
+
+            
+            RadioButton rb = sender as RadioButton;
+                if (rb != null && comSet != null)
+                {
+                    MessageDialog messageDialog = new MessageDialog("Параметры будут применены после перезагрузки приложения");
+                    string colorName = rb.Tag.ToString();
+                    switch (colorName)
+                    {
+                        case "Light":
+                            try
+                            {
+                                ClassSetUpUser.Application = "Light";
+                                ClassSetUpUser.saveUseSet();
+                                if (!ClassSetUpUser.start)
+                                {
+                                    await messageDialog.ShowAsync();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageDialog message = new MessageDialog(ex.ToString());
+                                await message.ShowAsync();
+                            }
+                            break;
+                        case "Dark":
+                            ClassSetUpUser.Application = "Dark";
+                            ClassSetUpUser.saveUseSet();
+                            if (!ClassSetUpUser.start)
+                            {
+                                await messageDialog.ShowAsync();
+                            }
+
+                            break;
+
+                    }
+               
 
 
+            }
+            ClassSetUpUser.start = false;
 
+        }
+
+        private void AppBarButton_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
     }
 }

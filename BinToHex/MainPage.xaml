@@ -15,12 +15,10 @@
         <local:DataConvertToVisual x:Key="ConvertVisual"/>
     </UserControl.Resources>
 
- 
-
-    <Page.Background>
+    <!--Page.Background>
         <ThemeResource ResourceKey="ApplicationPageBackgroundThemeBrush"/>
-    </Page.Background>
-    <Grid x:Name="GridMain">
+    </Page.Background-->
+    <Grid x:Name="GridMain" DataContext="{x:Bind ViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -31,8 +29,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <CommandBar Grid.Column="1">
-            <AppBarButton Icon="Setting" Label="Настройка" Click="AppBarButton_Click_3"/>
+        <CommandBar Grid.Column="1" x:Name="comSet">
+            <AppBarButton Icon="Setting" Label="Настройка" FrameworkElement.AllowFocusOnInteraction="True"  IsEnabled="True"  Tapped="AppBarButton_Tapped">
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout>
+
+                        <StackPanel  Orientation="Vertical" Margin="16,16,0,0" Padding="0,0,0,0" DataContext="{x:Bind ViewModel.DefaultVidDoc}">
+                            <ToggleSwitch Margin="0,4,0,4"   Header="Данные формата ASCII" Visibility="Collapsed"/>
+                            <TextBlock Text="Режим приложения" Style="{ThemeResource BaseTextBlockStyle}"/>
+                            <RadioButton x:Name="rb1" Content="Светлый" Checked="RadioButton_Checked" Tag="Light"   />
+                            <RadioButton x:Name="rb2" Content="Темный" Checked="RadioButton_Checked" Tag="Dark" />
+                        
+                        </StackPanel>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
+            </AppBarButton>
         </CommandBar>
         <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
             <AppBarButton Icon="NewFolder" Label="Новый файл"  Click="OpenNewFile" />
@@ -198,9 +209,9 @@
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="ASCII">
-                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
-                                                <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind oneASCII, Mode=OneWay}" x:Phase="3"  IsReadOnly="True" BorderThickness="0" FontSize="12"/>
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate >
+                                                <DataTemplate x:DataType="local:ClassData" >
+                                                    <TextBox Text="{x:Bind oneASCII, Mode=OneWay}" x:Phase="3"  IsReadOnly="True" BorderThickness="0" FontSize="12" Visibility="{x:Bind IsShowACSII}"/>
                                                 </DataTemplate>
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>

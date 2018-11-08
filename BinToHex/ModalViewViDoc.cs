@@ -64,6 +64,7 @@ namespace BinToHex
                 OnPropertyChanged("isShov");
             }
         }
+    
         private ObservableCollection<VidDoc> colTabs = new ObservableCollection<VidDoc>();
         public ObservableCollection<VidDoc> ColTabs
         {

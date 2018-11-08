@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -28,7 +29,30 @@ namespace BinToHex
         /// </summary>
         public App()
         {
+            try
+            {
+                ClassSetUpUser.SetPush();
+            }
+            catch (Exception ex)
+            {
+                MessageDialog messageDialog = new MessageDialog(ex.ToString());
+                messageDialog.ShowAsync();
+            }
+            ClassSetUpUser.start = true;
+            if (ClassSetUpUser.Application == "Dark")
+            {
+
+                Application.Current.RequestedTheme = ApplicationTheme.Dark;
+                
+            }
+            else
+            {
+                Application.Current.RequestedTheme = ApplicationTheme.Light;
+            }
+
+
             this.InitializeComponent();
+           
             this.Suspending += OnSuspending;
         }
 
