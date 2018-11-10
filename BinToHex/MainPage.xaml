@@ -69,7 +69,7 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                               
-                                <controls:DataGrid Visibility="{x:Bind IsShow1}" BeginningEdit="dataGrid1_BeginningEdit" x:Name="dataGrid1"  Grid.Row="1" ScrollViewer.HorizontalScrollMode="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="6" SelectionMode="Single"  IsFocusEngaged="False" AutoGenerateColumns="False"
+                                <controls:DataGrid Visibility="{x:Bind IsShow1}"  x:Name="dataGrid1"  Grid.Row="1" ScrollViewer.HorizontalScrollMode="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="6" SelectionMode="Single"  IsFocusEngaged="False" AutoGenerateColumns="False"
     ItemsSource="{x:Bind ClassDatas1,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  CellEditEnding="dataGrid1_CellEditEnding">
                                     <controls:DataGrid.Columns>
                                         <controls:DataGridTemplateColumn Header="OFFSET" >
