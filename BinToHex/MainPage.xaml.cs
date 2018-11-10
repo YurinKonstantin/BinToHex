@@ -112,19 +112,20 @@ namespace BinToHex
                             {
 
 
-                               
-                                  
-                                    ViewModel.ColTabs.Add(new VidDoc(bb)
-                                    {
-                                        Name = file.DisplayName,
-                                        Sppan = true,
-                                        ccc = cout,
-                                        IsShow = Visibility.Visible,
-                                        IsShow1 = Visibility.Visible,
 
-                                        Poz = 0,
-                                        Path = file.Path,
-                                        Size = basicProperties.Size.ToString(),
+
+                                ViewModel.ColTabs.Add(new VidDoc(bb)
+                                {
+                                    Name = file.DisplayName,
+                                    Sppan = true,
+                                    ccc = cout,
+                                    IsShow = Visibility.Visible,
+                                    IsShow1 = Visibility.Visible,
+
+                                    Poz = 0,
+                                    Path = file.Path,
+                                    Size = basicProperties.Size.ToString(),
+                                    NameType = file.FileType
                                         //  BiteFile=bb
 
                                     });
@@ -163,6 +164,7 @@ namespace BinToHex
                                 Poz = 0,
                                 Path = file.Path,
                                 Size = basicProperties.Size.ToString(),
+                                NameType = file.FileType
                                 //   bb1 = bb
                                 //  BiteFile=bb
 
@@ -189,6 +191,7 @@ namespace BinToHex
                             Poz = 0,
                             Path = file.Path,
                             Size = basicProperties.Size.ToString(),
+                            NameType = file.FileType
                             //   bb1 = bb
                             //  BiteFile=bb
 
@@ -206,10 +209,11 @@ namespace BinToHex
                     await f.ShowAsync();
                 }
 
-
+                
             }
             catch
             {
+              
                 Ring.IsActive = false;
                 MessageDialog f = new MessageDialog("Произошла ошибка, возможно файл поврежден");
                 await f.ShowAsync();
@@ -257,6 +261,7 @@ namespace BinToHex
                                  Poz = 0,
                                  Path = file.Path,
                                  Size = basicProperties.Size.ToString(),
+                                 NameType = file.FileType
                                  //   bb1 = bb
                                  //  BiteFile=bb
 
@@ -626,13 +631,23 @@ namespace BinToHex
         }
         private async void listViewer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageDialog d = new MessageDialog("ggfhg");
-            await d.ShowAsync();
+           // var v = (DataGrid)sender;
+      
+         
+           // var ff = (TextBox)v.SelectedItem;
+           
 
         }
 
         private async void TextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
+           // MessageDialog messageDialog = new MessageDialog("событие");
+          //  await messageDialog.ShowAsync();
+          if(ClassSetUpUser.ShovH)
+            {
+                helpRed.Visibility = Visibility.Visible;
+            }
+         
             TextBox f = (TextBox)sender;
             if (f != null & f.SelectionLength == 0)
             {
@@ -689,7 +704,7 @@ namespace BinToHex
 
             
             RadioButton rb = sender as RadioButton;
-                if (rb != null && comSet != null)
+                if (rb != null )
                 {
                     MessageDialog messageDialog = new MessageDialog("Параметры будут применены после перезагрузки приложения");
                     string colorName = rb.Tag.ToString();
@@ -716,6 +731,7 @@ namespace BinToHex
                             ClassSetUpUser.saveUseSet();
                             if (!ClassSetUpUser.start)
                             {
+                           
                                 await messageDialog.ShowAsync();
                             }
 
@@ -733,6 +749,129 @@ namespace BinToHex
         private void AppBarButton_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+
+        private async void AppBarButton_Click_3(object sender, RoutedEventArgs e)
+        {
+           
+        }
+
+        private async void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            MessageDialog messageDialog = new MessageDialog("событие");
+           await messageDialog.ShowAsync();
+            helpRed.Visibility = Visibility.Visible;
+            TextBox f = (TextBox)sender;
+            if (f != null & f.SelectionLength == 0)
+            {
+                int x = Tabs.SelectedIndex;
+                int i = 0;
+               foreach(var dVid in ViewModel.ColTabs)
+                {
+                    if(i==x)
+                    {
+                     
+                        dVid.bb1[Convert.ToInt32(f.Tag)-1] = Convert.ToByte(Convert.ToInt32(f.Text.ToString(), 16));
+                        dVid.ClassDatas1.Clear();
+                        dVid.OpenF();
+                      //  ViewModel.ColTabs.Insert(x, dVid);
+                      // ViewModel.ColTabs.RemoveAt(x+1);
+                        break;
+                    }
+                    i++;
+                }
+                //MessageDialog messageDialog = new MessageDialog(f.Tag.ToString()+" "+f.Text+" "+x.ToString());
+              //  messageDialog.ShowAsync();
+                //ViewModel.poisc(x, Convert.ToInt32(f.Tag));
+            }
+        }
+
+        private async void dataGrid1_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            try
+            {
+
+
+                DataGrid f = (DataGrid)sender;
+                if (f != null)
+                {
+                    var textBlock = (TextBox)e.EditingElement;
+                  //  MessageDialog messageDialog = new MessageDialog(textBlock.Tag.ToString() + " " + textBlock.Text + " ");
+                  //  await messageDialog.ShowAsync();
+                    int x = Tabs.SelectedIndex;
+                    int i = 0;
+                    foreach (var dVid in ViewModel.ColTabs)
+                    {
+                        if (i == x)
+                        {
+
+                            dVid.bb1[Convert.ToInt32(textBlock.Tag) - 1] = Convert.ToByte(Convert.ToInt32(textBlock.Text.ToString(), 16));
+                            dVid.ClassDatas1.Clear();
+                            await dVid.OpenF();
+                            //  ViewModel.ColTabs.Insert(x, dVid);
+                            // ViewModel.ColTabs.RemoveAt(x+1);
+                            break;
+                        }
+                        i++;
+                    }
+                 //   MessageDialog messageDialog1 = new MessageDialog(textBlock.Tag.ToString() + " " + textBlock.Text + " " + x.ToString());
+                   // await messageDialog1.ShowAsync();
+                    //ViewModel.poisc(x, Convert.ToInt32(f.Tag));
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+
+        private async void TextBox_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+            MessageDialog messageDialog = new MessageDialog("событие");
+            await  messageDialog.ShowAsync();
+            helpRed.Visibility = Visibility.Visible;
+            TextBox f = (TextBox)sender;
+            if (f != null & f.SelectionLength == 0)
+            {
+                int x = Tabs.SelectedIndex;
+                int ds = 0;
+                // StartSelectAndPoz(f.SelectionStart, Convert.ToInt32(f.Tag), out int start, out int poz);
+
+                //  f.Select(start, 2);
+                ViewModel.poisc(x, Convert.ToInt32(f.Tag));
+            }
+        }
+
+        private async void dataGrid1_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            //MessageDialog messageDialog1 = new MessageDialog("режим редактирования");
+          //  await messageDialog1.ShowAsync();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            helpRed.Visibility = Visibility.Collapsed;
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox rb = sender as CheckBox;
+            if (rb != null)
+            {
+            
+             if(Convert.ToBoolean(rb.IsChecked))
+                {
+                    ClassSetUpUser.ShovH = false;
+                    ClassSetUpUser.saveUseSet();
+                }
+             else
+                {
+                    ClassSetUpUser.ShovH = true;
+                    ClassSetUpUser.saveUseSet();
+                }
+
+
+            }
         }
     }
 }

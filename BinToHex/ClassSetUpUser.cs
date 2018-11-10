@@ -39,7 +39,18 @@ namespace BinToHex
                 applicationTheme = value;
             }
         }
-
+        static bool shovH=true;
+        static public bool ShovH
+        {
+            get
+            {
+                return shovH;
+            }
+            set
+            {
+                shovH = value;
+            }
+        }
         static public void saveUseSet()
         {
             // Composite setting
@@ -47,7 +58,7 @@ namespace BinToHex
             Windows.Storage.ApplicationDataCompositeValue composite =
                 new Windows.Storage.ApplicationDataCompositeValue();
             composite["strApplicationTheme"] = Application;
-            
+            composite["shovH"] = ShovH;
             // composite["intPorogS"] = PorogS;
             localSettings.Values["CompositeSetting"] = composite;
         }
@@ -62,8 +73,13 @@ namespace BinToHex
                 }
                 else
                 {
+                ShovH = Convert.ToBoolean(composite["shovH"]);
                 if (composite["strApplicationTheme"].ToString() != String.Empty)
+                {
                     Application = Convert.ToString(composite["strApplicationTheme"]);
+                   
+                }
+                   
                 else
                     Application = "Light";
 

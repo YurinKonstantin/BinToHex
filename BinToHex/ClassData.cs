@@ -1,11 +1,20 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 
 namespace BinToHex
 {
    
-    public class ClassData
+    public class ClassData : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            // Raise the PropertyChanged event, passing the name of the property whose value has changed.
+            this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
         Visibility isShovACSII = Visibility.Collapsed;
         public Visibility IsShowACSII
         {
@@ -23,7 +32,21 @@ namespace BinToHex
 
 
         byte one1;
-        public byte? One1
+        public  byte One112
+        {
+            get
+            {
+                return one1;
+            }
+            set
+            {
+                one1 = value;
+                OnPropertyChanged("One112");
+                var mess = new MessageDialog(One112.ToString());
+                mess.ShowAsync();
+            }
+        }
+   public byte? One1
         {
             get
             {
@@ -47,6 +70,9 @@ namespace BinToHex
                 else
                 {
                     one1 = Convert.ToByte(value);
+                  //  var mess = new MessageDialog(one1.ToString());
+                  // mess.ShowAsync();
+                    OnPropertyChanged("One1");
                 }
 
             }
@@ -80,6 +106,7 @@ namespace BinToHex
                 else
                 {
                     one2 = Convert.ToByte(value);
+                    OnPropertyChanged("One2");
                 }
 
             }
@@ -732,6 +759,10 @@ namespace BinToHex
                 }
 
                 return text; 
+            }
+            set
+            {
+                var g = value;
             }
         }
 

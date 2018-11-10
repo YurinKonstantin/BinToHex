@@ -4,9 +4,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace BinToHex
 {
@@ -20,6 +23,7 @@ namespace BinToHex
         /// Имя файла
         /// </summary>
         public string Name { get; set; }
+        public string NameType { get; set; }
         public int ccc { get; set; }
         public string Path { get; set; }
         string text;
@@ -35,10 +39,136 @@ namespace BinToHex
                 OnPropertyChanged();
             }
         }
+    
+        public async void ShowModel()
+        {
+            
+            var savePicker = new Windows.Storage.Pickers.FileSavePicker();
+            savePicker.SuggestedStartLocation =
+                Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary;
+            // Dropdown of file types the user can save the file as
+            savePicker.FileTypeChoices.Add("Тип открытого файла"+"|"+NameType, new List<string>() { NameType });
+            savePicker.FileTypeChoices.Add("Text", new List<string>() {".txt"});
+            savePicker.FileTypeChoices.Add("Bin", new List<string>() { ".bin" });
+            savePicker.FileTypeChoices.Add("PNG", new List<string>() { ".png" });
+            // Default file name if the user does not type one in or select a file to replace
+            savePicker.SuggestedFileName = Name;
+            Windows.Storage.StorageFile file = await savePicker.PickSaveFileAsync();
+            if (file != null)
+            {
+                byte[] bb = new byte[Convert.ToInt32(Size)];
+                int i = 0;
+                foreach(ClassData b in ClassDatas1)
+                {
+                    if (b.One1!=null)
+                    {
+                        bb[i] =Convert.ToByte(b.One1);
+                        i++;
+                    }
+                    if (b.One2 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One2);
+                        i++;
+                    }
+                    if (b.One3 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One3);
+                        i++;
+                    }
+                    if (b.One4 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One4);
+                        i++;
+                    }
+                    if (b.One5 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One5);
+                        i++;
+                    }
+                    if (b.One6 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One6);
+                        i++;
+                    }
+                    if (b.One7 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One7);
+                        i++;
+                    }
+                    if (b.One8 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One8);
+                        i++;
+                    }
+                    if (b.One9 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One9);
+                        i++;
+                    }
+                    if (b.One10 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One10);
+                        i++;
+                    }
+                    if (b.One11 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One11);
+                        i++;
+                    }
+                    if (b.One12 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One12);
+                        i++;
+                    }
+                    if (b.One13 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One13);
+                        i++;
+                    }
+                    if (b.One14 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One14);
+                        i++;
+                    }
+                    if (b.One15 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One15);
+                        i++;
+                    }
+                    if (b.One16 != null)
+                    {
+                        bb[i] = Convert.ToByte(b.One16);
+                        i++;
+                    }
+                }
+              
+                await Windows.Storage.FileIO.WriteBytesAsync(file, bb1);
+
+
+
+
+            }
+            else
+            {
+
+            }
+           
+            var mess = new MessageDialog("Сохранение завершено");
+            await mess.ShowAsync();
+        }
         public VidDoc(byte[] b)
         {
             bb1 = b;
+         
+           
             OpenF();
+        }
+        public async void redact()
+        {
+          //  var f = (TextBlock)sender;
+            MessageDialog messageDialog = new MessageDialog("hghg");
+         await   messageDialog.ShowAsync();
+
         }
         public async Task OpenF()
         {
@@ -170,7 +300,22 @@ namespace BinToHex
 
            
         }
-        public byte[] bb1 { get; set; }
+        public byte[] _bb1;
+        public byte[] bb1
+        {
+            get
+            {
+                return _bb1;
+            }
+            set
+            {
+                _bb1 = value;
+                ClassDatas1.Clear();
+                OpenF();
+                 OnPropertyChanged("bb1");
+            }
+        }
+        public byte[] bbuf { get; set; }
         public string Size { get; set; }
         public Visibility IsShow { get; set; }
         public Visibility IsShow1 { get; set; }
@@ -205,13 +350,26 @@ namespace BinToHex
             }
         }
         ObservableCollection<ClassData> classDatas1 = new ObservableCollection<ClassData>();
-        public ObservableCollection<ClassData> ClassDatas1 { get { return classDatas1; } set { classDatas1 = value; } }
+        public ObservableCollection<ClassData> ClassDatas1
+        {
+            get
+            {
+                return classDatas1;
+            }
+            set
+            {
+                classDatas1 = value;
+                OnPropertyChanged("ClassDatas1");
 
+            }
+        }
+    
 
         public void iniz()
         {
 
             ClassDatas1 = new ObservableCollection<ClassData>();
+       
 
 
         }

@@ -15,9 +15,9 @@
         <local:DataConvertToVisual x:Key="ConvertVisual"/>
     </UserControl.Resources>
 
-    <!--Page.Background>
+    <Page.Background>
         <ThemeResource ResourceKey="ApplicationPageBackgroundThemeBrush"/>
-    </Page.Background-->
+    </Page.Background>
     <Grid x:Name="GridMain" DataContext="{x:Bind ViewModel}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -29,41 +29,24 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <CommandBar Grid.Column="1" x:Name="comSet">
-            <AppBarButton Icon="Setting" Label="Настройка" FrameworkElement.AllowFocusOnInteraction="True"  IsEnabled="True"  Tapped="AppBarButton_Tapped">
-                <FlyoutBase.AttachedFlyout>
-                    <Flyout>
-
-                        <StackPanel  Orientation="Vertical" Margin="16,16,0,0" Padding="0,0,0,0" DataContext="{x:Bind ViewModel.DefaultVidDoc}">
-                            <ToggleSwitch Margin="0,4,0,4"   Header="Данные формата ASCII" Visibility="Collapsed"/>
-                            <TextBlock Text="Режим приложения" Style="{ThemeResource BaseTextBlockStyle}"/>
-                            <RadioButton x:Name="rb1" Content="Светлый" Checked="RadioButton_Checked" Tag="Light"   />
-                            <RadioButton x:Name="rb2" Content="Темный" Checked="RadioButton_Checked" Tag="Dark" />
-                        
-                        </StackPanel>
-                    </Flyout>
-                </FlyoutBase.AttachedFlyout>
-            </AppBarButton>
-        </CommandBar>
-        <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
-            <AppBarButton Icon="NewFolder" Label="Новый файл"  Click="OpenNewFile" />
-            <AppBarButton Icon="OpenFile" Label="Открыть файл" Click="AppBarButton_Click"/>
-        </CommandBar>
-        <controls:TabView Grid.Row="1" Grid.ColumnSpan="2" x:Name="Tabs" CanCloseTabs="True" IsCloseButtonOverlay="True" ItemsSource="{x:Bind ViewModel.ColTabs}" TabClosing="Tabs_TabClosing" Margin="0,8,0,0">
-            <controls:TabView.ItemHeaderTemplate>
+        <controls:TabView Grid.Row="1" Grid.ColumnSpan="2" x:Name="Tabs" CanCloseTabs="True" IsCloseButtonOverlay="True" ItemsSource="{x:Bind ViewModel.ColTabs, Mode=TwoWay}"   TabClosing="Tabs_TabClosing" Margin="0,8,0,0" >
+         
+                
+         
+            <controls:TabView.ItemHeaderTemplate >
                 <DataTemplate  x:DataType="local:VidDoc">
-                    <TextBlock Text="{x:Bind Name}" FontSize="14" Visibility="{x:Bind IsShow}" VerticalAlignment="Center" Tag="{x:Bind ccc}"></TextBlock>
+                    <TextBlock Text="{x:Bind Name}" FontSize="14" Visibility="{x:Bind IsShow}" VerticalAlignment="Center" Tag="{x:Bind ccc}" ></TextBlock>
                 </DataTemplate>
             </controls:TabView.ItemHeaderTemplate>
             <controls:TabView.ItemTemplate>
                 <DataTemplate x:DataType="local:VidDoc">
                     <Grid>
 
-                        <SplitView IsPaneOpen="{x:Bind Sppan, Mode=OneWay}" Visibility="{x:Bind IsShow1}"
+                        <SplitView IsPaneOpen="{x:Bind Sppan, Mode=OneWay}" 
            DisplayMode="Inline" PanePlacement="Right"
            OpenPaneLength="280" >
-                            <SplitView.Pane>
-                                <StackPanel Padding="12,0,0,0"   >
+                            <SplitView.Pane  >
+                                <StackPanel Padding="12,0,0,0"   Visibility="{x:Bind IsShow1}">
                                     <TextBlock Text="Имя файла" Style="{ThemeResource BaseTextBlockStyle}" />
                                     <TextBlock Text="{x:Bind Name}" TextWrapping="Wrap"  Style="{ThemeResource BaseTextBlockStyle}"  />
                                     <TextBlock Text="Путь к файлу"  Style="{ThemeResource BaseTextBlockStyle}"  />
@@ -81,12 +64,13 @@
 
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <controls:DataGrid x:Name="dataGrid1" ScrollViewer.HorizontalScrollMode="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="6" SelectionMode="Single" IsFocusEngaged="False" AutoGenerateColumns="False"
-    ItemsSource="{x:Bind ClassDatas1}" >
+                              
+                                <controls:DataGrid Visibility="{x:Bind IsShow1}" BeginningEdit="dataGrid1_BeginningEdit" x:Name="dataGrid1"  Grid.Row="1" ScrollViewer.HorizontalScrollMode="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="6" SelectionMode="Single"  IsFocusEngaged="False" AutoGenerateColumns="False"
+    ItemsSource="{x:Bind ClassDatas1,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  CellEditEnding="dataGrid1_CellEditEnding">
                                     <controls:DataGrid.Columns>
                                         <controls:DataGridTemplateColumn Header="OFFSET" >
                                             <controls:DataGridTemplateColumn.CellTemplate>
@@ -97,25 +81,25 @@
                                         </controls:DataGridTemplateColumn>
 
                                         <controls:DataGridTemplateColumn Header="01" Width="58" >
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox Text="{x:Bind One1, Mode=TwoWay, Converter={StaticResource Converter1}}" Visibility="{x:Bind One1, Converter={StaticResource ConvertVisual}}" x:Phase="2" Tag="{x:Bind one1B}" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate x:DataType="local:ClassData" >
+                                                    <TextBox Text="{x:Bind One1,  Mode=TwoWay, Converter={StaticResource Converter1}, UpdateSourceTrigger=PropertyChanged}"    IsReadOnly="False" Visibility="{x:Bind One1, Converter={StaticResource ConvertVisual}}" x:Phase="2" Tag="{x:Bind one1B}"  SelectionChanged="TextBox_SelectionChanged"  BorderThickness="0"/>
                                                 </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="02"  Width="58" >
-                                            <controls:DataGridTemplateColumn.CellTemplate>
+                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
                                                     <TextBox  Text="{x:Bind One2, Mode=TwoWay, Converter={StaticResource Converter1}}" Visibility="{x:Bind One2, Converter={StaticResource ConvertVisual}}" x:Phase="2"  Tag="{x:Bind one2B}"  SelectionChanged="TextBox_SelectionChanged" BorderThickness="0" HorizontalAlignment="Stretch"/>
                                                 </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
+                                                </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="03"  Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBox  Text="{x:Bind One3, Mode=TwoWay, Converter={StaticResource Converter1}}" Visibility="{x:Bind One3, Converter={StaticResource ConvertVisual}}" x:Phase="2" Tag="{x:Bind one3B}" IsReadOnly="True" SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
+                                                    <TextBox  Text="{x:Bind One3, Mode=TwoWay, Converter={StaticResource Converter1}}" Visibility="{x:Bind One3, Converter={StaticResource ConvertVisual}}" x:Phase="2" Tag="{x:Bind one3B}"  SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                                </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="04" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
@@ -209,14 +193,15 @@
                                             </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="ASCII">
-                                            <controls:DataGridTemplateColumn.CellEditingTemplate >
+                                            <controls:DataGridTemplateColumn.CellTemplate >
                                                 <DataTemplate x:DataType="local:ClassData" >
-                                                    <TextBox Text="{x:Bind oneASCII, Mode=OneWay}" x:Phase="3"  IsReadOnly="True" BorderThickness="0" FontSize="12" Visibility="{x:Bind IsShowACSII}"/>
+                                                    <TextBox Text="{x:Bind oneASCII, Mode=OneWay}" x:Phase="3"   BorderThickness="0" FontSize="12"/>
                                                 </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                            </controls:DataGridTemplateColumn.CellTemplate>
                                         </controls:DataGridTemplateColumn>
                                     </controls:DataGrid.Columns>
                                 </controls:DataGrid>
+                              
                                 <StackPanel Grid.Column="1" MaxWidth="120"  Orientation="Vertical" >
                                     <AppBarButton  Click="AppBarButton_Click_2" Tag="{x:Bind ccc}" Icon="OpenPane" Content="Инфо" />
                                 </StackPanel>
@@ -225,12 +210,47 @@
                                     <TextBlock Width="8"/>
                                     <TextBlock  Text="{x:Bind Poz, Mode=OneWay}" FontFamily="Georgia" FontStyle="Italic"/>
                                 </StackPanel>
+                                <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
+                                    <AppBarButton Icon="OpenFile" Label="Открыть файл" Click="AppBarButton_Click"/>
+                                    <AppBarButton Icon="Save" Label="Сохранить" Click="{x:Bind ShowModel}"/>
+                                </CommandBar>
                             </Grid>
                         </SplitView>
                     </Grid>
                 </DataTemplate>
             </controls:TabView.ItemTemplate>
+            <controls:TabView.TabActionHeader>
+                <CommandBar DefaultLabelPosition="Collapsed">
+                    <AppBarButton Icon="Add" Label="Новый файл"  Click="OpenNewFile" />
+                </CommandBar>
+            </controls:TabView.TabActionHeader>
+            <controls:TabView.TabEndHeader>
+                <CommandBar DefaultLabelPosition="Collapsed">
+                    <AppBarButton Icon="Setting" Label="Настройка" FrameworkElement.AllowFocusOnInteraction="True"  IsEnabled="True"  Tapped="AppBarButton_Tapped">
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout>
+                                <StackPanel  Orientation="Vertical" Margin="16,16,0,0" Padding="0,0,0,0" DataContext="{x:Bind ViewModel.DefaultVidDoc}">
+                                    <ToggleSwitch Margin="0,4,0,4"   Header="Данные формата ASCII" Visibility="Collapsed"/>
+                                    <TextBlock Text="Режим приложения" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                    <RadioButton x:Name="rb1" Content="Светлый" Checked="RadioButton_Checked" Tag="Light"   />
+                                    <RadioButton x:Name="rb2" Content="Темный" Checked="RadioButton_Checked" Tag="Dark" />
+
+                                </StackPanel>
+                            </Flyout>
+                        </FlyoutBase.AttachedFlyout>
+                    </AppBarButton>
+                </CommandBar>
+            </controls:TabView.TabEndHeader>
+          
         </controls:TabView>
+        <StackPanel x:Name="helpRed" Grid.ColumnSpan="2" Grid.Row="1" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="100" Background="{StaticResource SystemControlChromeMediumAcrylicWindowMediumBrush}">
+            <TextBlock Text="Чтобы перейти в режим редактирования:"/>
+            <TextBlock Text="1. Выберите ячейку и нажмите клавишу F2;"/>
+            <TextBlock Text="2. Внесите требуемое изменение;"/>
+            <TextBlock Text="3. Нажмите Enter что бы применить изменения."/>
+            <CheckBox Content="Больше не показывать" Margin="0,12,0,0" Checked="CheckBox_Checked"/>
+            <Button Content="Ок" HorizontalAlignment="Right" Margin="0,12,0,0" Width="100" Click="Button_Click"/>
+        </StackPanel>
         <ProgressRing x:Name="Ring" Grid.Row="1" Grid.ColumnSpan="2" IsActive="False"  Margin="0,12"  />
 
     </Grid>

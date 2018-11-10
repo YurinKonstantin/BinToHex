@@ -22,7 +22,7 @@ namespace BinToHex
             set
             {
                 defaulVidDoc = value;
-                OnPropertyChanged();
+                OnPropertyChanged("DefaultVidDoc");
             }
         }
      
@@ -61,7 +61,7 @@ namespace BinToHex
             set
             {
                 isShov = value;
-                OnPropertyChanged("isShov");
+                OnPropertyChanged("IsShowBar");
             }
         }
     
@@ -76,6 +76,7 @@ namespace BinToHex
             {
                 colTabs = value;
                 OnPropertyChanged("ColTabs");
+
 
             }
         }
