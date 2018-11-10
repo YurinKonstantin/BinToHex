@@ -179,7 +179,7 @@ namespace BinToHex
             int ss = 0;
             int s = 0;
             var fd = new ClassData() { };
-            string text;
+         //   string text;
           
             // text = String.Format("{0:X2}", ofs) + "\t";
             // await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -311,7 +311,7 @@ namespace BinToHex
             {
                 _bb1 = value;
                 ClassDatas1.Clear();
-                OpenF();
+               OpenF();
                  OnPropertyChanged("bb1");
             }
         }

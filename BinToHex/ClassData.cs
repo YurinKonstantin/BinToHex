@@ -42,8 +42,7 @@ namespace BinToHex
             {
                 one1 = value;
                 OnPropertyChanged("One112");
-                var mess = new MessageDialog(One112.ToString());
-                mess.ShowAsync();
+             
             }
         }
    public byte? One1

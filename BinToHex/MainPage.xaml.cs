@@ -62,7 +62,7 @@ namespace BinToHex
 
             // Tabs.SelectedIndex = 0;
         }
-        private async void Current_Activated(object sender, WindowActivatedEventArgs e)
+        private void Current_Activated(object sender, WindowActivatedEventArgs e)
         {
             ClassSetUpUser.SetPush();
             if (ClassSetUpUser.Application=="Dark")
@@ -302,7 +302,7 @@ namespace BinToHex
 
 
 
-        private async void AppBarButton_Click_2(object sender, RoutedEventArgs e)
+        private void AppBarButton_Click_2(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
             string Fio = (string)btn.Tag.ToString();
@@ -325,7 +325,7 @@ namespace BinToHex
 
         }
 
-        private async void TextBlock_Tapped_1(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        private  void TextBlock_Tapped_1(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             TextBlock f = (TextBlock)sender;
             f.SelectAll();
@@ -629,17 +629,9 @@ namespace BinToHex
 
             }
         }
-        private async void listViewer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           // var v = (DataGrid)sender;
-      
-         
-           // var ff = (TextBox)v.SelectedItem;
-           
+  
 
-        }
-
-        private async void TextBox_SelectionChanged(object sender, RoutedEventArgs e)
+        private void TextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
            // MessageDialog messageDialog = new MessageDialog("событие");
           //  await messageDialog.ShowAsync();
@@ -652,7 +644,7 @@ namespace BinToHex
             if (f != null & f.SelectionLength == 0)
             {
                 int x = Tabs.SelectedIndex;
-                int ds = 0;
+               // int ds = 0;
                 // StartSelectAndPoz(f.SelectionStart, Convert.ToInt32(f.Tag), out int start, out int poz);
 
                 //  f.Select(start, 2);
@@ -660,7 +652,7 @@ namespace BinToHex
             }
         }
 
-        private async void Tabs_TabClosing(object sender, Microsoft.Toolkit.Uwp.UI.Controls.TabClosingEventArgs e)
+        private void Tabs_TabClosing(object sender, Microsoft.Toolkit.Uwp.UI.Controls.TabClosingEventArgs e)
         {
             if (ViewModel.ColTabs.Count==1)
             {
@@ -751,10 +743,6 @@ namespace BinToHex
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
 
-        private async void AppBarButton_Click_3(object sender, RoutedEventArgs e)
-        {
-           
-        }
 
         private async void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -773,7 +761,7 @@ namespace BinToHex
                      
                         dVid.bb1[Convert.ToInt32(f.Tag)-1] = Convert.ToByte(Convert.ToInt32(f.Text.ToString(), 16));
                         dVid.ClassDatas1.Clear();
-                        dVid.OpenF();
+                      await  dVid.OpenF();
                       //  ViewModel.ColTabs.Insert(x, dVid);
                       // ViewModel.ColTabs.RemoveAt(x+1);
                         break;
@@ -819,7 +807,7 @@ namespace BinToHex
                     //ViewModel.poisc(x, Convert.ToInt32(f.Tag));
                 }
             }
-            catch(Exception ex)
+            catch(Exception )
             {
 
             }
@@ -834,7 +822,7 @@ namespace BinToHex
             if (f != null & f.SelectionLength == 0)
             {
                 int x = Tabs.SelectedIndex;
-                int ds = 0;
+              //  int ds = 0;
                 // StartSelectAndPoz(f.SelectionStart, Convert.ToInt32(f.Tag), out int start, out int poz);
 
                 //  f.Select(start, 2);
@@ -842,11 +830,7 @@ namespace BinToHex
             }
         }
 
-        private async void dataGrid1_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
-        {
-            //MessageDialog messageDialog1 = new MessageDialog("режим редактирования");
-          //  await messageDialog1.ShowAsync();
-        }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {

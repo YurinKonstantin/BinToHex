@@ -36,7 +36,7 @@ namespace BinToHex
         {
             ColTabs.Add(DefaultVidDoc);
         }
-        public async void poisc(int x, int poz)
+        public  void poisc(int x, int poz)
         {
             int ds = 0;
             foreach (VidDoc d in ColTabs)
