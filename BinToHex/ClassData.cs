@@ -6,9 +6,62 @@ using Windows.UI.Xaml;
 
 namespace BinToHex
 {
-   
+
     public class ClassData : INotifyPropertyChanged
     {
+        byte?[] masByte = new byte?[16];
+        public byte?[] MasByte
+        {
+            get
+            {
+                return masByte;
+            }
+            set
+            {
+                masByte = value;
+            }
+        }
+      public void addByte(int b, byte bb)
+        {
+            masByte[b] = bb;
+        }
+     
+        public byte? One1mas
+        {
+            get
+            {
+                if (masByte[0] == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return masByte[0];
+                }
+
+            }
+            set
+            {
+                var g = value;
+                if (g == null)
+                {
+
+                }
+                else
+                {
+                    masByte[0] = Convert.ToByte(value);
+                }
+
+            }
+        }
+        public int One1Tag
+        {
+            get
+            {
+                return 1+Convert.ToInt32(offset);
+            }
+        
+        }
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -26,72 +79,27 @@ namespace BinToHex
             set
             {
                 isShovACSII = value;
-                
-            }
-        }
-
-
-        byte one1;
-        public  byte One112
-        {
-            get
-            {
-                return one1;
-            }
-            set
-            {
-                one1 = value;
-                OnPropertyChanged("One112");
-             
-            }
-        }
-   public byte? One1
-        {
-            get
-            {
-                if (one1B == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return one1;
-                }
-
-            }
-            set
-            {
-                var g = value;
-                if (g == null)
-                {
-
-                }
-                else
-                {
-                    one1 = Convert.ToByte(value);
-                  //  var mess = new MessageDialog(one1.ToString());
-                  // mess.ShowAsync();
-                    OnPropertyChanged("One1");
-                }
 
             }
         }
-        public int? one1B { get; set; }
+
+
+     
 
         public int offset { get; set; }
         public int oneB { get; set; }
-        byte one2;
-        public byte? One2
+        
+        public byte? One2mas
         {
             get
             {
-                if (one2B == null)
+                if (masByte[1] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one2;
+                    return masByte[1];
                 }
 
             }
@@ -104,26 +112,34 @@ namespace BinToHex
                 }
                 else
                 {
-                    one2 = Convert.ToByte(value);
-                    OnPropertyChanged("One2");
+                    masByte[1] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one2B { get; set; }
-
-        byte one3;
-        public byte? One3
+        public int One2Tag
         {
             get
             {
-                if (one3B == null)
+                return 2 + Convert.ToInt32(offset);
+            }
+
+        }
+
+
+
+
+        public byte? One3mas
+        {
+            get
+            {
+                if (masByte[2] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one3;
+                    return masByte[2];
                 }
 
             }
@@ -136,25 +152,31 @@ namespace BinToHex
                 }
                 else
                 {
-                    one3 = Convert.ToByte(value);
+                    masByte[2] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one3B { get; set; }
-
-        byte one4;
-        public byte? One4
+        public int One3Tag
         {
             get
             {
-                if (one4B == null)
+                return 3 + Convert.ToInt32(offset);
+            }
+
+        }
+
+        public byte? One4mas
+        {
+            get
+            {
+                if (masByte[3] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one4;
+                    return masByte[3];
                 }
 
             }
@@ -167,25 +189,32 @@ namespace BinToHex
                 }
                 else
                 {
-                    one4 = Convert.ToByte(value);
+                    masByte[3] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one4B { get; set; }
-
-        byte one5;
-        public byte? One5
+        public int One4Tag
         {
             get
             {
-                if (one5B == null)
+                return 4 + Convert.ToInt32(offset);
+            }
+
+        }
+
+
+        public byte? One5mas
+        {
+            get
+            {
+                if (masByte[4] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one5;
+                    return masByte[4];
                 }
 
             }
@@ -198,25 +227,34 @@ namespace BinToHex
                 }
                 else
                 {
-                    one5 = Convert.ToByte(value);
+                    masByte[4] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one5B { get; set; }
-
-        byte one6;
-        public byte? One6
+        public int One5Tag
         {
             get
             {
-                if (one6B == null)
+                return 5 + Convert.ToInt32(offset);
+            }
+
+        }
+
+
+
+
+        public byte? One6mas
+        {
+            get
+            {
+                if (masByte[5] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one6;
+                    return masByte[5];
                 }
 
             }
@@ -229,25 +267,31 @@ namespace BinToHex
                 }
                 else
                 {
-                    one6 = Convert.ToByte(value);
+                    masByte[5] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one6B { get; set; }
-
-        byte one7;
-        public byte? One7
+        public int One6Tag
         {
             get
             {
-                if (one7B == null)
+                return 6 + Convert.ToInt32(offset);
+            }
+
+        }
+
+        public byte? One7mas
+        {
+            get
+            {
+                if (masByte[6] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one7;
+                    return masByte[6];
                 }
 
             }
@@ -260,25 +304,31 @@ namespace BinToHex
                 }
                 else
                 {
-                    one7 = Convert.ToByte(value);
+                    masByte[6] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one7B { get; set; }
-
-        byte one8;
-        public byte? One8
+        public int One7Tag
         {
             get
             {
-                if (one8B == null)
+                return 7 + Convert.ToInt32(offset);
+            }
+
+        }
+
+        public byte? One8mas
+        {
+            get
+            {
+                if (masByte[7] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one8;
+                    return masByte[7];
                 }
 
             }
@@ -291,25 +341,30 @@ namespace BinToHex
                 }
                 else
                 {
-                    one8 = Convert.ToByte(value);
+                    masByte[7] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one8B { get; set; }
-
-        byte one9;
-        public byte? One9
+        public int One8Tag
         {
             get
             {
-                if (one9B == null)
+                return 8 + Convert.ToInt32(offset);
+            }
+
+        }
+        public byte? One9mas
+        {
+            get
+            {
+                if (masByte[8] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one9;
+                    return masByte[8];
                 }
 
             }
@@ -322,25 +377,31 @@ namespace BinToHex
                 }
                 else
                 {
-                    one9 = Convert.ToByte(value);
+                    masByte[8] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one9B { get; set; }
-
-        byte one10;
-        public byte? One10
+        public int One9Tag
         {
             get
             {
-                if (one10B == null)
+                return 9 + Convert.ToInt32(offset);
+            }
+
+        }
+
+        public byte? One10mas
+        {
+            get
+            {
+                if (masByte[9] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one10;
+                    return masByte[9];
                 }
 
             }
@@ -353,25 +414,31 @@ namespace BinToHex
                 }
                 else
                 {
-                    one10 = Convert.ToByte(value);
+                    masByte[9] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one10B { get; set; }
-
-        byte one11;
-        public byte? One11
+        public int One10Tag
         {
             get
             {
-                if (one11B == null)
+                return 10 + Convert.ToInt32(offset);
+            }
+
+        }
+
+        public byte? One11mas
+        {
+            get
+            {
+                if (masByte[10] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one11;
+                    return masByte[10];
                 }
 
             }
@@ -384,25 +451,31 @@ namespace BinToHex
                 }
                 else
                 {
-                    one11 = Convert.ToByte(value);
+                    masByte[10] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one11B { get; set; }
-
-        byte one12;
-        public byte? One12
+        public int One11Tag
         {
             get
             {
-                if (one12B == null)
+                return 11 + Convert.ToInt32(offset);
+            }
+
+        }
+
+        public byte? One12mas
+        {
+            get
+            {
+                if (masByte[11] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one12;
+                    return masByte[11];
                 }
 
             }
@@ -415,25 +488,30 @@ namespace BinToHex
                 }
                 else
                 {
-                    one12 = Convert.ToByte(value);
+                    masByte[11] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one12B { get; set; }
-
-        byte one13;
-        public byte? One13
+        public int One12Tag
         {
             get
             {
-                if (one13B == null)
+                return 12 + Convert.ToInt32(offset);
+            }
+
+        }
+        public byte? One13mas
+        {
+            get
+            {
+                if (masByte[12] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one13;
+                    return masByte[12];
                 }
 
             }
@@ -446,25 +524,31 @@ namespace BinToHex
                 }
                 else
                 {
-                    one13 = Convert.ToByte(value);
+                    masByte[12] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one13B { get; set; }
-
-        byte one14;
-        public byte? One14
+        public int One13Tag
         {
             get
             {
-                if (one14B == null)
+                return 13 + Convert.ToInt32(offset);
+            }
+
+        }
+
+        public byte? One14mas
+        {
+            get
+            {
+                if (masByte[13] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one14;
+                    return masByte[13];
                 }
 
             }
@@ -477,25 +561,31 @@ namespace BinToHex
                 }
                 else
                 {
-                    one14 = Convert.ToByte(value);
+                    masByte[13] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one14B { get; set; }
-
-        byte one15;
-        public byte? One15
+        public int One14Tag
         {
             get
             {
-                if (one15B == null)
+                return 14 + Convert.ToInt32(offset);
+            }
+
+        }
+
+        public byte? One15mas
+        {
+            get
+            {
+                if (masByte[14] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one15;
+                    return masByte[14];
                 }
 
             }
@@ -508,256 +598,271 @@ namespace BinToHex
                 }
                 else
                 {
-                    one15 = Convert.ToByte(value);
+                    masByte[14] = Convert.ToByte(value);
                 }
 
             }
         }
-        public int? one15B { get; set; }
-
-        byte one16;
-        public byte? One16
+        public int One15Tag
         {
             get
             {
-                if(one16B==null)
+                return 15 + Convert.ToInt32(offset);
+            }
+
+        }
+
+      
+        public byte? One16mas
+        {
+            get
+            {
+                if (masByte[15] == null)
                 {
                     return null;
                 }
                 else
                 {
-                    return one16;
+                    return masByte[15];
                 }
-                
+
             }
             set
             {
                 var g = value;
-                if(g==null)
+                if (g == null)
                 {
 
                 }
                 else
                 {
-                    one16 =Convert.ToByte(value);
+                    masByte[15] = Convert.ToByte(value);
                 }
-                
+
             }
-       }
-        public int? one16B { get; set; }
+        }
+        public int One16Tag
+        {
+            get
+            {
+                return 16 + Convert.ToInt32(offset);
+            }
+
+        }
 
 
         public string one
         {
             get
             {
-                return String.Format("{0:X2}", one1) + "\t"+ String.Format("{0:X2}", one2) + "\t" + String.Format("{0:X2}", one3)
-                    + "\t" + String.Format("{0:X2}", one4) + "\t" + String.Format("{0:X2}", one5) + "\t" + String.Format("{0:X2}", one6)
-                    + "\t" + String.Format("{0:X2}", one7) + "\t" + String.Format("{0:X2}", one8) + "\t" + String.Format("{0:X2}", one9)
-                    + "\t" + String.Format("{0:X2}", one10) + "\t" + String.Format("{0:X2}", one11) + "\t" + String.Format("{0:X2}", one12)
-                    + "\t" + String.Format("{0:X2}", one13) + "\t" + String.Format("{0:X2}", one14) + "\t" + String.Format("{0:X2}", one15) + "\t" + String.Format("{0:X2}", one16);
+               
+                return String.Format("{0:X2}", One1mas) + "\t" + String.Format("{0:X2}", One2mas) + "\t" + String.Format("{0:X2}", One3mas)
+                    + "\t" + String.Format("{0:X2}", One4mas) + "\t" + String.Format("{0:X2}", One5mas) + "\t" + String.Format("{0:X2}", One6mas)
+                    + "\t" + String.Format("{0:X2}", One7mas) + "\t" + String.Format("{0:X2}", One8mas) + "\t" + String.Format("{0:X2}", One9mas)
+                    + "\t" + String.Format("{0:X2}", One10mas) + "\t" + String.Format("{0:X2}", One11mas) + "\t" + String.Format("{0:X2}", One12mas)
+                    + "\t" + String.Format("{0:X2}", One13mas) + "\t" + String.Format("{0:X2}", One14mas) + "\t" + String.Format("{0:X2}", One15mas) + "\t" + String.Format("{0:X2}", One16mas);
             }
         }
         public string oneASCII
         {
             get
             {
-                string text=String.Empty;
-               
-                if (One1 != null)
+                string text = String.Empty;
+
+                if (One1mas != null)
                 {
-                    Char cg = (Char)One1;
+                    Char cg = (Char)One1mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One1);
+                        text += String.Format("{0:X2}", One1mas);
                     }
                 }
-                if (One2 != null)
+                if (One2mas != null)
                 {
-                    Char cg = (Char)One2;
+                    Char cg = (Char)One2mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One2);
+                        text += String.Format("{0:X2}", One2mas);
                     }
                 }
-                if (One3 != null)
+                if (One3mas != null)
                 {
-                    Char cg = (Char)One3;
+                    Char cg = (Char)One3mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One3);
+                        text += String.Format("{0:X2}", One3mas);
                     }
                 }
-                if (One4 != null)
+                if (One4mas != null)
                 {
-                    Char cg = (Char)One4;
+                    Char cg = (Char)One4mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One4);
+                        text += String.Format("{0:X2}", One4mas);
                     }
                 }
-                if (One5 != null)
+                if (One5mas != null)
                 {
-                    Char cg = (Char)One5;
+                    Char cg = (Char)One5mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One5);
+                        text += String.Format("{0:X2}", One5mas);
                     }
                 }
-                if (One6 != null)
+                if (One6mas != null)
                 {
-                    Char cg = (Char)One6;
+                    Char cg = (Char)One6mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One6);
+                        text += String.Format("{0:X2}", One6mas);
                     }
                 }
-                if (One7 != null)
+                if (One7mas != null)
                 {
-                    Char cg = (Char)One7;
+                    Char cg = (Char)One7mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One7);
+                        text += String.Format("{0:X2}", One7mas);
                     }
                 }
-                if (One8 != null)
+                if (One8mas != null)
                 {
-                    Char cg = (Char)One8;
+                    Char cg = (Char)One8mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}",One8);
+                        text += String.Format("{0:X2}", One8mas);
                     }
                 }
-                if (One9 != null)
+                if (One9mas != null)
                 {
-                    Char cg = (Char)One9;
+                    Char cg = (Char)One9mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One9);
+                        text += String.Format("{0:X2}", One9mas);
                     }
                 }
-                if (One10 != null)
+                if (One10mas != null)
                 {
-                    Char cg = (Char)One10;
+                    Char cg = (Char)One10mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One10);
+                        text += String.Format("{0:X2}", One10mas);
                     }
                 }
-                if (One11 != null)
+                if (One11mas != null)
                 {
-                    Char cg = (Char)One11;
+                    Char cg = (Char)One11mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One11);
+                        text += String.Format("{0:X2}", One11mas);
                     }
                 }
-                if (One12 != null)
+                if (One12mas != null)
                 {
-                    Char cg = (Char)One12;
+                    Char cg = (Char)One12mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One12);
+                        text += String.Format("{0:X2}", One12mas);
                     }
                 }
-                if (One13 != null)
+                if (One13mas != null)
                 {
-                    Char cg = (Char)One13;
+                    Char cg = (Char)One13mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One13);
+                        text += String.Format("{0:X2}", One13mas);
                     }
                 }
-                if (One14 != null)
+                if (One14mas != null)
                 {
-                    Char cg = (Char)One14;
+                    Char cg = (Char)One14mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One14);
+                        text += String.Format("{0:X2}", One14mas);
                     }
                 }
-                if (One15 != null)
+                if (One15mas != null)
                 {
-                    Char cg = (Char)One15;
+                    Char cg = (Char)One15mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One15);
+                        text += String.Format("{0:X2}", One15mas);
                     }
                 }
-                if (One16 != null)
+                if (One16mas != null)
                 {
-                    Char cg = (Char)One16;
+                    Char cg = (Char)One16mas;
                     if (char.IsLetterOrDigit(cg) || char.IsPunctuation(cg))
                     {
                         text += cg;
                     }
                     else
                     {
-                        text += String.Format("{0:X2}", One16);
+                        text += String.Format("{0:X2}", One16mas);
                     }
                 }
 
-                return text; 
+                return text;
             }
             set
             {
@@ -766,5 +871,5 @@ namespace BinToHex
         }
 
     }
- 
+
 }

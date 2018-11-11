@@ -60,84 +60,84 @@ namespace BinToHex
                 int i = 0;
                 foreach(ClassData b in ClassDatas1)
                 {
-                    if (b.One1!=null)
+                    if (b.One1mas!=null)
                     {
-                        bb[i] =Convert.ToByte(b.One1);
+                        bb[i] =Convert.ToByte(b.One1mas);
                         i++;
                     }
-                    if (b.One2 != null)
+                    if (b.One2mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One2);
+                        bb[i] = Convert.ToByte(b.One2mas);
                         i++;
                     }
-                    if (b.One3 != null)
+                    if (b.One3mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One3);
+                        bb[i] = Convert.ToByte(b.One3mas);
                         i++;
                     }
-                    if (b.One4 != null)
+                    if (b.One4mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One4);
+                        bb[i] = Convert.ToByte(b.One4mas);
                         i++;
                     }
-                    if (b.One5 != null)
+                    if (b.One5mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One5);
+                        bb[i] = Convert.ToByte(b.One5mas);
                         i++;
                     }
-                    if (b.One6 != null)
+                    if (b.One6mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One6);
+                        bb[i] = Convert.ToByte(b.One6mas);
                         i++;
                     }
-                    if (b.One7 != null)
+                    if (b.One7mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One7);
+                        bb[i] = Convert.ToByte(b.One7mas);
                         i++;
                     }
-                    if (b.One8 != null)
+                    if (b.One8mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One8);
+                        bb[i] = Convert.ToByte(b.One8mas);
                         i++;
                     }
-                    if (b.One9 != null)
+                    if (b.One9mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One9);
+                        bb[i] = Convert.ToByte(b.One9mas);
                         i++;
                     }
-                    if (b.One10 != null)
+                    if (b.One10mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One10);
+                        bb[i] = Convert.ToByte(b.One10mas);
                         i++;
                     }
-                    if (b.One11 != null)
+                    if (b.One11mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One11);
+                        bb[i] = Convert.ToByte(b.One11mas);
                         i++;
                     }
-                    if (b.One12 != null)
+                    if (b.One12mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One12);
+                        bb[i] = Convert.ToByte(b.One12mas);
                         i++;
                     }
-                    if (b.One13 != null)
+                    if (b.One13mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One13);
+                        bb[i] = Convert.ToByte(b.One13mas);
                         i++;
                     }
-                    if (b.One14 != null)
+                    if (b.One14mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One14);
+                        bb[i] = Convert.ToByte(b.One14mas);
                         i++;
                     }
-                    if (b.One15 != null)
+                    if (b.One15mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One15);
+                        bb[i] = Convert.ToByte(b.One15mas);
                         i++;
                     }
-                    if (b.One16 != null)
+                    if (b.One16mas != null)
                     {
-                        bb[i] = Convert.ToByte(b.One16);
+                        bb[i] = Convert.ToByte(b.One16mas);
                         i++;
                     }
                 }
@@ -212,68 +212,57 @@ namespace BinToHex
                 switch (s)
                 {
                     case 0:
-                        fd.One1 = bb1[i];
-                        fd.one1B = i+1;
+                      
+                        fd.addByte(s, bb1[i]);
+                    
                         break;
                     case 1:
-                        fd.One2 = bb1[i];
-                        fd.one2B = i + 1;
+
+                        fd.addByte(s, bb1[i]);
+
                         break;
                     case 2:
-                        fd.One3 = bb1[i];
-                        fd.one3B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
-                    case 3:                  
-                        fd.One4 = bb1[i];
-                        fd.one4B = i + 1;
+                    case 3:
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 4:
-                        fd.One5 = bb1[i];
-                        fd.one5B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 5:
-                        fd.One6 = bb1[i];
-                        fd.one6B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 6:
-                        fd.One7 = bb1[i];
-                        fd.one7B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 7:
-                        fd.One8 = bb1[i];
-                        fd.one8B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 8:
-                        fd.One9 = bb1[i];
-                        fd.one9B = i + 1;
+                        fd.addByte(s, bb1[i]);
+
                         break;
                     case 9:
-                        fd.One10 = bb1[i];
-                        fd.one10B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 10:
-                        fd.One11 = bb1[i];
-                        fd.one11B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 11:
-                        fd.One12 = bb1[i];
-                        fd.one12B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 12:
-                        fd.One13 = bb1[i];
-                        fd.one13B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 13:
-                        fd.One14 = bb1[i];
-                        fd.one14B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 14:
-                        fd.One15 = bb1[i];
-                        fd.one15B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                     case 15:
-                        fd.One16 = bb1[i];
-                        fd.one16B = i + 1;
+                        fd.addByte(s, bb1[i]);
                         break;
                 }
                 s++;

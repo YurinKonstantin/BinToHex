@@ -639,8 +639,11 @@ namespace BinToHex
             {
                 helpRed.Visibility = Visibility.Visible;
             }
-         
+       
             TextBox f = (TextBox)sender;
+           // DataGrid dataGrid = sender as DataGrid;
+    
+
             if (f != null & f.SelectionLength == 0)
             {
                 int x = Tabs.SelectedIndex;

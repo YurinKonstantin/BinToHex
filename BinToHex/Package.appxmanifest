@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="38673Yurin.BinViewer" Publisher="CN=6DBA1DE5-9EA9-4313-BEA7-F315A6AEEB19" Version="1.1.18.0" />
+  <Identity Name="38673Yurin.BinViewer" Publisher="CN=6DBA1DE5-9EA9-4313-BEA7-F315A6AEEB19" Version="1.1.22.0" />
   <mp:PhoneIdentity PhoneProductId="8beb55bd-2796-45c5-9d40-d52b158639b4" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>BinViewer</DisplayName>
