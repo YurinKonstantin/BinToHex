@@ -163,13 +163,7 @@ namespace BinToHex
             var mess = new MessageDialog("Сохранение завершено");
             await mess.ShowAsync();
         }
-        public VidDoc()
-        {
-           // bb1 = b;
-         
-           
-           // OpenF();
-        }
+   
         public async void redact()
         {
           //  var f = (TextBlock)sender;
@@ -180,7 +174,7 @@ namespace BinToHex
         public async Task OpenF()
         {
 
-            iniz();
+           // iniz();
             int i = 0;
             int ofs = 0;
             int ss = 0;
@@ -307,12 +301,12 @@ namespace BinToHex
             set
             {
                 _bb1 = value;
-                ClassDatas1.Clear();
-               OpenF();
+               // ClassDatas1.Clear();
+             //  OpenF();
                  OnPropertyChanged("bb1");
             }
         }
-        public byte[] bbuf { get; set; }
+      //  public byte[] bbuf { get; set; }
         public string Size { get; set; }
         public Visibility IsShow { get; set; }
         public Visibility IsShow1 { get; set; }
@@ -362,14 +356,14 @@ namespace BinToHex
         }
     
 
-        public void iniz()
-        {
+       // public void iniz()
+      //  {
 
-            ClassDatas1 = new ObservableCollection<ClassData>();
+          //  ClassDatas1 = new ObservableCollection<ClassData>();
        
 
 
-        }
+       // }
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
