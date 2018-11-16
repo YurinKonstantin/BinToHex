@@ -10,6 +10,13 @@ using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.UI.ViewManagement;
+using Windows.UI;
+using System.Data;
+using Windows.UI.Core;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace BinToHex
 {
@@ -156,12 +163,12 @@ namespace BinToHex
             var mess = new MessageDialog("Сохранение завершено");
             await mess.ShowAsync();
         }
-        public VidDoc(byte[] b)
+        public VidDoc()
         {
-            bb1 = b;
+           // bb1 = b;
          
            
-            OpenF();
+           // OpenF();
         }
         public async void redact()
         {
@@ -194,8 +201,9 @@ namespace BinToHex
                 if (s == 16)
                 {
                     s = 0;
-
-                    fd.oneB = ss;
+                 
+                        fd.oneB = ss;
+                   
                     ofs += 16;
                     //  text += "\n";
 
@@ -213,8 +221,8 @@ namespace BinToHex
                 {
                     case 0:
                       
-                        fd.addByte(s, bb1[i]);
-                    
+                            fd.addByte(s, bb1[i]);
+                      
                         break;
                     case 1:
 

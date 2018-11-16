@@ -29,12 +29,12 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <controls:TabView Grid.Row="1" Grid.ColumnSpan="2" x:Name="Tabs" CanCloseTabs="True" IsCloseButtonOverlay="True" ItemsSource="{x:Bind ViewModel.ColTabs, Mode=TwoWay}"   TabClosing="Tabs_TabClosing" Margin="0,8,0,0" >
+        <controls:TabView  Grid.Row="1" Grid.ColumnSpan="2" x:Name="Tabs" CanCloseTabs="True" IsCloseButtonOverlay="True" ItemsSource="{x:Bind ViewModel.ColTabs, Mode=TwoWay}"   TabClosing="Tabs_TabClosing" Margin="0,8,0,0" >
          
                 
          
             <controls:TabView.ItemHeaderTemplate >
-                <DataTemplate  x:DataType="local:VidDoc">
+                <DataTemplate  x:DataType="local:VidDoc" >
                     <TextBlock Text="{x:Bind Name}" FontSize="14" Visibility="{x:Bind IsShow}" VerticalAlignment="Center" Tag="{x:Bind ccc}" ></TextBlock>
                 </DataTemplate>
             </controls:TabView.ItemHeaderTemplate>

@@ -47,12 +47,12 @@ namespace BinToHex
         
     
             this.DataContext = this;
-            byte[] bb = new byte[0];
-            ViewModel.ColTabs.Add(new VidDoc(bb)
+           
+            ViewModel.ColTabs.Add(new VidDoc()
             {
                 Name = "Новый документ",
                 ccc = 0,
-                IsShow1 = Visibility.Collapsed,
+                IsShow1 = Visibility.Visible,
                  IsShow = Visibility.Visible
                 //  BiteFile=bb
 
@@ -112,9 +112,7 @@ namespace BinToHex
                             {
 
 
-
-
-                                ViewModel.ColTabs.Add(new VidDoc(bb)
+                                VidDoc vidDoc = new VidDoc()
                                 {
                                     Name = file.DisplayName,
                                     Sppan = true,
@@ -126,14 +124,17 @@ namespace BinToHex
                                     Path = file.Path,
                                     Size = basicProperties.Size.ToString(),
                                     NameType = file.FileType
-                                        //  BiteFile=bb
+                                    //  BiteFile=bb
 
-                                    });
+                                };
+
+                                ViewModel.ColTabs.Add(vidDoc);
 
                                 //   cout++;
                                 ViewModel.ColTabs.RemoveAt(0);
                                 Tabs.SelectedIndex = 0;
-                                
+                                vidDoc.bb1 = bb;
+                               await vidDoc.OpenF();
 
                                 //Tabs.SelectedIndex = 0;
                                 cout++;
@@ -151,7 +152,7 @@ namespace BinToHex
 
                             icol = Tabs.SelectedIndex;
                             ViewModel.ColTabs.RemoveAt(icol);
-                            ViewModel.ColTabs.Insert(icol, new VidDoc(bb)
+                            VidDoc vidDoc = new VidDoc()
                             {
                                 //uuu
                                 //jjj
@@ -168,9 +169,11 @@ namespace BinToHex
                                 //   bb1 = bb
                                 //  BiteFile=bb
 
-                            });
-
+                            };
+                            ViewModel.ColTabs.Insert(icol, vidDoc);
                             Tabs.SelectedIndex = icol;
+                            vidDoc.bb1 = bb;
+                           await vidDoc.OpenF();
                             cout++;
                         }
 
@@ -178,7 +181,7 @@ namespace BinToHex
                     }
                     else
                     {
-                        ViewModel.ColTabs.Add(new VidDoc(bb)
+                        VidDoc vidDoc = new VidDoc()
                         {
                             //uuu
                             //jjj
@@ -195,9 +198,12 @@ namespace BinToHex
                             //   bb1 = bb
                             //  BiteFile=bb
 
-                        });
+                        };
+                        ViewModel.ColTabs.Add(vidDoc);
                         cout++;
                         Tabs.SelectedIndex = ViewModel.ColTabs.Count - 1;
+                        vidDoc.bb1 = bb;
+                        await vidDoc.OpenF();
                     }
                     Ring.IsActive = false;
 
@@ -245,27 +251,27 @@ namespace BinToHex
                     byte[] bb = buffer.ToArray();
                     Windows.Storage.FileProperties.BasicProperties basicProperties = await file.GetBasicPropertiesAsync();
 
+                    VidDoc vidDoc = new VidDoc()
+                    {
+                        //uuu
+                        //jjj
+                        Name = file.DisplayName,
+                        Sppan = true,
+                        ccc = cout,
+                        IsShow = Visibility.Visible,
+                        IsShow1 = Visibility.Visible,
+                        Poz = 0,
+                        Path = file.Path,
+                        Size = basicProperties.Size.ToString(),
+                        NameType = file.FileType
+                        //   bb1 = bb
+                        //  BiteFile=bb
 
+                    };
                   await  Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                          {
-                             ViewModel.ColTabs.Add(new VidDoc(bb)
-                             {
-                                 //uuu
-                                 //jjj
-                                 Name = file.DisplayName,
-                                 Sppan = true,
-                                 ccc = cout,
-                                 IsShow = Visibility.Visible,
-                                 IsShow1 = Visibility.Visible,
-
-                                 Poz = 0,
-                                 Path = file.Path,
-                                 Size = basicProperties.Size.ToString(),
-                                 NameType = file.FileType
-                                 //   bb1 = bb
-                                 //  BiteFile=bb
-
-                             });
+                             ViewModel.ColTabs.Add(vidDoc
+                             );
                          });
                     if (ViewModel.ColTabs[0].Name == "Новый документ")
                     {
@@ -274,12 +280,19 @@ namespace BinToHex
 
                     }
 
+
                     cout++;
                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         Tabs.SelectedIndex = ViewModel.ColTabs.Count - 1;
                     });
-                 
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        vidDoc.bb1 = bb;
+                    });
+                    
+                       await vidDoc.OpenF();
+                   
                     //ViewModel.IsShowBar = Visibility.Collapsed;
                     Ring.IsActive = false;
 
@@ -660,7 +673,7 @@ namespace BinToHex
             if (ViewModel.ColTabs.Count==1)
             {
                 byte[] bb = new byte[0];
-                ViewModel.ColTabs.Add(new VidDoc(bb)
+                ViewModel.ColTabs.Add(new VidDoc()
                 {
                     Name = "Новый документ",
                     ccc = 0,
