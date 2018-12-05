@@ -10,6 +10,13 @@ using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.UI.ViewManagement;
+using Windows.UI;
+using System.Data;
+using Windows.UI.Core;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace BinToHex
 {
@@ -156,13 +163,7 @@ namespace BinToHex
             var mess = new MessageDialog("Сохранение завершено");
             await mess.ShowAsync();
         }
-        public VidDoc(byte[] b)
-        {
-            bb1 = b;
-         
-           
-            OpenF();
-        }
+   
         public async void redact()
         {
           //  var f = (TextBlock)sender;
@@ -173,7 +174,7 @@ namespace BinToHex
         public async Task OpenF()
         {
 
-            iniz();
+           // iniz();
             int i = 0;
             int ofs = 0;
             int ss = 0;
@@ -194,8 +195,9 @@ namespace BinToHex
                 if (s == 16)
                 {
                     s = 0;
-
-                    fd.oneB = ss;
+                 
+                        fd.oneB = ss;
+                   
                     ofs += 16;
                     //  text += "\n";
 
@@ -213,8 +215,8 @@ namespace BinToHex
                 {
                     case 0:
                       
-                        fd.addByte(s, bb1[i]);
-                    
+                            fd.addByte(s, bb1[i]);
+                      
                         break;
                     case 1:
 
@@ -299,12 +301,12 @@ namespace BinToHex
             set
             {
                 _bb1 = value;
-                ClassDatas1.Clear();
-               OpenF();
+               // ClassDatas1.Clear();
+             //  OpenF();
                  OnPropertyChanged("bb1");
             }
         }
-        public byte[] bbuf { get; set; }
+      //  public byte[] bbuf { get; set; }
         public string Size { get; set; }
         public Visibility IsShow { get; set; }
         public Visibility IsShow1 { get; set; }
@@ -354,14 +356,14 @@ namespace BinToHex
         }
     
 
-        public void iniz()
-        {
+       // public void iniz()
+      //  {
 
-            ClassDatas1 = new ObservableCollection<ClassData>();
+          //  ClassDatas1 = new ObservableCollection<ClassData>();
        
 
 
-        }
+       // }
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
