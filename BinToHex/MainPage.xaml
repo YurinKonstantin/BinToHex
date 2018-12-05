@@ -8,11 +8,75 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  
     mc:Ignorable="d"
-   >
+   
+    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters">
     <UserControl.Resources>
         <local:DataConverter x:Key="Converter1"/>
         <local:DataConverter2 x:Key="Convert2"/>
         <local:DataConvertToVisual x:Key="ConvertVisual"/>
+        <StaticResource x:Key="TabViewItemHeaderRevealBorderBrush" ResourceKey="SystemControlBackgroundTransparentRevealBorderBrush"/>
+        <converters:DoubleToVisibilityConverter x:Key="GreaterThanToleranceVisibilityConverter" GreaterThan="65.0"/>
+        <Style x:Key="TabViewScrollViewer" TargetType="ScrollViewer">
+            <Setter Property="HorizontalScrollMode" Value="Auto"/>
+            <Setter Property="VerticalScrollMode" Value="Auto"/>
+            <Setter Property="IsHorizontalRailEnabled" Value="True"/>
+            <Setter Property="IsVerticalRailEnabled" Value="True"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="ZoomMode" Value="Disabled"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="1,0,0,0"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource TabViewItemHeaderRevealBorderBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollViewer">
+                        <Border x:Name="Root" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                            <Grid Background="{TemplateBinding Background}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <RepeatButton x:Name="ScrollBackButton" Background="Transparent" BorderThickness="1" Content="&#xE76B;" Delay="50" FontFamily="Segoe MDL2 Assets" Interval="100" Style="{StaticResource RepeatButtonRevealStyle}" VerticalAlignment="Stretch" Visibility="{Binding ScrollableWidth, Converter={StaticResource GreaterThanToleranceVisibilityConverter}, FallbackValue=Collapsed, RelativeSource={RelativeSource Mode=TemplatedParent}, TargetNullValue=Collapsed}"/>
+                                <ScrollContentPresenter x:Name="ScrollContentPresenter" Grid.Column="1" Margin="{TemplateBinding Padding}"/>
+                                <RepeatButton x:Name="ScrollForwardButton" Background="Transparent" BorderThickness="1" Content="&#xE76C;" Grid.Column="2" Delay="50" FontFamily="Segoe MDL2 Assets" Interval="100" Style="{StaticResource RepeatButtonRevealStyle}" VerticalAlignment="Stretch" Visibility="{Binding ScrollableWidth, Converter={StaticResource GreaterThanToleranceVisibilityConverter}, FallbackValue=Collapsed, RelativeSource={RelativeSource Mode=TemplatedParent}, TargetNullValue=Collapsed}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="TabViewTemplate1" TargetType="controls:TabView">
+            <Grid x:Name="TabViewContainer">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition controls:TabView.ConstrainColumn="True" controls:TabView.IgnoreColumn="True" Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition controls:TabView.IgnoreColumn="True" Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.ColumnSpan="6" Grid.Row="0"/>
+                <ContentPresenter ContentTemplate="{TemplateBinding TabStartHeaderTemplate}" Content="{TemplateBinding TabStartHeader}" Grid.Column="0" Grid.Row="1"/>
+                <ScrollViewer x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}" Grid.Column="1" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}" IsVerticalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsVerticalScrollChainingEnabled}" IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}" IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}" IsHorizontalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsHorizontalScrollChainingEnabled}" Grid.Row="1" Style="{StaticResource TabViewScrollViewer}" TabNavigation="{TemplateBinding TabNavigation}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
+                    <ItemsPresenter x:Name="TabsItemsPresenter" Padding="{TemplateBinding Padding}"/>
+                </ScrollViewer>
+                <ContentPresenter ContentTemplate="{TemplateBinding TabActionHeaderTemplate}" Content="{TemplateBinding TabActionHeader}" Grid.Column="3" HorizontalAlignment="Left" Grid.Row="1"/>
+                <ContentPresenter ContentTemplate="{TemplateBinding TabEndHeaderTemplate}" Content="{TemplateBinding TabEndHeader}" Grid.Column="5" Grid.Row="1"/>
+                <ContentPresenter x:Name="TabContentPresenter" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Grid.ColumnSpan="6" Grid.Row="2"/>
+                <ContentPresenter ContentTemplate="{TemplateBinding FooterTemplate}" Content="{TemplateBinding Footer}" Grid.ColumnSpan="6" Grid.Row="3"/>
+            </Grid>
+        </ControlTemplate>
     </UserControl.Resources>
 
     <Page.Background>
@@ -29,10 +93,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <controls:TabView  Grid.Row="1" Grid.ColumnSpan="2" x:Name="Tabs" CanCloseTabs="True" IsCloseButtonOverlay="True" ItemsSource="{x:Bind ViewModel.ColTabs, Mode=TwoWay}"   TabClosing="Tabs_TabClosing" Margin="0,8,0,0" >
-         
-                
-         
+        <controls:TabView Template="{StaticResource TabViewTemplate1}"  Grid.Row="1" Grid.ColumnSpan="2" x:Name="Tabs" CanCloseTabs="True" IsCloseButtonOverlay="True" ItemsSource="{x:Bind ViewModel.ColTabs, Mode=TwoWay}"   TabClosing="Tabs_TabClosing" Margin="0,8,0,0" >
             <controls:TabView.ItemHeaderTemplate >
                 <DataTemplate  x:DataType="local:VidDoc" >
                     <TextBlock Text="{x:Bind Name}" FontSize="14" Visibility="{x:Bind IsShow}" VerticalAlignment="Center" Tag="{x:Bind ccc}" ></TextBlock>
@@ -47,11 +108,11 @@
            OpenPaneLength="280" >
                             <SplitView.Pane  >
                                 <StackPanel Padding="12,0,0,0"   Visibility="{x:Bind IsShow1}">
-                                    <TextBlock Text="Имя файла" Style="{ThemeResource BaseTextBlockStyle}" />
+                                    <TextBlock  x:Uid="FileName" Style="{ThemeResource BaseTextBlockStyle}" />
                                     <TextBlock Text="{x:Bind Name}" TextWrapping="Wrap"  Style="{ThemeResource BaseTextBlockStyle}"  />
-                                    <TextBlock Text="Путь к файлу"  Style="{ThemeResource BaseTextBlockStyle}"  />
+                                    <TextBlock  x:Uid="Path"  Style="{ThemeResource BaseTextBlockStyle}"  />
                                     <TextBlock Text="{x:Bind Path}" TextWrapping="Wrap" Style="{ThemeResource BaseTextBlockStyle}"  />
-                                    <TextBlock Text="Размер (Байт)" Style="{ThemeResource BaseTextBlockStyle}" />
+                                    <TextBlock x:Uid="Size" Style="{ThemeResource BaseTextBlockStyle}" />
                                     <TextBlock Text="{x:Bind Size}" Style="{ThemeResource BaseTextBlockStyle}"  FontStyle="Oblique"/>
 
                                 </StackPanel>
@@ -67,6 +128,7 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                               
                                 <controls:DataGrid Visibility="{x:Bind IsShow1}"  x:Name="dataGrid1"  Grid.Row="1" ScrollViewer.HorizontalScrollMode="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="6" SelectionMode="Single"  IsFocusEngaged="False" AutoGenerateColumns="False"
@@ -201,18 +263,30 @@
                                         </controls:DataGridTemplateColumn>
                                     </controls:DataGrid.Columns>
                                 </controls:DataGrid>
-                              
+                                <StackPanel Orientation="Horizontal" Grid.Row="3">
+                                    <ListView Name="01" ItemsSource="{x:Bind ClassDatas1B}">
+                                        <ListView.ItemTemplate >
+                                            <DataTemplate  >
+                                                <StackPanel Width="264" Height="48" Padding="12" Orientation="Horizontal">
+                                                    <TextBlock Margin="12,0,0,0" Width="204" Text="{Binding}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    <ListView Name="02"/>
+                                    <ListView Name="03"/>
+                                </StackPanel>
                                 <StackPanel Grid.Column="1" MaxWidth="120"  Orientation="Vertical" >
                                     <AppBarButton  Click="AppBarButton_Click_2" Tag="{x:Bind ccc}" Icon="OpenPane" Content="Инфо" />
                                 </StackPanel>
                                 <StackPanel Grid.Row="2" Orientation="Horizontal">
-                                    <TextBlock Text="Позиция:  " FontFamily="Georgia" FontStyle="Italic"  xml:space="preserve"/>
+                                    <TextBlock  x:Uid="Offset" FontFamily="Georgia" FontStyle="Italic"  xml:space="preserve"/>
                                     <TextBlock Width="8"/>
                                     <TextBlock  Text="{x:Bind Poz, Mode=OneWay}" FontFamily="Georgia" FontStyle="Italic"/>
                                 </StackPanel>
                                 <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Left">
-                                    <AppBarButton Icon="OpenFile" Label="Открыть файл" Click="AppBarButton_Click"/>
-                                    <AppBarButton Icon="Save" Label="Сохранить" Click="{x:Bind ShowModel}"/>
+                                    <AppBarButton Icon="OpenFile" x:Uid="OpenFile" Click="AppBarButton_Click"/>
+                                    <AppBarButton Icon="Save" x:Uid="SaveAs" Click="{x:Bind ShowModel}"/>
                                 </CommandBar>
                             </Grid>
                         </SplitView>
@@ -231,9 +305,9 @@
                             <Flyout>
                                 <StackPanel  Orientation="Vertical" Margin="16,16,0,0" Padding="0,0,0,0" DataContext="{x:Bind ViewModel.DefaultVidDoc}">
                                     <ToggleSwitch Margin="0,4,0,4"   Header="Данные формата ASCII" Visibility="Collapsed"/>
-                                    <TextBlock Text="Режим приложения" Style="{ThemeResource BaseTextBlockStyle}"/>
-                                    <RadioButton x:Name="rb1" Content="Светлый" Checked="RadioButton_Checked" Tag="Light"   />
-                                    <RadioButton x:Name="rb2" Content="Темный" Checked="RadioButton_Checked" Tag="Dark" />
+                                    <TextBlock x:Uid="RezimApp" Style="{ThemeResource BaseTextBlockStyle}"/>
+                                    <RadioButton x:Name="rb1" x:Uid="Light"  Checked="RadioButton_Checked" Tag="Light"   />
+                                    <RadioButton x:Name="rb2" x:Uid="Dark" Checked="RadioButton_Checked" Tag="Dark" />
 
                                 </StackPanel>
                             </Flyout>

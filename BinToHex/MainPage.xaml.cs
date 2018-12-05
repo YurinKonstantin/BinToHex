@@ -50,7 +50,7 @@ namespace BinToHex
            
             ViewModel.ColTabs.Add(new VidDoc()
             {
-                Name = "Новый документ",
+                Name = "New File",
                 ccc = 0,
                 IsShow1 = Visibility.Visible,
                  IsShow = Visibility.Visible
@@ -106,7 +106,7 @@ namespace BinToHex
                     int icol = 0;
                     if (ViewModel.ColTabs.Count > 0)
                     {
-                        if (ViewModel.ColTabs[0].Name == "Новый документ")
+                        if (ViewModel.ColTabs[0].Name == "New File")
                         {
                             try
                             {
@@ -226,7 +226,132 @@ namespace BinToHex
             }
             Ring.IsActive = false;
         }
-       
+        public async Task OpenF(byte[] bb1, VidDoc vidDoc)
+        {
+
+            // iniz();
+            int i = 0;
+            int ofs = 0;
+            int ss = 0;
+            int s = 0;
+           // var fd = new ClassData() { };
+            //   string text;
+
+            // text = String.Format("{0:X2}", ofs) + "\t";
+            // await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            // {
+         //   fd.offset = ofs;
+         //   fd.oneB = ss;
+            //  text = String.Format("{0:X2}", ofs)+"\t";
+
+            //   });
+            while (i < bb1.Length)
+            {
+                if (s == 16)
+                {
+                    s = 0;
+
+                  //  fd.oneB = ss;
+
+                    ofs += 16;
+                    //  text += "\n";
+
+                  //  ClassDatas1.Add(fd);
+
+                  ss += 16;
+                  //  fd = new ClassData() { };
+
+
+                 //   fd.offset = ofs;
+
+
+                }
+                switch (s)
+                {
+                    case 0:
+                        await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        {
+                            vidDoc.ClassDatas1B.Add(bb1[i]);
+                        });
+                       // fd.addByte(s, bb1[i]);
+
+                        break;
+                    case 1:
+
+                        //fd.addByte(s, bb1[i]);
+
+                        break;
+                    case 2:
+                       // fd.addByte(s, bb1[i]);
+                        break;
+                    case 3:
+                      //  fd.addByte(s, bb1[i]);
+                        break;
+                    case 4:
+                      //  fd.addByte(s, bb1[i]);
+                        break;
+                    case 5:
+                      //  fd.addByte(s, bb1[i]);
+                        break;
+                    case 6:
+                       // fd.addByte(s, bb1[i]);
+                        break;
+                    case 7:
+                       // fd.addByte(s, bb1[i]);
+                        break;
+                    case 8:
+                       // fd.addByte(s, bb1[i]);
+
+                        break;
+                    case 9:
+                      //  fd.addByte(s, bb1[i]);
+                        break;
+                    case 10:
+                       // fd.addByte(s, bb1[i]);
+                        break;
+                    case 11:
+                      //  fd.addByte(s, bb1[i]);
+                        break;
+                    case 12:
+                       // fd.addByte(s, bb1[i]);
+                        break;
+                    case 13:
+                      //  fd.addByte(s, bb1[i]);
+                        break;
+                    case 14:
+                       // fd.addByte(s, bb1[i]);
+                        break;
+                    case 15:
+                       // fd.addByte(s, bb1[i]);
+                        break;
+                }
+                s++;
+                i++;
+            }
+            if (s != 0)
+            {
+                s = 0;
+
+                // fd.oneB = ss;
+                //  ofs += 16;
+                //  text += "\n";
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                  {
+                      //vidDoc.ClassDatas1B.Add(bb1[i]);
+                  });
+              //  ClassDatas1.Add(fd);
+
+                ss += 16;
+                // fd = new ClassData() { };
+
+                // await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                //  {
+                //   text += String.Format("{0:X2}", ofs) + "\t";
+                // fd.offset = ofs;
+            }
+
+
+        }
         private async void OpenNewFile(object sender, RoutedEventArgs e)
         {
             // ViewModel.IsShowBar = Visibility.Visible;
@@ -273,7 +398,7 @@ namespace BinToHex
                              ViewModel.ColTabs.Add(vidDoc
                              );
                          });
-                    if (ViewModel.ColTabs[0].Name == "Новый документ")
+                    if (ViewModel.ColTabs[0].Name == "New File")
                     {
                       
                         ViewModel.ColTabs.RemoveAt(0);
@@ -292,7 +417,7 @@ namespace BinToHex
                     });
                     
                        await vidDoc.OpenF();
-                   
+                    await OpenF(bb, vidDoc);
                     //ViewModel.IsShowBar = Visibility.Collapsed;
                     Ring.IsActive = false;
 
@@ -675,7 +800,7 @@ namespace BinToHex
                 byte[] bb = new byte[0];
                 ViewModel.ColTabs.Add(new VidDoc()
                 {
-                    Name = "Новый документ",
+                    Name = "New File",
                     ccc = 0,
                     IsShow1 = Visibility.Collapsed
                     //  BiteFile=bb

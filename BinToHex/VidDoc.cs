@@ -200,10 +200,10 @@ namespace BinToHex
                    
                     ofs += 16;
                     //  text += "\n";
-
+                    
                     ClassDatas1.Add(fd);
-
-                    ss += 16;
+            
+                ss += 16;
                     fd = new ClassData() { };
 
                    
@@ -354,16 +354,29 @@ namespace BinToHex
 
             }
         }
-    
+        ObservableCollection<byte> classDatas1B = new ObservableCollection<Byte>();
+        public ObservableCollection<byte> ClassDatas1B
+        {
+            get
+            {
+                return classDatas1B;
+            }
+            set
+            {
+                classDatas1B = value;
+           
 
-       // public void iniz()
-      //  {
+            }
+        }
 
-          //  ClassDatas1 = new ObservableCollection<ClassData>();
-       
+        // public void iniz()
+        //  {
+
+        //  ClassDatas1 = new ObservableCollection<ClassData>();
 
 
-       // }
+
+        // }
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
