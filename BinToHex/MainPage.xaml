@@ -14,69 +14,7 @@
         <local:DataConverter x:Key="Converter1"/>
         <local:DataConverter2 x:Key="Convert2"/>
         <local:DataConvertToVisual x:Key="ConvertVisual"/>
-        <StaticResource x:Key="TabViewItemHeaderRevealBorderBrush" ResourceKey="SystemControlBackgroundTransparentRevealBorderBrush"/>
-        <converters:DoubleToVisibilityConverter x:Key="GreaterThanToleranceVisibilityConverter" GreaterThan="65.0"/>
-        <Style x:Key="TabViewScrollViewer" TargetType="ScrollViewer">
-            <Setter Property="HorizontalScrollMode" Value="Auto"/>
-            <Setter Property="VerticalScrollMode" Value="Auto"/>
-            <Setter Property="IsHorizontalRailEnabled" Value="True"/>
-            <Setter Property="IsVerticalRailEnabled" Value="True"/>
-            <Setter Property="IsTabStop" Value="False"/>
-            <Setter Property="ZoomMode" Value="Disabled"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="VerticalContentAlignment" Value="Top"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="BorderThickness" Value="1,0,0,0"/>
-            <Setter Property="BorderBrush" Value="{ThemeResource TabViewItemHeaderRevealBorderBrush}"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="UseSystemFocusVisuals" Value="{StaticResource UseSystemFocusVisuals}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ScrollViewer">
-                        <Border x:Name="Root" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
-                            <Grid Background="{TemplateBinding Background}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <RepeatButton x:Name="ScrollBackButton" Background="Transparent" BorderThickness="1" Content="&#xE76B;" Delay="50" FontFamily="Segoe MDL2 Assets" Interval="100" Style="{StaticResource RepeatButtonRevealStyle}" VerticalAlignment="Stretch" Visibility="{Binding ScrollableWidth, Converter={StaticResource GreaterThanToleranceVisibilityConverter}, FallbackValue=Collapsed, RelativeSource={RelativeSource Mode=TemplatedParent}, TargetNullValue=Collapsed}"/>
-                                <ScrollContentPresenter x:Name="ScrollContentPresenter" Grid.Column="1" Margin="{TemplateBinding Padding}"/>
-                                <RepeatButton x:Name="ScrollForwardButton" Background="Transparent" BorderThickness="1" Content="&#xE76C;" Grid.Column="2" Delay="50" FontFamily="Segoe MDL2 Assets" Interval="100" Style="{StaticResource RepeatButtonRevealStyle}" VerticalAlignment="Stretch" Visibility="{Binding ScrollableWidth, Converter={StaticResource GreaterThanToleranceVisibilityConverter}, FallbackValue=Collapsed, RelativeSource={RelativeSource Mode=TemplatedParent}, TargetNullValue=Collapsed}"/>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <ControlTemplate x:Key="TabViewTemplate1" TargetType="controls:TabView">
-            <Grid x:Name="TabViewContainer">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition controls:TabView.ConstrainColumn="True" controls:TabView.IgnoreColumn="True" Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition controls:TabView.IgnoreColumn="True" Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.ColumnSpan="6" Grid.Row="0"/>
-                <ContentPresenter ContentTemplate="{TemplateBinding TabStartHeaderTemplate}" Content="{TemplateBinding TabStartHeader}" Grid.Column="0" Grid.Row="1"/>
-                <ScrollViewer x:Name="ScrollViewer" AutomationProperties.AccessibilityView="Raw" BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}" Grid.Column="1" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}" IsVerticalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsVerticalScrollChainingEnabled}" IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}" IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}" IsHorizontalScrollChainingEnabled="{TemplateBinding ScrollViewer.IsHorizontalScrollChainingEnabled}" Grid.Row="1" Style="{StaticResource TabViewScrollViewer}" TabNavigation="{TemplateBinding TabNavigation}" VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" ZoomMode="{TemplateBinding ScrollViewer.ZoomMode}">
-                    <ItemsPresenter x:Name="TabsItemsPresenter" Padding="{TemplateBinding Padding}"/>
-                </ScrollViewer>
-                <ContentPresenter ContentTemplate="{TemplateBinding TabActionHeaderTemplate}" Content="{TemplateBinding TabActionHeader}" Grid.Column="3" HorizontalAlignment="Left" Grid.Row="1"/>
-                <ContentPresenter ContentTemplate="{TemplateBinding TabEndHeaderTemplate}" Content="{TemplateBinding TabEndHeader}" Grid.Column="5" Grid.Row="1"/>
-                <ContentPresenter x:Name="TabContentPresenter" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Grid.ColumnSpan="6" Grid.Row="2"/>
-                <ContentPresenter ContentTemplate="{TemplateBinding FooterTemplate}" Content="{TemplateBinding Footer}" Grid.ColumnSpan="6" Grid.Row="3"/>
-            </Grid>
-        </ControlTemplate>
+     
     </UserControl.Resources>
 
     <Page.Background>
@@ -93,7 +31,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <controls:TabView Template="{StaticResource TabViewTemplate1}"  Grid.Row="1" Grid.ColumnSpan="2" x:Name="Tabs" CanCloseTabs="True" IsCloseButtonOverlay="True" ItemsSource="{x:Bind ViewModel.ColTabs, Mode=TwoWay}"   TabClosing="Tabs_TabClosing" Margin="0,8,0,0" >
+        <controls:TabView   Grid.Row="1" Grid.ColumnSpan="2" x:Name="Tabs" CanCloseTabs="True" IsCloseButtonOverlay="True" ItemsSource="{x:Bind ViewModel.ColTabs, Mode=TwoWay}"   TabClosing="Tabs_TabClosing" Margin="0,8,0,0" >
             <controls:TabView.ItemHeaderTemplate >
                 <DataTemplate  x:DataType="local:VidDoc" >
                     <TextBlock Text="{x:Bind Name}" FontSize="14" Visibility="{x:Bind IsShow}" VerticalAlignment="Center" Tag="{x:Bind ccc}" ></TextBlock>
@@ -128,40 +66,25 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="*"/>
+                                   
                                 </Grid.RowDefinitions>
-                              
-                                <controls:DataGrid Visibility="{x:Bind IsShow1}"  x:Name="dataGrid1"  Grid.Row="1" ScrollViewer.HorizontalScrollMode="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="6" SelectionMode="Single"  IsFocusEngaged="False" AutoGenerateColumns="False"
-    ItemsSource="{x:Bind ClassDatas1,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  CellEditEnding="dataGrid1_CellEditEnding">
+                                <controls:DataGrid Visibility="{x:Bind IsShow1}" AutoGenerateColumns="False" Loading="DataGrid1_Loading"  x:Name="dataGrid1"  Grid.Row="1" ScrollViewer.HorizontalScrollMode="Auto"  ScrollViewer.HorizontalScrollBarVisibility="Auto" Margin="6" SelectionMode="Single"  IsFocusEngaged="False" 
+    ItemsSource="{x:Bind ClassDatas1, Mode=TwoWay}"  CellEditEnding="dataGrid1_CellEditEnding">
                                     <controls:DataGrid.Columns>
-                                        <controls:DataGridTemplateColumn Header="OFFSET" >
-                                            <controls:DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate x:DataType="local:ClassData">
-                                                    <TextBlock Text="{x:Bind offset}"  x:Phase="1" />
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellTemplate>
-                                        </controls:DataGridTemplateColumn>
-
-                                        <controls:DataGridTemplateColumn Header="01" Width="58" >
-                                            <controls:DataGridTemplateColumn.CellEditingTemplate>
-                                                <DataTemplate x:DataType="local:ClassData" >
-                                                    <TextBox Text="{x:Bind One1mas,  Mode=TwoWay, Converter={StaticResource Converter1}, UpdateSourceTrigger=PropertyChanged}"    IsReadOnly="False" Visibility="{x:Bind One1mas, Converter={StaticResource ConvertVisual}}" x:Phase="2" Tag="{x:Bind One1Tag}"  SelectionChanged="TextBox_SelectionChanged"  BorderThickness="0"/>
-                                                </DataTemplate>
-                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
-                                        </controls:DataGridTemplateColumn>
+                                      
                                         <controls:DataGridTemplateColumn Header="02"  Width="58" >
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
                                                     <TextBox  Text="{x:Bind One2mas, Mode=TwoWay, Converter={StaticResource Converter1}}" Visibility="{x:Bind One2mas, Converter={StaticResource ConvertVisual}}" x:Phase="2"  Tag="{x:Bind One2Tag}"  SelectionChanged="TextBox_SelectionChanged" BorderThickness="0" HorizontalAlignment="Stretch"/>
                                                 </DataTemplate>
-                                                </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="03"  Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate x:DataType="local:ClassData">
                                                     <TextBox  Text="{x:Bind One3mas, Mode=TwoWay, Converter={StaticResource Converter1}}" Visibility="{x:Bind One3mas, Converter={StaticResource ConvertVisual}}" x:Phase="2" Tag="{x:Bind One3Tag}"  SelectionChanged="TextBox_SelectionChanged" BorderThickness="0"/>
                                                 </DataTemplate>
-                                                </controls:DataGridTemplateColumn.CellEditingTemplate>
+                                            </controls:DataGridTemplateColumn.CellEditingTemplate>
                                         </controls:DataGridTemplateColumn>
                                         <controls:DataGridTemplateColumn Header="04" Width="58">
                                             <controls:DataGridTemplateColumn.CellEditingTemplate>
@@ -263,19 +186,7 @@
                                         </controls:DataGridTemplateColumn>
                                     </controls:DataGrid.Columns>
                                 </controls:DataGrid>
-                                <StackPanel Orientation="Horizontal" Grid.Row="3">
-                                    <ListView Name="01" ItemsSource="{x:Bind ClassDatas1B}">
-                                        <ListView.ItemTemplate >
-                                            <DataTemplate  >
-                                                <StackPanel Width="264" Height="48" Padding="12" Orientation="Horizontal">
-                                                    <TextBlock Margin="12,0,0,0" Width="204" Text="{Binding}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                    <ListView Name="02"/>
-                                    <ListView Name="03"/>
-                                </StackPanel>
+                        
                                 <StackPanel Grid.Column="1" MaxWidth="120"  Orientation="Vertical" >
                                     <AppBarButton  Click="AppBarButton_Click_2" Tag="{x:Bind ccc}" Icon="OpenPane" Content="Инфо" />
                                 </StackPanel>

@@ -46,7 +46,35 @@ namespace BinToHex
                 OnPropertyChanged();
             }
         }
-    
+  
+        public DataGrid dataGrid = new DataGrid();
+        public DataTable booksTable;
+        public VidDoc()
+            {
+            classDatas1 = new ObservableCollection<DataRow>();
+            booksTable = new DataTable("name");
+            DataColumn idColumn = new DataColumn("offset", Type.GetType("System.Int32"));
+            idColumn.Unique = true; // столбец будет иметь уникальное значение
+            idColumn.AllowDBNull = false; // не может принимать null
+            idColumn.AutoIncrement = true; // будет автоинкрементироваться
+            idColumn.AutoIncrementSeed = 0; // начальное значение
+            idColumn.AutoIncrementStep = 16; // приращении при добавлении новой строки
+
+            DataColumn nameColumn = new DataColumn("One1mas", Type.GetType("System.String"));
+            nameColumn.AllowDBNull = true;
+            DataColumn priceColumn = new DataColumn("One2mas", Type.GetType("System.String"));
+            priceColumn.AllowDBNull = true;
+            DataColumn discountColumn = new DataColumn("One3mas", Type.GetType("System.String"));
+            discountColumn.AllowDBNull = true;
+
+            booksTable.Columns.Add(idColumn);
+            booksTable.Columns.Add(nameColumn);
+            booksTable.Columns.Add(priceColumn);
+            booksTable.Columns.Add(discountColumn);
+            booksTable.PrimaryKey = new DataColumn[] { booksTable.Columns["offset"] };
+          
+          
+        }
         public async void ShowModel()
         {
             
@@ -65,7 +93,7 @@ namespace BinToHex
             {
                 byte[] bb = new byte[Convert.ToInt32(Size)];
                 int i = 0;
-                foreach(ClassData b in ClassDatas1)
+            /*    foreach(ClassData b in ClassDatas1)
                 {
                     if (b.One1mas!=null)
                     {
@@ -151,7 +179,7 @@ namespace BinToHex
               
                 await Windows.Storage.FileIO.WriteBytesAsync(file, bb1);
 
-
+    */
 
 
             }
@@ -186,14 +214,27 @@ namespace BinToHex
             // await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             // {
             fd.offset = ofs;
+            DataRow row;
+            row = booksTable.NewRow();
             fd.oneB = ss;
             //  text = String.Format("{0:X2}", ofs)+"\t";
 
             //   });
             while (i < bb1.Length)
             {
+               
                 if (s == 16)
                 {
+                  
+                   // row.ItemArray = new object[] { null, String.Format("{0:X2}", bb1[i]), 200 };
+                    // int x = booksTable.Columns.Count - 1;
+
+
+                    // DataRow row1 = booksTable.NewRow();
+                    // booksTable.Rows.Add(new object[] { null, String.Format("{0:X2}", bb1[i]) });
+                    ClassDatas1.Add(row);
+                    row = booksTable.NewRow();
+                  
                     s = 0;
                  
                         fd.oneB = ss;
@@ -201,7 +242,7 @@ namespace BinToHex
                     ofs += 16;
                     //  text += "\n";
                     
-                    ClassDatas1.Add(fd);
+                   // ClassDatas1.Add(fd);
             
                 ss += 16;
                     fd = new ClassData() { };
@@ -216,15 +257,19 @@ namespace BinToHex
                     case 0:
                       
                             fd.addByte(s, bb1[i]);
-                      
+                        row[1] = String.Format("{0:X2}", bb1[i]);
+
+
                         break;
                     case 1:
 
                         fd.addByte(s, bb1[i]);
+                        row[2] = String.Format("{0:X2}", bb1[i]);
 
                         break;
                     case 2:
                         fd.addByte(s, bb1[i]);
+                        row[3] = String.Format("{0:X2}", bb1[i]);
                         break;
                     case 3:
                         fd.addByte(s, bb1[i]);
@@ -278,7 +323,7 @@ namespace BinToHex
                 ofs += 16;
                 //  text += "\n";
 
-                ClassDatas1.Add(fd);
+              //  ClassDatas1.Add(fd);
 
                 ss += 16;
                // fd = new ClassData() { };
@@ -340,8 +385,8 @@ namespace BinToHex
                 OnPropertyChanged();
             }
         }
-        ObservableCollection<ClassData> classDatas1 = new ObservableCollection<ClassData>();
-        public ObservableCollection<ClassData> ClassDatas1
+        ObservableCollection<DataRow> classDatas1;
+        public ObservableCollection<DataRow> ClassDatas1
         {
             get
             {
@@ -350,8 +395,7 @@ namespace BinToHex
             set
             {
                 classDatas1 = value;
-                OnPropertyChanged("ClassDatas1");
-
+              
             }
         }
         ObservableCollection<byte> classDatas1B = new ObservableCollection<Byte>();

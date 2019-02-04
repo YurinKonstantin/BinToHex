@@ -9,7 +9,7 @@ namespace BinToHex
 {
    public class DataConverter:IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, string language)
+        public object  Convert(object value, Type targetType, object parameter, string language)
         {
             byte? bb = (byte?)value;
             

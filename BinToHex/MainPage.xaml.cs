@@ -15,6 +15,15 @@ using Windows.UI.Core;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 
+using System.Collections.Generic;
+using System.IO;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+
 
 // Документацию по шаблону элемента "Пустая страница" см. по адресу https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x419
 
@@ -83,7 +92,7 @@ namespace BinToHex
             Ring.IsActive = true;
             try
             {
-
+                
                 var picker = new Windows.Storage.Pickers.FileOpenPicker();
                 picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
                 picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
@@ -995,6 +1004,62 @@ namespace BinToHex
                     ClassSetUpUser.saveUseSet();
                 }
 
+
+            }
+        }
+        DataConverter DataConverter1 = new DataConverter(); 
+        public DataTable booksTable=new DataTable();
+        public void DataGrid1_Loading(FrameworkElement sender, object args)
+        {
+            DataGrid dataGrid = (DataGrid)sender;
+            ViewModel.ColTabs[0].dataGrid = dataGrid;
+
+            booksTable = new DataTable("name");
+            DataColumn idColumn = new DataColumn("offset", Type.GetType("System.Int32"));
+            idColumn.Unique = true; // столбец будет иметь уникальное значение
+            idColumn.AllowDBNull = false; // не может принимать null
+            idColumn.AutoIncrement = true; // будет автоинкрементироваться
+            idColumn.AutoIncrementSeed = 1; // начальное значение
+            idColumn.AutoIncrementStep = 16; // приращении при добавлении новой строки
+
+            DataColumn nameColumn = new DataColumn("One1mas", Type.GetType("System.String"));
+            nameColumn.AllowDBNull = true;
+            DataColumn priceColumn = new DataColumn("One2mas", Type.GetType("System.String"));
+            priceColumn.AllowDBNull = true;
+            DataColumn discountColumn = new DataColumn("One3mas", Type.GetType("System.String"));
+            discountColumn.AllowDBNull = true;
+
+            booksTable.Columns.Add(idColumn);
+            booksTable.Columns.Add(nameColumn);
+            booksTable.Columns.Add(priceColumn);
+            booksTable.Columns.Add(discountColumn);
+            booksTable.PrimaryKey = new DataColumn[] { booksTable.Columns["offset"] };
+         
+
+
+            if (booksTable != null) // table is a DataTable
+            {
+                int i = 0;
+                foreach (DataColumn col in booksTable.Columns)
+                {
+                    // booksTable.Columns.Add(
+                    //  new DataGridTextColumn
+                    //  {
+                    //    Header = col.ColumnName,
+
+                    //   Binding = new Binding(string.Format("[{0}]", col.ColumnName))
+
+
+
+                    //  });
+                    dataGrid.Columns.Add(new DataGridTextColumn()
+                    {
+                        Header = col.ColumnName,
+                        Binding = new Binding { Path = new PropertyPath("[" + col.ColumnName.ToString() + "]") },
+                        IsReadOnly = false
+                    });
+
+                }
 
             }
         }

@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Dark.Text" xml:space="preserve">
+  <data name="Dark.Content" xml:space="preserve">
     <value>Dark</value>
   </data>
   <data name="FileName.Text" xml:space="preserve">
     <value>File name</value>
   </data>
-  <data name="Light.Text" xml:space="preserve">
+  <data name="Light.Content" xml:space="preserve">
     <value>Light</value>
   </data>
   <data name="Offset.Text" xml:space="preserve">
