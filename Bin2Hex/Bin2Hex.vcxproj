@@ -140,6 +140,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Bin2Hex.ico" />
+    <Image Include="photo_Qr-code.bmp" />
+    <Image Include="photo_Qr-code.ico" />
+    <Image Include="photo_Qr-code.jpg" />
     <Image Include="small.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

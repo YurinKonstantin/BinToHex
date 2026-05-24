@@ -13,8 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Файлы ресурсов\Ru-ru">
-      <UniqueIdentifier>{5612fdc8-51ae-467e-b331-378dee05d8a3}</UniqueIdentifier>
+    <Filter Include="Файлы ресурсов\page">
+      <UniqueIdentifier>{db8d96cc-ebbb-46f4-9178-30ff640c5f29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +58,15 @@
       <Filter>Файлы ресурсов</Filter>
     </Image>
     <Image Include="Bin2Hex.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="photo_Qr-code.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="photo_Qr-code.jpg">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="photo_Qr-code.bmp">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>

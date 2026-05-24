@@ -7,12 +7,15 @@
 #define IDR_MAINFRAME			128
 #define IDD_BIN2HEX_DIALOG	102
 #define IDD_ABOUTBOX			103
+#define IDD_RUSBOX				1030
 #define IDM_ABOUT				104
+#define IDM_RUS					1040
 #define IDM_EXIT				105
 #define IDM_FILE_CLOSE			1052
 #define IDM_FILE_OPEN			1051
 #define IDI_BIN2HEX			107
 #define IDI_SMALL				108
+#define IDI_QRCODE			1080
 #define IDC_BIN2HEX			109
 #define IDC_MYICON				2
 #ifndef IDC_STATIC
@@ -21,6 +24,8 @@
 #define TEX_POZ					140
 #define IDS_Info				141
 #define IDD_ERRORBOX			142
+#define IDD_ReviewBOX			143
+#define IDREV			144
 
 // Следующие стандартные значения для новых объектов
 //
