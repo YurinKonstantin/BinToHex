@@ -29,7 +29,17 @@ namespace BinViewer
         {
             InitializeComponent();
             //ViewModel = new ModalViewViDoc();
-         
+            this.Content.KeyDown += Global_KeyDown;
+
+        }
+        private void Global_KeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            // 1. Проверяем, открыта ли вкладка и есть ли в ней наш редактор
+            if (FileTabView.SelectedItem is TabViewItem currentTab && currentTab.Content is HexEditorView editorView)
+            {
+                // 2. Перенаправляем нажатие клавиши напрямую в активный редактор
+                editorView.HandleKeyboardInput(e);
+            }
         }
         private async void OpenBuffer_Click(object sender, RoutedEventArgs e)
         {

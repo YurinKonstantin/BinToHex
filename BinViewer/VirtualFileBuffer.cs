@@ -17,7 +17,15 @@ namespace BinViewer
         {
             _fileStream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
         }
-
+        public bool HasModification(long position)
+        {
+            return _modifications.ContainsKey(position);
+        }
+        public void SetByte(long position, byte value)
+        {
+            // Записываем измененный байт во внутренний словарь изменений
+            _modifications[position] = value;
+        }
         public byte ReadByte(long position)
         {
             // Было: if (_modifications.TryGetValue(position, ref var modifiedByte))

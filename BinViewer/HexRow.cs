@@ -10,6 +10,9 @@ namespace BinViewer
         public string AddressHex => Address.ToString("X8");
         public byte[] Bytes { get; set; }
 
+        public List<HexByteItem> ByteItems { get; set; } = new();
+        public string AsciiString { get; set; }
+
         // Количество реальных байт в этой строке (для конца файла)
         public int ValidBytesCount { get; set; }
 
@@ -36,7 +39,7 @@ namespace BinViewer
             }
         }
 
-        public string AsciiString => GetAsciiString(Bytes, ValidBytesCount);
+
 
         private static string GetAsciiString(byte[] bytes, int validCount)
         {
