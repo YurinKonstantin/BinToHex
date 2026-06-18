@@ -89,7 +89,8 @@ VOID HexView_DrawLine( _In_ HWND hWnd, _In_ HDC hdcMem,_In_ PHEXVIEW HexView, _I
     rc.bottom = HexView->HeightChar;
     ExtTextOut(hdcMem, 0, 0, ETO_OPAQUE, &rc, NULL, 0, NULL);
 
-    if ((HexView->VscrollPos + NumberOfLine) < HexView->TotalLines) {
+    if ((HexView->VscrollPos + NumberOfLine) < HexView->TotalLines) 
+    {
 
         NMHVDISPINFO DispInfo = { 0 };
         TCHAR Buffer[32];
@@ -126,7 +127,8 @@ VOID HexView_DrawLine( _In_ HWND hWnd, _In_ HDC hdcMem,_In_ PHEXVIEW HexView, _I
         SelectionStart = min(HexView->SelectionStart, HexView->SelectionEnd);
         SelectionEnd = max(HexView->SelectionStart, HexView->SelectionEnd);
 
-        for (i = NumberOfItem; i <= NumberOfItem + 15 && i < HexView->TotalItems; i++) {
+        for (i = NumberOfItem; i <= NumberOfItem + 15 && i < HexView->TotalItems; i++) 
+        {
 
             DispInfo.Item.Mask = HVIF_BYTE;
             DispInfo.Item.State = 0;
@@ -135,11 +137,13 @@ VOID HexView_DrawLine( _In_ HWND hWnd, _In_ HDC hdcMem,_In_ PHEXVIEW HexView, _I
             DispInfo.Item.Value = 0;
             HexView_SendNotify(hWnd, HVN_GETDISPINFO, (LPNMHDR)&DispInfo);
 
-            if ((HexView->Flags & HVF_SELECTED) && (i >= SelectionStart && i <= SelectionEnd)) {
+            if ((HexView->Flags & HVF_SELECTED) && (i >= SelectionStart && i <= SelectionEnd)) 
+            {
 
                 clrBk = SetBkColor(hdcMem, HexView->clrSelectedTextBackground);
 
-                if (i != SelectionEnd && i != NumberOfItem + 15) {
+                if (i != SelectionEnd && i != NumberOfItem + 15)
+                {
 
                     rc.top = 0;
                     rc.bottom = HexView->HeightView;
@@ -175,11 +179,13 @@ VOID HexView_DrawLine( _In_ HWND hWnd, _In_ HDC hdcMem,_In_ PHEXVIEW HexView, _I
             // Draw a char value
             //
 
-            if (isprint(DispInfo.Item.Value)) {
+            if (isprint(DispInfo.Item.Value)) 
+            {
 
                 StringCchPrintf(Buffer, _countof(Buffer), _T("%c"), DispInfo.Item.Value);
             }
-            else {
+            else 
+            {
 
                 _tcscpy_s(Buffer, _countof(Buffer), _T("."));
             }
@@ -193,7 +199,7 @@ VOID HexView_DrawLine( _In_ HWND hWnd, _In_ HDC hdcMem,_In_ PHEXVIEW HexView, _I
         }
     }
 }
-VOID HexView_Paint(_In_ HWND hWnd,_In_ HDC hdc,_In_ PHEXVIEW HexView)
+VOID HexView_Paint(_In_ HWND hWnd,_In_ HDC hdc,_In_ PHEXVIEW HexView)//Отображает строки файла как hex
 {
     HDC hdcMem;
     HBITMAP hbmMem;
@@ -210,7 +216,8 @@ VOID HexView_Paint(_In_ HWND hWnd,_In_ HDC hdc,_In_ PHEXVIEW HexView)
 
     clrBk = SetBkColor(hdcMem, HexView->clrTextBackground);
 
-    for (NumberOfLine = 0; NumberOfLine <= HexView->VisibleLines; NumberOfLine++) {
+    for (NumberOfLine = 0; NumberOfLine <= HexView->VisibleLines; NumberOfLine++) 
+    {
 
         HexView_DrawLine(hWnd, hdcMem, HexView, NumberOfLine);
 
@@ -1180,12 +1187,12 @@ LRESULT CALLBACK HexViewProc(_In_ HWND hWnd,_In_ UINT message, _In_ WPARAM wPara
         InvalidateRect(hWnd, NULL, FALSE);
         break;
     }
-    case HVM_SETEXTENDEDSTYLE:
+    case HVM_SETEXTENDEDSTYLE://Вызывается при открытие файла
     {
         HexView->ExStyle = (DWORD)lParam;
         break;
     }
-    case HVM_SETITEMCOUNT:
+    case HVM_SETITEMCOUNT://Вызывается при открытие файла
     {
         HexView->TotalItems = 0;
         HexView->TotalLines = 0;

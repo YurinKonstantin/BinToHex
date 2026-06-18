@@ -15,8 +15,9 @@ using Windows.UI.ViewManagement;
 using Windows.UI;
 using System.Data;
 using Windows.UI.Core;
-using Microsoft.Toolkit.Uwp.UI.Controls;
+
 using Windows.UI.Xaml.Controls.Primitives;
+using System.Diagnostics;
 
 namespace BinToHex
 {
@@ -46,8 +47,8 @@ namespace BinToHex
                 OnPropertyChanged();
             }
         }
-  
-        public DataGrid dataGrid = new DataGrid();
+        TextBlock ttext { get; set;  }
+        public Grid dataGrid = new Grid();
         public DataTable booksTable;
         public VidDoc()
             {
@@ -427,5 +428,16 @@ namespace BinToHex
             // Raise the PropertyChanged event, passing the name of the property whose value has changed.
             this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+        public void dataGrid1_Loaded(object sender, RoutedEventArgs e)
+        {
+           // var datagrid = sender as DataGrid;
+           // Debug.WriteLine(datagrid.Tag.ToString());
+        }
+        public void dataGrid1_Loading(FrameworkElement sender, object args)
+        {
+            Grid dataGrid = (Grid)sender;
+            Debug.WriteLine(dataGrid.Tag.ToString());
+        }
+        
     }
 }

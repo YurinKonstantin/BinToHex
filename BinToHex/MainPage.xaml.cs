@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.UI.Popups;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using System.ComponentModel;
-using Windows.UI.ViewManagement;
-using Windows.UI;
-using System.Runtime.CompilerServices;
-using System.Data;
-using System.Threading.Tasks;
-using Windows.UI.Core;
-using Microsoft.Toolkit.Uwp.UI.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-
+﻿using Microsoft.Toolkit.Uwp.UI.Controls;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data;
 using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.Composition;
+using Windows.UI.Core;
+using Windows.UI.Popups;
+using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
@@ -1063,5 +1063,9 @@ namespace BinToHex
 
             }
         }
+
+      
+        
     }
+    
 }

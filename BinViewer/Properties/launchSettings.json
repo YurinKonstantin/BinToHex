@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BinViewer (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "BinViewer (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

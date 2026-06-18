@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="BinViewer.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BinViewer"
+    
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="BinViewer"
+      xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls">
+
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Верхняя панель управления -->
+        <CommandBar Grid.Row="0">
+            <AppBarButton Icon="OpenFile" Label="Открыть" Click="OpenBuffer_Click"/>
+            <AppBarButton Icon="Save" Label="Сохранить" Click="SaveBuffer_Click"/>
+            <AppBarSeparator/>
+            <AppBarElementContainer>
+                <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
+                    <!-- Блок поиска -->
+                    <TextBox x:Name="SearchBox" Width="120" PlaceholderText="Поиск (ASCII)"/>
+                    <Button Content="Найти" Click="Search_Click" Margin="5,0,0,0"/>
+
+                    <AppBarSeparator Margin="10,0,10,0"/>
+
+                    <!-- Блок перехода по адресу -->
+                    <TextBox x:Name="GoToBox" Width="120" PlaceholderText="Адрес (HEX, напр. 1A0)"/>
+                    <Button Content="Перейти" Click="GoToOffset_Click" Margin="5,0,0,0"/>
+                </StackPanel>
+            </AppBarElementContainer>
+        </CommandBar>
+
+        <!-- Вкладки для документов -->
+        <TabView x:Name="FileTabView" Grid.Row="1" TabCloseRequested="FileTabView_TabCloseRequested" />
+    </Grid>
+
+
+</Window>
