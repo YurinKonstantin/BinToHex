@@ -16,7 +16,7 @@
   <mp:PhoneIdentity PhoneProductId="d7efe282-5d2f-47d0-96d3-e68ad0d3b402" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>BinViewer</DisplayName>
+    <DisplayName>BinStudio — Fast HEX Editor &amp; Binary Viewer</DisplayName>
     <PublisherDisplayName>yurin</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -35,14 +35,29 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="BinViewer"
-        Description="BinViewer"
+        DisplayName="BinStudio"
+        Description="Blazing fast HEX editor for huge files. RAM virtualization, smart search, data inspector, and auto .bak backup."
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
+		<Extensions>
+			<uap:Extension Category="windows.fileTypeAssociation">
+				<uap:FileTypeAssociation Name="binstudiofile">
+					<uap:SupportedFileTypes>
+						<!-- Регистрируем расширение .bin -->
+						<uap:FileType>.bin</uap:FileType>
+						<!-- Регистрируем расширение .hex -->
+						<uap:FileType>.hex</uap:FileType>
+					</uap:SupportedFileTypes>
+					<uap:DisplayName>BinStudio Binary File</uap:DisplayName>
+					<!-- Можно указать имя конкретного логотипа для иконки файла в Проводнике -->
+					<uap:Logo>Assets\StoreLogo.png</uap:Logo>
+				</uap:FileTypeAssociation>
+			</uap:Extension>
+		</Extensions>
     </Application>
   </Applications>
 

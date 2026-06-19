@@ -23,6 +23,17 @@ namespace BinViewer
             get => _isFirstNibbleEntered;
             set { _isFirstNibbleEntered = value; OnPropertyChanged(); }
         }
+        public void SaveDocument()
+        {
+            // 1. Сначала создаем резервную копию оригинального файла
+            Buffer.CreateBackup(FullPath);
+
+            // 2. Только после успешного создания бэкапа пишем изменения на диск
+            Buffer.Save();
+
+            // 3. Обновляем строки в UI
+            RefreshAllRows();
+        }
 
         // Метод для записи измененного байта через буфер
         public void ChangeByteAt(long address, byte newValue)
@@ -44,13 +55,43 @@ namespace BinViewer
         public long SelectionStart
         {
             get => _selectionStart;
-            set { _selectionStart = value; OnPropertyChanged(); }
+            set
+            {
+                _selectionStart = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectionInfoText)); // Уведомляем об изменении строки статуса
+            }
         }
 
         public long SelectionEnd
         {
             get => _selectionEnd;
-            set { _selectionEnd = value; OnPropertyChanged(); }
+            set
+            {
+                _selectionEnd = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectionInfoText)); // Уведомляем об изменении строки статуса
+            }
+        }
+        // Новое свойство, генерирующее красивый текст для Status Bar
+        public string SelectionInfoText
+        {
+            get
+            {
+                if (SelectionStart == -1) return "-";
+
+                // Если выбран один байт, показываем его адрес в DEC и HEX
+                if (SelectionStart == SelectionEnd)
+                {
+                    return $"{SelectionStart} (0x{SelectionStart.ToString("X")})";
+                }
+
+                // Если выбрано несколько байт, показываем диапазон и размер выделения
+                long min = Math.Min(SelectionStart, SelectionEnd);
+                long max = Math.Max(SelectionStart, SelectionEnd);
+                long count = max - min + 1;
+                return $"0x{min.ToString("X")} .. 0x{max.ToString("X")} (Выделено: {count} байт)";
+            }
         }
 
         // Проверяет, выделен ли конкретный байт по его абсолютному адресу
@@ -81,6 +122,12 @@ namespace BinViewer
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        // Публичный метод, доступный из любого места программы
+        public void RefreshAllRows()
+        {
+            // Теперь OnPropertyChanged вызывается внутри своего класса, что полностью легально
+            OnPropertyChanged(nameof(Rows));
         }
     }
 

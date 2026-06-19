@@ -53,6 +53,19 @@
     <Folder Include="Control\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Strings\ru-RU\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Strings\ru-RU\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="HexEditorView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

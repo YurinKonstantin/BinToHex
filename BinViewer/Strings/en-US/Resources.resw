@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutArch.Text" xml:space="preserve">
+    <value>Architectural Features:</value>
+  </data>
+  <data name="AboutArch1.Text" xml:space="preserve">
+    <value>• Modifications are isolated in RAM and do not damage the original file until saved.</value>
+  </data>
+  <data name="AboutArch2.Text" xml:space="preserve">
+    <value>• Thread-safe asynchronous search processed in 64 KB blocks.</value>
+  </data>
+  <data name="AboutDesc.Text" xml:space="preserve">
+    <value>High-speed professional hex editor designed for instantly opening files of any size (from a few bytes to hundreds of gigabytes). The application utilizes data stream and UI virtualization, saving RAM and maintaining maximum FPS during scrolling.</value>
+  </data>
+  <data name="AboutDev.Text" xml:space="preserve">
+    <value>Developer: AI Collaboration &amp; C# WinUI Community</value>
+  </data>
+  <data name="AboutDialog.CloseButtonText" xml:space="preserve">
+    <value>Got it</value>
+  </data>
+  <data name="AboutDialog.Title" xml:space="preserve">
+    <value>Documentation &amp; User Guide</value>
+  </data>
+  <data name="AboutTitle.Text" xml:space="preserve">
+    <value>Fast WinUI 3 HEX Editor</value>
+  </data>
+  <data name="AboutVersion.Text" xml:space="preserve">
+    <value>Version: 1.0.0 (Stable Release)</value>
+  </data>
+  <data name="ManualSect1.Text" xml:space="preserve">
+    <value>1. WORKING WITH FILES AND TABS</value>
+  </data>
+  <data name="ManualSect1_1.Text" xml:space="preserve">
+    <value>• Opening:</value>
+  </data>
+  <data name="ManualSect1_2.Text" xml:space="preserve">
+    <value>Via 'File -&gt; Open file...' menu you can select any document. Each new file opens isolated in its own tab.</value>
+  </data>
+  <data name="ManualSect1_3.Text" xml:space="preserve">
+    <value>• Closing:</value>
+  </data>
+  <data name="ManualSect1_4.Text" xml:space="preserve">
+    <value>Click the tab's close button. The file handle memory (FileStream) will be instantly released to the OS.</value>
+  </data>
+  <data name="ManualSect2.Text" xml:space="preserve">
+    <value>2. MULTIPLE BYTE SELECTION</value>
+  </data>
+  <data name="ManualSect2_1.Text" xml:space="preserve">
+    <value>• Single Choice:</value>
+  </data>
+  <data name="ManualSect2_2.Text" xml:space="preserve">
+    <value>Clicking LMB (Left Mouse Button) on a cell selects the byte. Its address is duplicated in the bottom status bar.</value>
+  </data>
+  <data name="ManualSect2_3.Text" xml:space="preserve">
+    <value>• Range Selection (Drag &amp; Drop):</value>
+  </data>
+  <data name="ManualSect2_4.Text" xml:space="preserve">
+    <value>Hold LMB on the starting byte and drag the cursor through the table up or down. The grid will highlight the chosen array. The right mouse button is locked to prevent selection reset.</value>
+  </data>
+  <data name="ManualSect3.Text" xml:space="preserve">
+    <value>3. BYTE-BY-BYTE EDITING</value>
+  </data>
+  <data name="ManualSect3_1.Text" xml:space="preserve">
+    <value>• Enter Editing Mode:</value>
+  </data>
+  <data name="ManualSect3_2.Text" xml:space="preserve">
+    <value>Double-click (Double Tap) a byte to bring the cell into input focus.</value>
+  </data>
+  <data name="ManualSect3_3.Text" xml:space="preserve">
+    <value>• Character Typing Process:</value>
+  </data>
+  <data name="ManualSect3_4.Text" xml:space="preserve">
+    <value>Type HEX characters [0-9] or [A-F]. Pressing the first key shifts the byte into a semi-input state (e.g., 'A?'). The second press writes the byte permanently, updates its ASCII character on the right, colors the text RED, and automatically moves the cursor to the next step.</value>
+  </data>
+  <data name="ManualSect3_5.Text" xml:space="preserve">
+    <value>• Cancel and Navigation:</value>
+  </data>
+  <data name="ManualSect3_6.Text" xml:space="preserve">
+    <value>Pressing the Escape key resets the cell editing mode. You can navigate between cells during input using the arrow keys.</value>
+  </data>
+  <data name="ManualTitle.Text" xml:space="preserve">
+    <value>How to use the editor:</value>
+  </data>
+  <data name="MenuAbout.Text" xml:space="preserve">
+    <value>About &amp; Manual...</value>
+  </data>
+  <data name="MenuCopy.Text" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="MenuEdit.Title" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="MenuFile.Title" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="MenuGoTo.Text" xml:space="preserve">
+    <value>Go to Offset...</value>
+  </data>
+  <data name="MenuHelp.Title" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="MenuInfo.Text" xml:space="preserve">
+    <value>File Information</value>
+  </data>
+  <data name="MenuOpen.Text" xml:space="preserve">
+    <value>Open file...</value>
+  </data>
+  <data name="MenuPaste.Text" xml:space="preserve">
+    <value>Paste</value>
+  </data>
+  <data name="MenuSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="MenuSearch.Text" xml:space="preserve">
+    <value>Search File</value>
+  </data>
+  <data name="MenuView.Title" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="PivotAbout.Header" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="PivotManual.Header" xml:space="preserve">
+    <value>Full Manual</value>
+  </data>
+  <data name="StatusBytesText" xml:space="preserve">
+    <value>Selected: {1} bytes</value>
+  </data>
+  <data name="StatusOffsetText" xml:space="preserve">
+    <value>Offset: {0}</value>
+  </data>
+  <data name="StatusSizeText" xml:space="preserve">
+    <value>Size: {0:N0} bytes</value>
+  </data>
+  <data name="AboutArch3.Text" xml:space="preserve">
+    <value>• Automatic backup creation (.bak) before each write session for 100% data loss protection.</value>
+  </data>
+</root>

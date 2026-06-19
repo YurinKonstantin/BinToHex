@@ -16,11 +16,28 @@
         <!-- Фиксированный заголовок -->
         <Grid Grid.Row="0" ColumnDefinitions="90, 410, 160" Height="28" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
             <TextBlock Grid.Column="0" Text="Offset" FontFamily="Consolas" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0"/>
-            <TextBlock Grid.Column="1" Text="00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F" FontFamily="Consolas" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="5,0,0,0"/>
+            <!-- НОВОЕ: Поячеистый заголовок позиций (00-0F), идеально повторяющий структуру данных -->
+            <ItemsControl Grid.Column="1" ItemsSource="{x:Bind HeaderPositions}" Margin="5,0,0,0" VerticalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <!-- Размеры Width и Margin СТРОГО совпадают с Border данных ниже -->
+                        <Border Width="21" Margin="0,0,4,0">
+                            <TextBlock Text="{x:Bind}" FontFamily="Consolas" FontSize="14" FontWeight="Bold" Foreground="{ThemeResource TextControlForeground}" HorizontalAlignment="Center"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
             <TextBlock Grid.Column="2" Text="ASCII" FontFamily="Consolas" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,0,0"/>
         </Grid>
+        <!-- Рабочая область: Таблица + Боковая панель -->
+        <Grid Grid.Row="1" ColumnDefinitions="*, Auto">
 
-        <!-- Основная таблица строк -->
+            <!-- Основная таблица строк -->
         <ScrollViewer x:Name="ContentScrollViewer" Grid.Row="1" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto">
             <ItemsRepeater x:Name="HexRepeater" ItemsSource="{x:Bind ViewModel.Rows, Mode=OneWay}">
                 <ItemsRepeater.ItemTemplate>
@@ -40,13 +57,19 @@
                                     <DataTemplate x:DataType="local:HexByteItem">
                                         <!-- Добавлено событие DoubleTapped="Byte_DoubleTapped" -->
                                         <Border x:Name="ByteBorder" 
-                Width="21" Height="22" 
-                Margin="0,0,4,0" 
-                CornerRadius="2"
-                Background="Transparent"
-                PointerPressed="Byte_PointerPressed" 
-                DoubleTapped="Byte_DoubleTapped"
-                DataContextChanged="ByteBorder_DataContextChanged">
+                                            Width="21" Height="22" 
+                                            Margin="0,0,4,0" 
+                                            CornerRadius="2"
+                                            Background="Transparent"
+                                            PointerPressed="Byte_PointerPressed" 
+                                            DoubleTapped="Byte_DoubleTapped"
+                                            DataContextChanged="ByteBorder_DataContextChanged">
+                                            <Border.ContextFlyout>
+                                                <MenuFlyout>
+                                                    <MenuFlyoutItem Text="Копировать" Icon="Copy" Click="MenuCopy_Click"/>
+                                                    <MenuFlyoutItem Text="Вставить" Icon="Paste" Click="MenuPaste_Click"/>
+                                                </MenuFlyout>
+                                            </Border.ContextFlyout>
                                             <TextBlock Text="{x:Bind DisplayText}" 
                        FontFamily="Consolas" FontSize="14" 
                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -62,5 +85,97 @@
                 </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>
         </ScrollViewer>
+
+            <!-- Боковая панель результатов (Правая колонка), скрыта по умолчанию -->
+            <Grid x:Name="SearchResultsPanel" Grid.Column="1" Width="220" Visibility="Collapsed"   Background="{ThemeResource LayerFillColorDefaultBrush}" BorderThickness="1,0,0,0" 
+                  BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                <Grid RowDefinitions="Auto, *">
+                    <!-- Верхняя шапка панели с кнопкой закрытия -->
+                    <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Padding="10,5,5,5">
+                        <TextBlock Grid.Column="0" Text="Результаты поиска" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <!-- Кнопка-крестик без рамок в стиле Fluent Design -->
+                        <Button Grid.Column="1" 
+            Click="CloseSearchPanel_Click" 
+            Content="&#xE8BB;" 
+            FontFamily="Segoe MDL2 Assets" 
+            FontSize="12"
+            Width="32" 
+            Height="32" 
+            Padding="0"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            CornerRadius="4"/>
+                    </Grid>
+
+                    <ListView x:Name="SearchResultsList" Grid.Row="1" SelectionChanged="SearchResultsList_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:SearchResultItem">
+                                <StackPanel Margin="0,4,0,4">
+                                    <TextBlock Text="{x:Bind AddressHex}" FontFamily="Consolas" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}" FontWeight="Bold"/>
+                                    <TextBlock Text="{x:Bind PreviewText}" FontFamily="Consolas" FontSize="12" Foreground="Gray" MaxLines="1" TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </Grid>
+            <!-- Боковая панель информации о файле (Новая, Правая колонка) -->
+            <Grid x:Name="FileInfoPanel" Grid.Column="1" Width="240" Visibility="Collapsed" 
+                  Background="{ThemeResource LayerFillColorDefaultBrush}" 
+                  BorderThickness="1,0,0,0" 
+                  BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                  Translation="0,0,8">
+                <Grid RowDefinitions="Auto, *">
+
+                    <!-- Шапка панели информации -->
+                    <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Padding="10,5,5,5">
+                        <TextBlock Grid.Column="0" Text="Информация о файле" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" Click="CloseFileInfoPanel_Click" Content="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10" Width="32" Height="32" Padding="0" Background="Transparent" BorderBrush="Transparent" CornerRadius="4"/>
+                    </Grid>
+
+                    <!-- Содержимое панели (Метаданные + Инспектор типов) -->
+                    <ScrollViewer Grid.Row="1" Padding="10,0,10,10">
+                        <StackPanel Spacing="15">
+                            <!-- Блок метаданных -->
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Метаданные" FontSize="12" Foreground="Gray" FontWeight="SemiBold"/>
+                                <TextBlock Text="Имя файла:" FontSize="12" Foreground="Gray"/>
+                                <TextBlock x:Name="InfoFileName" FontSize="13" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                <TextBlock Text="Полный путь:" FontSize="12" Foreground="Gray" Margin="0,5,0,0"/>
+                                <TextBlock x:Name="InfoFilePath" FontSize="11" TextWrapping="Wrap" Foreground="DarkGray"/>
+                            </StackPanel>
+
+                            <MenuFlyoutSeparator/>
+
+                            <!-- Блок инспектора данных (Data Inspector) -->
+                            <StackPanel Spacing="5">
+                                <TextBlock Text="Инспектор данных (Курсор)" FontSize="12" Foreground="Gray" FontWeight="SemiBold"/>
+
+                                <Grid ColumnDefinitions="*, *" Margin="0,4,0,0">
+                                    <TextBlock Grid.Column="0" Text="Binary (Byte):" FontSize="13"/>
+                                    <TextBlock x:Name="InspectByte" Grid.Column="1" Text="-" FontFamily="Consolas" FontSize="13" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid ColumnDefinitions="*, *">
+                                    <TextBlock Grid.Column="0" Text="Int16 (Short):" FontSize="13"/>
+                                    <TextBlock x:Name="InspectInt16" Grid.Column="1" Text="-" FontFamily="Consolas" FontSize="13" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid ColumnDefinitions="*, *">
+                                    <TextBlock Grid.Column="0" Text="Int32 (Int):" FontSize="13"/>
+                                    <TextBlock x:Name="InspectInt32" Grid.Column="1" Text="-" FontFamily="Consolas" FontSize="13" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid ColumnDefinitions="*, *">
+                                    <TextBlock Grid.Column="0" Text="Int64 (Long):" FontSize="13"/>
+                                    <TextBlock x:Name="InspectInt64" Grid.Column="1" Text="-" FontFamily="Consolas" FontSize="13" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Grid ColumnDefinitions="*, *">
+                                    <TextBlock Grid.Column="0" Text="Float (Single):" FontSize="13"/>
+                                    <TextBlock x:Name="InspectFloat" Grid.Column="1" Text="-" FontFamily="Consolas" FontSize="13" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

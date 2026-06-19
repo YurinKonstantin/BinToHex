@@ -12,29 +12,257 @@
       xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls">
 
 
-    <Grid RowDefinitions="Auto, *">
+    <Grid RowDefinitions="Auto, *, Auto">
         <!-- Верхняя панель управления -->
-        <CommandBar Grid.Row="0">
-            <AppBarButton Icon="OpenFile" Label="Открыть" Click="OpenBuffer_Click"/>
-            <AppBarButton Icon="Save" Label="Сохранить" Click="SaveBuffer_Click"/>
-            <AppBarSeparator/>
-            <AppBarElementContainer>
-                <StackPanel Orientation="Horizontal" Margin="5,5,5,0">
-                    <!-- Блок поиска -->
-                    <TextBox x:Name="SearchBox" Width="120" PlaceholderText="Поиск (ASCII)"/>
-                    <Button Content="Найти" Click="Search_Click" Margin="5,0,0,0"/>
+        <!-- 1. Классическое верхнее меню -->
+        <MenuBar Grid.Row="0">
+            <MenuBarItem  x:Uid="MenuFile">
+                <MenuFlyoutItem x:Uid="MenuOpen" Icon="OpenFile" Click="OpenBuffer_Click"/>
+                <MenuFlyoutItem x:Uid="MenuSave" Icon="Save" Click="SaveBuffer_Click"/>
+                <MenuFlyoutItem x:Uid="MenuInfo" Click="MenuFileInfo_Click">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE946;" FontFamily="Segoe MDL2 Assets"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+            <MenuBarItem x:Uid="MenuEdit">
+                <!-- Исправлено: заменено на KeyboardAcceleratorTextOverride -->
+                <MenuFlyoutItem x:Uid="MenuCopy" KeyboardAcceleratorTextOverride="Ctrl+C" Click="MenuGlobalCopy_Click"/>
+                <MenuFlyoutItem x:Uid="MenuPaste" KeyboardAcceleratorTextOverride="Ctrl+V" Click="MenuGlobalPaste_Click"/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem x:Uid="MenuGoTo" Click="MenuGoTo_Click"/>
+            </MenuBarItem>
+            <MenuBarItem x:Uid="MenuView">
+                <!-- Исправлено: заменено на KeyboardAcceleratorTextOverride -->
+                <MenuFlyoutItem x:Uid="MenuSearch" KeyboardAcceleratorTextOverride="Ctrl+F" Click="MenuSearch_Click"/>
+                <!-- НОВОЕ: Подменю выбора тем оформления -->
+                <!--<MenuFlyoutSubItem Text="Тема оформления">
+                    <MenuFlyoutSubItem.Icon>
+                        <FontIcon Glyph="&#xE790;" FontFamily="Segoe MDL2 Assets"/>
+                    </MenuFlyoutSubItem.Icon>
 
-                    <AppBarSeparator Margin="10,0,10,0"/>
+                    <RadioMenuFlyoutItem x:Name="ThemeDefaultRadio" Text="Как в системе" GroupName="AppTheme" Click="ThemeRadio_Click"/>
+                    <RadioMenuFlyoutItem x:Name="ThemeLightRadio" Text="Светлая тема" GroupName="AppTheme" Click="ThemeRadio_Click"/>
+                    <RadioMenuFlyoutItem x:Name="ThemeDarkRadio" Text="Темная тема" GroupName="AppTheme" Click="ThemeRadio_Click"/>
+                    <RadioMenuFlyoutItem x:Name="ThemeHighContrastRadio" Text="Контрастная тема" GroupName="AppTheme" Click="ThemeRadio_Click"/>
+                </MenuFlyoutSubItem>-->
+            </MenuBarItem>
+            <!-- Новый раздел меню -->
+            <MenuBarItem x:Uid="MenuHelp">
+                <MenuFlyoutItem x:Uid="MenuAbout" Click="MenuAbout_Click">
+                    <MenuFlyoutItem.Icon>
+                        <FontIcon Glyph="&#xE897;" FontFamily="Segoe MDL2 Assets"/>
+                    </MenuFlyoutItem.Icon>
+                </MenuFlyoutItem>
+            </MenuBarItem>
+        </MenuBar>
+        <Grid Grid.Row="1">
+            <!-- Вкладки для документов -->
+        <TabView x:Name="FileTabView" Grid.Row="1" TabCloseRequested="FileTabView_TabCloseRequested" SelectionChanged="FileTabView_SelectionChanged"/>
+            <!-- Всплывающая панель поиска и перехода (Overlay) -->
+            <!-- Всплывающая панель поиска и перехода (Overlay) -->
+            <!-- Исправлено: свойство Shadow заменено на современный ThemeShadow через ресурсы -->
+            <Border x:Name="SearchOverlayPanel" 
+        Visibility="Collapsed"
+        HorizontalAlignment="Right" 
+        VerticalAlignment="Top" 
+        Margin="0,10,30,0" 
+        Padding="15"
+        Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+        BorderThickness="1"
+        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+        CornerRadius="8"
+        Translation="0,0,16">
+                <!-- Приподнимает панель по оси Z для отбрасывания тени -->
 
-                    <!-- Блок перехода по адресу -->
-                    <TextBox x:Name="GoToBox" Width="120" PlaceholderText="Адрес (HEX, напр. 1A0)"/>
-                    <Button Content="Перейти" Click="GoToOffset_Click" Margin="5,0,0,0"/>
+                <Border.Shadow>
+                    <ThemeShadow />
+                    <!-- Автоматически генерирует мягкую системную тень Windows 11 -->
+                </Border.Shadow>
+
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <!-- Внутреннее содержимое StackPanel (SearchSection, GoToSection и кнопка) остается без изменений -->
+                    <StackPanel x:Name="SearchSection" Orientation="Horizontal" Spacing="5">
+                        <TextBox x:Name="SearchBox" Width="150" PlaceholderText="Поиск (ASCII/HEX)"/>
+                        <Button Content="Найти" Click="Search_Click"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="GoToSection" Orientation="Horizontal" Spacing="5">
+                        <AppBarSeparator/>
+                        <TextBox x:Name="GoToBox" Width="120" PlaceholderText="Адрес (HEX)"/>
+                        <Button Content="Перейти" Click="GoToOffset_Click"/>
+                    </StackPanel>
+
+                    <AppBarSeparator/>
+
+                    <Button Click="CloseSearchOverlay_Click" 
+                Content="&#xE8BB;" 
+                FontFamily="Segoe MDL2 Assets" 
+                FontSize="10"
+                Width="28" Height="28" Padding="0"
+                Background="Transparent" BorderBrush="Transparent" CornerRadius="4"/>
                 </StackPanel>
-            </AppBarElementContainer>
-        </CommandBar>
+            </Border>
+        </Grid>
+        <!-- НОВАЯ: Нижняя информационная строка (Status Bar) -->
+        <Grid Grid.Row="2" Background="{ThemeResource SolidBackgroundFillColorBaseBrush}" 
+      Height="28" 
+      Padding="15,0,15,0" 
+      BorderThickness="0,1,0,0" 
+      BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <!-- Размер файла -->
+                <TextBlock x:Name="StatusFileSize" Text="Размер: 0 байт" FontFamily="Segoe UI" FontSize="12" Foreground="{ThemeResource TextControlForeground}"/>
+                <AppBarSeparator Margin="15,0,15,0"/>
+                <!-- Текущая позиция (смещение) -->
+                <TextBlock x:Name="StatusOffset" Text="Смещение: -" FontFamily="Segoe UI" FontSize="12" Foreground="{ThemeResource TextControlForeground}"/>
+            </StackPanel>
+        </Grid>
+        <!-- Диалоговое окно справки и информации -->
+        <ContentDialog x:Name="AboutDialog" 
+                   x:Uid="AboutDialogText"
+                   CloseButtonText="Закрыть"
+                   DefaultButton="Close">
+            <!-- Важно для WinUI 3 -->
 
-        <!-- Вкладки для документов -->
-        <TabView x:Name="FileTabView" Grid.Row="1" TabCloseRequested="FileTabView_TabCloseRequested" />
+            <Pivot Width="460" Height="320" Margin="0,10,0,0">
+                <!-- Вкладка 1: О программе -->
+                <PivotItem x:Uid="PivotAbout">
+                    <ScrollViewer VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Margin="0,0,-10,0" Padding="0,0,10,0">
+                        <StackPanel Spacing="12" Margin="0,10,0,0">
+                            <TextBlock x:Uid="AboutTitle" FontSize="18" FontWeight="Bold" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                            <TextBlock x:Uid="AboutVersion" FontSize="12" Foreground="Gray"/>
+                            <TextBlock x:Uid="AboutDesc" TextWrapping="Wrap" FontSize="14"/>
+                            <TextBlock x:Uid="AboutDev" FontSize="12" Foreground="Gray"/>
+                            <TextBlock x:Uid="AboutArch" FontSize="13" FontWeight="SemiBold" Margin="0,5,0,0"/>
+
+                            <!-- Архитектурные особенности -->
+                            <TextBlock x:Uid="AboutArch1" FontSize="12" Margin="5,0,0,0"/>
+                            <TextBlock x:Uid="AboutArch2" FontSize="12" Margin="5,0,0,0"/>
+                            <!-- НОВЫЙ ЭЛЕМЕНТ: Описание автоматического бэкапа -->
+                            <TextBlock x:Uid="AboutArch3" FontSize="12" Margin="5,0,0,0"/>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+
+                <!-- Вкладка 2: Руководство пользователя -->
+                <PivotItem x:Uid="PivotManual">
+                    <ScrollViewer VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Auto" Margin="0,0,-10,0" Padding="0,0,10,0">
+                        <StackPanel Spacing="15" Margin="0,10,0,10">
+
+                            <!-- Раздел 1: Вкладки и файлы -->
+                            <StackPanel Spacing="3">
+                                <TextBlock x:Uid="ManualSect1" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock x:Uid="ManualSect1_1" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect1_2" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock x:Uid="ManualSect1_3" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect1_4" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                            <MenuFlyoutSeparator/>
+
+                            <!-- Раздел 2: Выделение -->
+                            <StackPanel Spacing="3">
+                                <TextBlock x:Uid="ManualSect2" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock x:Uid="ManualSect2_1" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect2_2" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock x:Uid="ManualSect2_2" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect2_4" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                            <MenuFlyoutSeparator/>
+
+                            <!-- Раздел 3: Редактирование -->
+                            <StackPanel Spacing="3">
+                                <TextBlock x:Uid="ManualSect3" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock x:Uid="ManualSect3_1" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect3_2" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock x:Uid="ManualSect3_3" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect3_4" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock x:Uid="ManualSect3_5" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect3_6" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                            <MenuFlyoutSeparator/>
+
+                            <!-- Раздел 4: Буфер обмена и меню -->
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="4. БУФЕР ОБМЕНА И КОНТЕКСТНОЕ МЕНЮ" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock Text="• Копирование:" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock Text="Выделите байты и нажмите Ctrl+C или кликните ПКМ -> 'Копировать'. Данные экспортируются в буфер Windows в виде HEX-строки (например, '41 00 FF')." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock Text="• Умная вставка:" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock Text="Нажмите Ctrl+V или кликните ПКМ -> 'Вставить'. Программа скопирует HEX-текст из буфера, автоматически пропустит пробелы/дефисы, распарсит его в массив байт и перезапишет файл начиная с позиции курсора." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                            <MenuFlyoutSeparator/>
+
+                            <!-- Раздел 5: Поиск и переход -->
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="5. ГЛОБАЛЬНЫЙ ПОИСК И ПЕРЕХОД" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock Text="• Автоматический поиск сигнатур:" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock Text="Нажмите Ctrl+F или зайдите в 'Вид -> Поиск по файлу'. Введите поисковый запрос. Если вы ввели текст, программа найдет его ASCII-кодировку. Если ввели пары символов (например, '4D5A'), сработает HEX-поиск." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock Text="• Интерактивный список результатов:" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock Text="Все найденные совпадения (до 5000 штук) выводятся в боковую панель справа от таблицы. Клик по любому адресу в этом списке мгновенно скроллит таблицу к нужной строке. Панель закрывается на крестик." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock Text="• Прямой переход (Go To Offset):" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock Text="В меню 'Правка -> Перейти к адресу...' введите адрес в шестнадцатеричном виде (например, '1C0') и нажмите Ввод. Программа выполнят мгновенный переход." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                            <MenuFlyoutSeparator/>
+
+                            <!-- Раздел 6: Инспектор -->
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="6. DATA INSPECTOR (ИНСПЕКТОР ТИПОВ)" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock Text="• Дешифровка структур:" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock Text="Через меню 'Файл -> Информация о файле' открывается боковая панель метаданных. При перемещении курсора по ячейкам инспектор считывает до 8 смежных байт и мгновенно конвертирует их в человекочитаемые форматы чисел: Binary (1 байт), Int16 Short (2 байта), Int32 Integer (4 байта), Int64 Long (8 байт) и Float с плавающей точкой." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                            <MenuFlyoutSeparator/>
+
+                            <!-- Раздел 7: Статус-бар -->
+                            <StackPanel Spacing="3">
+                                <TextBlock Text="7. НИЖНЯЯ ИНФОРМАЦИОННАЯ СТРОКА" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock Text="Отображает статический размер файла в байтах с разделением разрядов тысяч. При выделении одного байта показывает его точные координаты в десятичном и HEX представлении, а при массовом выделении — диапазон границ 'От .. До' и точное число выделенных байтов." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </PivotItem>
+            </Pivot>
+        </ContentDialog>
+
+        <!-- Диалог умного запроса оценки в стиле Fluent Design -->
+        <ContentDialog x:Name="RateDialog" 
+                   Title="Вам нравится BinStudio?"
+                   PrimaryButtonText="Отправить"
+                   CloseButtonText="Позже"
+                   DefaultButton="Primary"
+                   PrimaryButtonClick="RateDialog_PrimaryButtonClick"
+                   >
+
+            <StackPanel Spacing="15" Margin="0,10,0,0" Width="400">
+                <TextBlock Text="Мы рады, что вы пользуетесь BinStudio! Пожалуйста, оцените наше приложение, это поможет нам сделать его еще лучше." 
+                       TextWrapping="Wrap" FontSize="14"/>
+
+                <!-- Интерактивные радио-кнопки в виде звезд -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10" Margin="0,10,0,10">
+                    <RadioButton x:Name="Star1" Content="1 ★" GroupName="Stars" FontSize="16"/>
+                    <RadioButton x:Name="Star2" Content="2 ★" GroupName="Stars" FontSize="16"/>
+                    <RadioButton x:Name="Star3" Content="3 ★" GroupName="Stars" FontSize="16"/>
+                    <RadioButton x:Name="Star4" Content="4 ★" GroupName="Stars" FontSize="16"/>
+                    <RadioButton x:Name="Star5" Content="5 ★" GroupName="Stars" FontSize="16" IsChecked="True"/>
+                </StackPanel>
+
+                <!-- Скрытое по умолчанию поле для ввода отзыва (если оценка низкая) -->
+                <TextBox x:Name="FeedbackTextBox" 
+                     PlaceholderText="Что мы могли бы улучшить в программе?" 
+                     TextWrapping="Wrap" Height="70" 
+                     Visibility="Collapsed"/>
+
+                <!-- Вежливый чекбокс -->
+                <CheckBox x:Name="NeverShowAgainCheckBox" Content="Больше не показывать это окно" FontSize="12"/>
+            </StackPanel>
+        </ContentDialog>
     </Grid>
 
 
