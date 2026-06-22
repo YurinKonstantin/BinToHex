@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+ <defs>
+    <!-- Плавные Fluent-градиенты -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1e24"/>
+      <stop offset="100%" stop-color="#111115"/>
+    </linearGradient>
+    <linearGradient id="cubeLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#005a9e"/>
+      <stop offset="100%" stop-color="#0078d4"/>
+    </linearGradient>
+    <linearGradient id="cubeRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#106ebe"/>
+      <stop offset="100%" stop-color="#005a9e"/>
+    </linearGradient>
+    <linearGradient id="cubeTop" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2b88d8"/>
+      <stop offset="100%" stop-color="#106ebe"/>
+    </linearGradient>
+    <linearGradient id="accentGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00b7ff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#0078d4" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Округлая базовая подложка иконки (Squircle) -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+
+  <!-- Внутреннее неоновое свечение по контуру -->
+  <rect x="2" y="2" width="508" height="508" rx="110" fill="none" stroke="url(#accentGlow)" stroke-width="3" opacity="0.4"/>
+
+  <!-- Основной логотип куба данных -->
+  <g>
+    <!-- Левая грань (Образует контур буквы B) -->
+    <path d="M 256,256 L 140,190 L 140,320 L 256,386 Z" fill="url(#cubeLeft)"/>
+    <path d="M 140,190 C 100,210 100,250 140,270" fill="none" stroke="#00b7ff" stroke-width="8" stroke-linecap="round" opacity="0.7"/>
+    <path d="M 140,270 C 100,290 100,330 140,350" fill="none" stroke="#00b7ff" stroke-width="8" stroke-linecap="round" opacity="0.7"/>
+
+    <!-- Правая грань (Образует контур буквы S) -->
+    <path d="M 256,256 L 372,190 L 372,320 L 256,386 Z" fill="url(#cubeRight)"/>
+    <path d="M 270,280 L 350,325" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.3"/>
+    <path d="M 270,310 L 350,355" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.3"/>
+
+    <!-- Верхняя грань куба (Сетка матрицы байтов) -->
+    <path d="M 256,126 L 372,190 L 256,256 L 140,190 Z" fill="url(#cubeTop)"/>
+    
+    <!-- Линии разметки структуры данных на верхней грани -->
+    <line x1="198" y1="158" x2="314" y2="223" stroke="#ffffff" stroke-width="2" opacity="0.4"/>
+    <line x1="198" y1="223" x2="314" y2="158" stroke="#ffffff" stroke-width="2" opacity="0.4"/>
+  </g>
+
+  <!-- Низкоуровневые бинарные элементы (Декоративные 0 и 1) -->
+  <g font-family="Consolas, monospace" font-size="22" font-weight="bold" fill="#00b7ff" opacity="0.35">
+    <!-- Символы вокруг куба -->
+    <text x="75" y="130">01</text>
+    <text x="400" y="130">10</text>
+    <text x="65" y="415">00</text>
+    <text x="415" y="415">FF</text>
+    
+    <!-- Бинарный код на левой панели -->
+    <text x="160" y="235" fill="#ffffff" font-size="14" opacity="0.6">0</text>
+    <text x="180" y="275" fill="#ffffff" font-size="14" opacity="0.6">1</text>
+    <text x="200" y="315" fill="#ffffff" font-size="14" opacity="0.6">0</text>
+  </g>
+
+  <!-- Центральная светящаяся точка фокуса инспектора -->
+  <circle cx="256" cy="256" r="6" fill="#ffffff"/>
+  <circle cx="256" cy="256" r="16" fill="none" stroke="#00b7ff" stroke-width="2" opacity="0.5"/>
+</svg>

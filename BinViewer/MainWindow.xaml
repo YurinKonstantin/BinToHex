@@ -8,8 +8,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="BinViewer"
-      xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls">
+
+>
 
 
     <Grid RowDefinitions="Auto, *, Auto">
@@ -58,10 +58,8 @@
         </MenuBar>
         <Grid Grid.Row="1">
             <!-- Вкладки для документов -->
-        <TabView x:Name="FileTabView" Grid.Row="1" TabCloseRequested="FileTabView_TabCloseRequested" SelectionChanged="FileTabView_SelectionChanged"/>
+            <TabView x:Name="FileTabView" IsAddTabButtonVisible="False" Grid.Row="1" TabCloseRequested="FileTabView_TabCloseRequested" SelectionChanged="FileTabView_SelectionChanged"/>
             <!-- Всплывающая панель поиска и перехода (Overlay) -->
-            <!-- Всплывающая панель поиска и перехода (Overlay) -->
-            <!-- Исправлено: свойство Shadow заменено на современный ThemeShadow через ресурсы -->
             <Border x:Name="SearchOverlayPanel" 
         Visibility="Collapsed"
         HorizontalAlignment="Right" 
@@ -83,14 +81,14 @@
                 <StackPanel Orientation="Horizontal" Spacing="10">
                     <!-- Внутреннее содержимое StackPanel (SearchSection, GoToSection и кнопка) остается без изменений -->
                     <StackPanel x:Name="SearchSection" Orientation="Horizontal" Spacing="5">
-                        <TextBox x:Name="SearchBox" Width="150" PlaceholderText="Поиск (ASCII/HEX)"/>
-                        <Button Content="Найти" Click="Search_Click"/>
+                        <TextBox x:Name="SearchBox" Width="150" x:Uid="SearchOverlayBox" PlaceholderText="Поиск (ASCII/HEX)"/>
+                        <Button x:Uid="SearchOverlayBtn" Click="Search_Click"/>
                     </StackPanel>
 
                     <StackPanel x:Name="GoToSection" Orientation="Horizontal" Spacing="5">
                         <AppBarSeparator/>
-                        <TextBox x:Name="GoToBox" Width="120" PlaceholderText="Адрес (HEX)"/>
-                        <Button Content="Перейти" Click="GoToOffset_Click"/>
+                        <TextBox x:Name="GoToBox"  x:Uid="GoToOverlayBox" Width="120" PlaceholderText="Адрес (HEX)"/>
+                        <Button  Click="GoToOffset_Click" x:Uid="GoToOverlayBtn"/>
                     </StackPanel>
 
                     <AppBarSeparator/>
@@ -112,16 +110,16 @@
       BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <!-- Размер файла -->
-                <TextBlock x:Name="StatusFileSize" Text="Размер: 0 байт" FontFamily="Segoe UI" FontSize="12" Foreground="{ThemeResource TextControlForeground}"/>
+                <TextBlock x:Name="StatusFileSize"  FontFamily="Segoe UI" FontSize="12" Foreground="{ThemeResource TextControlForeground}"/>
                 <AppBarSeparator Margin="15,0,15,0"/>
                 <!-- Текущая позиция (смещение) -->
-                <TextBlock x:Name="StatusOffset" Text="Смещение: -" FontFamily="Segoe UI" FontSize="12" Foreground="{ThemeResource TextControlForeground}"/>
+                <TextBlock x:Name="StatusOffset" FontFamily="Segoe UI" FontSize="12" Foreground="{ThemeResource TextControlForeground}"/>
             </StackPanel>
         </Grid>
         <!-- Диалоговое окно справки и информации -->
         <ContentDialog x:Name="AboutDialog" 
                    x:Uid="AboutDialogText"
-                   CloseButtonText="Закрыть"
+                  
                    DefaultButton="Close">
             <!-- Важно для WinUI 3 -->
 
@@ -188,41 +186,41 @@
 
                             <!-- Раздел 4: Буфер обмена и меню -->
                             <StackPanel Spacing="3">
-                                <TextBlock Text="4. БУФЕР ОБМЕНА И КОНТЕКСТНОЕ МЕНЮ" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
-                                <TextBlock Text="• Копирование:" FontWeight="SemiBold" FontSize="12"/>
-                                <TextBlock Text="Выделите байты и нажмите Ctrl+C или кликните ПКМ -> 'Копировать'. Данные экспортируются в буфер Windows в виде HEX-строки (например, '41 00 FF')." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
-                                <TextBlock Text="• Умная вставка:" FontWeight="SemiBold" FontSize="12"/>
-                                <TextBlock Text="Нажмите Ctrl+V или кликните ПКМ -> 'Вставить'. Программа скопирует HEX-текст из буфера, автоматически пропустит пробелы/дефисы, распарсит его в массив байт и перезапишет файл начиная с позиции курсора." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock x:Uid="ManualSect4" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock x:Uid="ManualSect4_1" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect4_2" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock x:Uid="ManualSect4_3" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect4_4" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
                             </StackPanel>
 
                             <MenuFlyoutSeparator/>
 
                             <!-- Раздел 5: Поиск и переход -->
                             <StackPanel Spacing="3">
-                                <TextBlock Text="5. ГЛОБАЛЬНЫЙ ПОИСК И ПЕРЕХОД" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
-                                <TextBlock Text="• Автоматический поиск сигнатур:" FontWeight="SemiBold" FontSize="12"/>
-                                <TextBlock Text="Нажмите Ctrl+F или зайдите в 'Вид -> Поиск по файлу'. Введите поисковый запрос. Если вы ввели текст, программа найдет его ASCII-кодировку. Если ввели пары символов (например, '4D5A'), сработает HEX-поиск." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
-                                <TextBlock Text="• Интерактивный список результатов:" FontWeight="SemiBold" FontSize="12"/>
-                                <TextBlock Text="Все найденные совпадения (до 5000 штук) выводятся в боковую панель справа от таблицы. Клик по любому адресу в этом списке мгновенно скроллит таблицу к нужной строке. Панель закрывается на крестик." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
-                                <TextBlock Text="• Прямой переход (Go To Offset):" FontWeight="SemiBold" FontSize="12"/>
-                                <TextBlock Text="В меню 'Правка -> Перейти к адресу...' введите адрес в шестнадцатеричном виде (например, '1C0') и нажмите Ввод. Программа выполнят мгновенный переход." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock x:Uid="ManualSect5" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock x:Uid="ManualSect5_1" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect5_2" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock x:Uid="ManualSect5_3" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect5_4" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock x:Uid="ManualSect5_5"  FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect5_6" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
                             </StackPanel>
 
                             <MenuFlyoutSeparator/>
 
                             <!-- Раздел 6: Инспектор -->
                             <StackPanel Spacing="3">
-                                <TextBlock Text="6. DATA INSPECTOR (ИНСПЕКТОР ТИПОВ)" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
-                                <TextBlock Text="• Дешифровка структур:" FontWeight="SemiBold" FontSize="12"/>
-                                <TextBlock Text="Через меню 'Файл -> Информация о файле' открывается боковая панель метаданных. При перемещении курсора по ячейкам инспектор считывает до 8 смежных байт и мгновенно конвертирует их в человекочитаемые форматы чисел: Binary (1 байт), Int16 Short (2 байта), Int32 Integer (4 байта), Int64 Long (8 байт) и Float с плавающей точкой." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock x:Uid="ManualSect6" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock x:Uid="ManualSect6_1" FontWeight="SemiBold" FontSize="12"/>
+                                <TextBlock x:Uid="ManualSect6_2" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
                             </StackPanel>
 
                             <MenuFlyoutSeparator/>
 
                             <!-- Раздел 7: Статус-бар -->
                             <StackPanel Spacing="3">
-                                <TextBlock Text="7. НИЖНЯЯ ИНФОРМАЦИОННАЯ СТРОКА" FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
-                                <TextBlock Text="Отображает статический размер файла в байтах с разделением разрядов тысяч. При выделении одного байта показывает его точные координаты в десятичном и HEX представлении, а при массовом выделении — диапазон границ 'От .. До' и точное число выделенных байтов." TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
+                                <TextBlock  x:Uid="ManualSect7"  FontWeight="Bold" FontSize="13" Foreground="{ThemeResource SystemControlHighlightAccentBrush}"/>
+                                <TextBlock  x:Uid="ManualSect7_1" TextWrapping="Wrap" FontSize="12" Margin="10,0,0,0"/>
                             </StackPanel>
 
                         </StackPanel>
@@ -233,9 +231,8 @@
 
         <!-- Диалог умного запроса оценки в стиле Fluent Design -->
         <ContentDialog x:Name="RateDialog" 
-                   Title="Вам нравится BinStudio?"
-                   PrimaryButtonText="Отправить"
-                   CloseButtonText="Позже"
+                   
+                   x:Uid="RateDialog"
                    DefaultButton="Primary"
                    PrimaryButtonClick="RateDialog_PrimaryButtonClick"
                    >
@@ -255,12 +252,12 @@
 
                 <!-- Скрытое по умолчанию поле для ввода отзыва (если оценка низкая) -->
                 <TextBox x:Name="FeedbackTextBox" 
-                     PlaceholderText="Что мы могли бы улучшить в программе?" 
+                     x:Uid="FeedbackBox"
                      TextWrapping="Wrap" Height="70" 
                      Visibility="Collapsed"/>
 
                 <!-- Вежливый чекбокс -->
-                <CheckBox x:Name="NeverShowAgainCheckBox" Content="Больше не показывать это окно" FontSize="12"/>
+                <CheckBox x:Name="NeverShowAgainCheckBox" x:Uid="NeverShowAgainCheck" FontSize="12"/>
             </StackPanel>
         </ContentDialog>
     </Grid>

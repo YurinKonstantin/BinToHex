@@ -130,7 +130,7 @@
     <value>High-speed professional hex editor designed for instantly opening files of any size (from a few bytes to hundreds of gigabytes). The application utilizes data stream and UI virtualization, saving RAM and maintaining maximum FPS during scrolling.</value>
   </data>
   <data name="AboutDev.Text" xml:space="preserve">
-    <value>Developer: AI Collaboration &amp; C# WinUI Community</value>
+    <value>Developer: YurinKO</value>
   </data>
   <data name="AboutDialog.CloseButtonText" xml:space="preserve">
     <value>Got it</value>
@@ -139,7 +139,7 @@
     <value>Documentation &amp; User Guide</value>
   </data>
   <data name="AboutTitle.Text" xml:space="preserve">
-    <value>Fast WinUI 3 HEX Editor</value>
+    <value>Fast HEX Editor</value>
   </data>
   <data name="AboutVersion.Text" xml:space="preserve">
     <value>Version: 1.0.0 (Stable Release)</value>
@@ -251,5 +251,140 @@
   </data>
   <data name="AboutArch3.Text" xml:space="preserve">
     <value>• Automatic backup creation (.bak) before each write session for 100% data loss protection.</value>
+  </data>
+  <data name="SearchPanelTitle.Text" xml:space="preserve">
+    <value>Search Results</value>
+  </data>
+  <data name="SearchPanelClose.Content" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="InfoPanelTitle.Text" xml:space="preserve">
+    <value>File Information</value>
+  </data>
+  <data name="InfoMetaHeader.Text" xml:space="preserve">
+    <value>Metadata</value>
+  </data>
+  <data name="InfoFileNameLabel.Text" xml:space="preserve">
+    <value>File name:</value>
+  </data>
+  <data name="InfoFilePathLabel.Text" xml:space="preserve">
+    <value>Full path:</value>
+  </data>
+  <data name="InfoInspectHeader.Text" xml:space="preserve">
+    <value>Data Inspector (Cursor)</value>
+  </data>
+  <data name="InspectByteLabel.Text" xml:space="preserve">
+    <value>Binary (Byte):</value>
+  </data>
+  <data name="InspectInt16Label.Text" xml:space="preserve">
+    <value>Int16 (Short):</value>
+  </data>
+  <data name="InspectInt32Label.Text" xml:space="preserve">
+    <value>Int32 (Int):</value>
+  </data>
+  <data name="InspectInt64Label.Text" xml:space="preserve">
+    <value>Int64 (Long):</value>
+  </data>
+  <data name="InspectFloatLabel.Text" xml:space="preserve">
+    <value>Float (Single):</value>
+  </data>
+  <data name="SearchOverlayBox.PlaceholderText" xml:space="preserve">
+    <value>Search (ASCII/HEX)</value>
+  </data>
+  <data name="SearchOverlayBtn.Content" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="GoToOverlayBox.PlaceholderText" xml:space="preserve">
+    <value>Offset (HEX)</value>
+  </data>
+  <data name="GoToOverlayBtn.Content" xml:space="preserve">
+    <value>Go To</value>
+  </data>
+  <data name="SearchProgressText" xml:space="preserve">
+    <value>Searching..</value>
+  </data>
+  <data name="RateDialog.Title" xml:space="preserve">
+    <value>Do you like BinStudio?</value>
+  </data>
+  <data name="RateDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="RateDialog.CloseButtonText" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="RateDialogDesc.Text" xml:space="preserve">
+    <value>We are glad you are using BinStudio! Please rate our app to help us make it even better.</value>
+  </data>
+  <data name="FeedbackBox.PlaceholderText" xml:space="preserve">
+    <value>What can we improve in the application?</value>
+  </data>
+  <data name="NeverShowAgainCheck.Content" xml:space="preserve">
+    <value>Do not show this window again</value>
+  </data>
+  <data name="ThankYouTitle" xml:space="preserve">
+    <value>Thank you for your feedback!</value>
+  </data>
+  <data name="ThankYouDesc" xml:space="preserve">
+    <value>We have received your message and will definitely address the issues in the next update.</value>
+  </data>
+  <data name="StatusOffsetDefault" xml:space="preserve">
+    <value>Offset: -</value>
+  </data>
+  <data name="ManualSect4.Text" xml:space="preserve">
+    <value>4. CLIPBOARD AND CONTEXT MENU</value>
+  </data>
+  <data name="ManualSect4_1.Text" xml:space="preserve">
+    <value>• Copying:</value>
+  </data>
+  <data name="ManualSect4_2.Text" xml:space="preserve">
+    <value>Select bytes and press Ctrl+C or right-click -&gt; 'Copy'. Data is exported to the Windows clipboard as a HEX string (e.g., '41 00 FF').</value>
+  </data>
+  <data name="ManualSect4_3.Text" xml:space="preserve">
+    <value>• Smart Paste:</value>
+  </data>
+  <data name="ManualSect4_4.Text" xml:space="preserve">
+    <value>Press Ctrl+V or right-click -&gt; 'Paste'. The program will grab the HEX text from the clipboard, automatically strip whitespaces/hyphens, parse it into a byte array, and overwrite the file starting from the cursor position.</value>
+  </data>
+  <data name="ManualSect5.Text" xml:space="preserve">
+    <value>5. GLOBAL SEARCH AND NAVIGATION</value>
+  </data>
+  <data name="ManualSect5_1.Text" xml:space="preserve">
+    <value>• Automated Signature Search:</value>
+  </data>
+  <data name="ManualSect5_2.Text" xml:space="preserve">
+    <value>Press Ctrl+F or go to 'View -&gt; Search File'. Type your query. If you type text, the program will look for its ASCII encoding. If you type character pairs (e.g., '4D5A'), a HEX search will trigger.</value>
+  </data>
+  <data name="ManualSect5_3.Text" xml:space="preserve">
+    <value>• Interactive Side Panel:</value>
+  </data>
+  <data name="ManualSect5_4.Text" xml:space="preserve">
+    <value>All found matches (up to 5000 items) are listed in a convenient side panel. Clicking any address inside this list instantly scrolls the table to the requested row. The panel can be closed with a cross button.</value>
+  </data>
+  <data name="ManualSect5_5.Text" xml:space="preserve">
+    <value>• Go To Offset:</value>
+  </data>
+  <data name="ManualSect5_6.Text" xml:space="preserve">
+    <value>In the 'Edit -&gt; Go to Offset...' menu, type an address in hexadecimal format (e.g., '1C0') and press Enter. The program performs a swift transition.</value>
+  </data>
+  <data name="ManualSect6.Text" xml:space="preserve">
+    <value>6. DATA INSPECTOR (TYPE INSPECTOR)</value>
+  </data>
+  <data name="ManualSect6_1.Text" xml:space="preserve">
+    <value>• Decoding Structures:</value>
+  </data>
+  <data name="ManualSect6_2.Text" xml:space="preserve">
+    <value>Opening 'File -&gt; File Information' menu brings up the metadata sidebar. When moving the cursor across cells, the inspector reads up to 8 contiguous bytes and instantly converts them into human-readable numeric formats: Binary (1 byte), Int16 Short (2 bytes), Int32 Integer (4 bytes), Int64 Long (8 bytes), and Floating-point Float.</value>
+  </data>
+  <data name="ManualSect7.Text" xml:space="preserve">
+    <value>7. BOTTOM INFORMATION STATUS BAR</value>
+  </data>
+  <data name="ManualSect7_1.Text" xml:space="preserve">
+    <value>Displays the static file size in bytes with thousand separator formatting. Selecting a single byte shows its exact coordinates in decimal and HEX view, while a mass selection shows 'From .. To' bounds and the exact count of selected bytes.</value>
+  </data>
+  <data name="AboutDialogText.CloseButtonText" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>BinStudio — Fast HEX Editor &amp; Binary Viewer</value>
   </data>
 </root>

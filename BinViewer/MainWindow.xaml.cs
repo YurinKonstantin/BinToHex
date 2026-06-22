@@ -1,4 +1,5 @@
-using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
@@ -8,7 +9,9 @@ using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.Windows.ApplicationModel.Resources; // Добавьте это пространство имен
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using WinRT;
@@ -23,6 +26,8 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BinViewer
 {
+   
+
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -32,49 +37,70 @@ namespace BinViewer
         // Стало (правильный десктопный менеджер ресурсов):
         private readonly ResourceManager _resourceManager = new();
         private readonly ResourceContext _resourceContext;
-
+      
         public MainWindow()
         {
             InitializeComponent();
             // Создаем контекст для определения системного языка (ru-RU, en-US и т.д.)
             _resourceContext = _resourceManager.CreateResourceContext();
+
             //ViewModel = new ModalViewViDoc();
-            this.Content.KeyDown += Global_KeyDown;
+            this.Content.KeyDown += Global_KeyDown; 
             // Инициализация темы оформления при старте
             //InitAppTheme();
+            // НОВАЯ СТРОКА: Принудительно инициализируем дефолтный локализованный статус-бар
+            UpdateStatusBar();
+            this.Title = GetLocalizedText("AppDisplayName");
+            // Меняем иконку окна
+            SetAppIcon("Assets/appicon.ico");
 
 
         }
+        private void SetAppIcon(string iconPath)
+        {
+            // 1. Получаем хэндл (HWND) текущего окна WinUI 3
+            IntPtr hWnd = WindowNative.GetWindowHandle(this);
+
+            // 2. Получаем ID окна на основе хэндла
+            WindowId windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+
+            // 3. Получаем экземпляр AppWindow, который управляет заголовком и иконкой
+            AppWindow appWindow = AppWindow.GetFromWindowId(windowId);
+
+            if (appWindow != null)
+            {
+                // Формируем полный абсолютный путь к файлу иконки в папке сборки
+                string fullPath = Path.Combine(AppContext.BaseDirectory, iconPath);
+
+                if (File.Exists(fullPath))
+                {
+                    // 4. Применяем иконку к окну
+                    appWindow.SetIcon(fullPath);
+                }
+            }
+        }
+
         // Храним ссылку на текущую активную ViewModel, чтобы вовремя отписываться от её событий
         private HexDocumentViewModel _activeViewModel;
         private void UpdateStatusBar()
         {
-            // 1. Сначала отписываемся от старой ViewModel, если она была
-            if (_activeViewModel != null)
-            {
-                _activeViewModel.PropertyChanged -= ViewModel_StatusChanged;
-            }
+            // УБЕРИТЕ ОТСЮДА любой код с += ViewModel_StatusChanged и -= ViewModel_StatusChanged!
 
-            if (FileTabView.SelectedItem is TabViewItem currentTab && currentTab.Tag is HexDocumentViewModel vm)
+            if (FileTabView.SelectedItem is TabViewItem currentTab &&
+                currentTab.Content is HexEditorView editorView &&
+                editorView.ViewModel is HexDocumentViewModel vm)
             {
-                // 2. Запоминаем новую активную ViewModel и подписываемся на неё
-                _activeViewModel = vm;
-                _activeViewModel.PropertyChanged += ViewModel_StatusChanged;
-                // Читаем шаблон строки из ресурсов ("Размер: {0:N0} байт" или "Size: {0:N0} bytes")
+                _activeViewModel = vm; // Просто запоминаем ссылку
+
                 string sizeTemplate = GetLocalizedText("StatusSizeText");
-                // Выводим размер файла
-                //StatusFileSize.Text = $"Размер: {vm.Buffer.Length:N0} байт";
                 StatusFileSize.Text = string.Format(sizeTemplate, vm.Buffer.Length);
-                //StatusOffset.Text = _resourceLoader.GetString("StatusOffsetText").Replace("{0}", vm.SelectionInfoText);
-                //StatusOffset.Text = $"Смещение: {vm.SelectionInfoText}";
+                UpdateOffsetStatusText(vm);
             }
             else
             {
                 _activeViewModel = null;
                 StatusFileSize.Text = GetLocalizedText("StatusSizeText").Replace("{0:N0}", "0");
-                StatusOffset.Text = GetLocalizedText("StatusOffsetText").Replace("{0}", "-");
-                //StatusFileSize.Text = "Размер: 0 байт";
-               // StatusOffset.Text = "Смещение: -";
+                StatusOffset.Text = GetLocalizedText("StatusOffsetDefault");
             }
         }
         private string GetLocalizedText(string resourceKey)
@@ -136,9 +162,9 @@ namespace BinViewer
         }
         // Обработчики кликов верхнего меню MenuBar
         private void MenuSearch_Click(object sender, RoutedEventArgs e)
-{
-    ShowSearchOverlay(showSearch: true, showGoTo: false);
-}
+        {
+            ShowSearchOverlay(showSearch: true, showGoTo: false);
+        }
 
 private void MenuGoTo_Click(object sender, RoutedEventArgs e)
 {
@@ -162,30 +188,43 @@ private void MenuGlobalPaste_Click(object sender, RoutedEventArgs e)
 }
         private async void OpenBuffer_Click(object sender, RoutedEventArgs e)
         {
-            var picker = new FileOpenPicker();
+            try
+            {
+
+                var picker = new FileOpenPicker();
             InitializeWithWindow.Initialize(picker, WindowNative.GetWindowHandle(this));
             picker.FileTypeFilter.Add("*");
 
             var file = await picker.PickSingleFileAsync();
-            if (file != null)
-            {
-                // 1. Создаем ViewModel данных для файла
-                var tabViewModel = new HexDocumentViewModel(file.Path);
-
-                // 2. Создаем визуальный элемент (UI) для этой вкладки и передаем ему данные
-                var editorView = new HexEditorView(tabViewModel);
-
-                // 3. Собираем вкладку воедино
-                var newTab = new TabViewItem
+                if (file != null)
                 {
-                    Header = tabViewModel.FileName,
-                    Content = editorView, // Помещаем UI внутрь вкладки
-                    Tag = tabViewModel    // Сохраняем ссылку на ViewModel для поиска и сохранения
-                };
+                    // 1. Создаем ViewModel данных для файла
+                    var tabViewModel = new HexDocumentViewModel(file.Path);
+                    // ПОДПИСЫВАЕМСЯ ЗДЕСЬ И ВСЕГО ОДИН РАЗ:
+                    tabViewModel.PropertyChanged += ViewModel_StatusChanged;
+                    // 2. Создаем визуальный элемент (UI) для этой вкладки и передаем ему данные
+                    var editorView = new HexEditorView(tabViewModel);
+                    
 
-                FileTabView.TabItems.Add(newTab);
-                FileTabView.SelectedItem = newTab;
-                UpdateWindowTitle(); // Добавьте вызов сюда
+                    // 3. Собираем вкладку воедино
+                    var newTab = new TabViewItem
+                    {
+                        Header = tabViewModel.FileName,
+                        Content = editorView, // Помещаем UI внутрь вкладки
+                                              // Кладем в Tag легковесную обертку вместо «тяжелой» ViewModel
+                        Tag = new HexTabReference(tabViewModel)
+                    };
+
+                    FileTabView.TabItems.Add(newTab);
+                    FileTabView.SelectedItem = newTab;
+                    UpdateStatusBar();
+                    UpdateWindowTitle(); // Добавьте вызов сюда
+                }
+            }
+            catch (Exception ex)
+            {
+                // Запись в файл на рабочем столе, так как UI может не работать
+                File.WriteAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "hex_error.txt"), ex.ToString());
             }
         }
         private void SaveBuffer_Click(object sender, RoutedEventArgs e)
@@ -325,7 +364,7 @@ private void MenuGlobalPaste_Click(object sender, RoutedEventArgs e)
 
                 // Официальный URI для открытия страницы отзывов конкретного приложения в Microsoft Store
                 // Замените YOUR_STORE_PRODUCT_ID на реальный ID вашего приложения после публикации
-                var storeUri = new Uri("ms-windows-store://review/?ProductId=YOUR_STORE_PRODUCT_ID");
+                var storeUri = new Uri("ms-windows-store://review/?ProductId=9NNHSR22R4NF");
                 await Windows.System.Launcher.LaunchUriAsync(storeUri);
             }
             else
@@ -342,9 +381,9 @@ private void MenuGlobalPaste_Click(object sender, RoutedEventArgs e)
                 sender.Hide();
                 var thankYouDialog = new ContentDialog
                 {
-                    Title = "Спасибо за ваш отзыв!",
-                    Content = "Мы получили ваше сообщение и обязательно исправим указанные недостатки в следующем обновлении.",
-                    CloseButtonText = "ОК",
+                    Title = GetLocalizedText("ThankYouTitle"),
+                    Content = GetLocalizedText("ThankYouDesc"),
+                    CloseButtonText = "OK",
                     XamlRoot = this.Content.XamlRoot
                 };
                 await thankYouDialog.ShowAsync();
@@ -378,12 +417,15 @@ private void MenuGlobalPaste_Click(object sender, RoutedEventArgs e)
                 pattern = System.Text.Encoding.ASCII.GetBytes(query);
             }
 
-            if (sender is Button searchButton) searchButton.Content = "Поиск...";
+            if (sender is Button searchButton)
+                searchButton.Content = GetLocalizedText("SearchProgressText"); // Динамический перевод
+
 
             // Запускаем процесс генерации списка результатов справа
             await editorView.ExecuteSearchAsync(pattern, query);
 
-            if (sender is Button btn) btn.Content = "Найти";
+            if (sender is Button btn)
+                btn.Content = GetLocalizedText("SearchOverlayBtn/Content");
         }
 
         private long FindPatternInFile(VirtualFileBuffer buffer, byte[] pattern)
@@ -411,19 +453,21 @@ private void MenuGlobalPaste_Click(object sender, RoutedEventArgs e)
 
         private void FileTabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
         {
-            if (args.Item is TabViewItem tab && tab.Tag is HexDocumentViewModel vm)
+            if (args.Item is TabViewItem tab &&
+        tab.Content is HexEditorView editorView &&
+        editorView.ViewModel is HexDocumentViewModel vm)
             {
-                // Если закрываемая вкладка была активной, сбрасываем ссылку
+                // ОТПИСЫВАЕМСЯ ПЕРЕД УНИЧТОЖЕНИЕМ ВКЛАДКИ:
+                vm.PropertyChanged -= ViewModel_StatusChanged;
+
                 if (_activeViewModel == vm)
                 {
-                    vm.PropertyChanged -= ViewModel_StatusChanged;
                     _activeViewModel = null;
                 }
 
-                // ОСВОБОЖДАЕМ ФАЙЛ: закрываем FileStream, чтобы Windows сняла блокировку доступа
                 vm.Buffer.Dispose();
-
                 FileTabView.TabItems.Remove(tab);
+
                 UpdateStatusBar();
                 UpdateWindowTitle();
             }
@@ -491,10 +535,12 @@ private void MenuGlobalPaste_Click(object sender, RoutedEventArgs e)
         // Срабатывает каждый раз, когда пользователь кликает, выделяет или перемещается стрелочками
         private void ViewModel_StatusChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+        
             if (e.PropertyName == nameof(HexDocumentViewModel.SelectionInfoText))
             {
-                if (FileTabView.SelectedItem is TabViewItem currentTab && currentTab.Tag is HexDocumentViewModel vm)
+                if (FileTabView.SelectedItem is TabViewItem currentTab && currentTab.Tag is HexTabReference tabRef)
                 {
+                    HexDocumentViewModel vm = tabRef.ViewModel;
                     // Обновляем только смещение (размер файла статичен)
                     //StatusOffset.Text = $"Смещение: {vm.SelectionInfoText}";
                     UpdateOffsetStatusText(vm);
@@ -548,8 +594,13 @@ private void MenuGlobalPaste_Click(object sender, RoutedEventArgs e)
         private void UpdateWindowTitle()
         {
             // Проверяем, выбрана ли вкладка и есть ли у неё ViewModel
-            if (FileTabView.SelectedItem is TabViewItem currentTab && currentTab.Tag is HexDocumentViewModel vm)
+            if (FileTabView.SelectedItem is TabViewItem currentTab && currentTab.Tag is HexTabReference tabRef)
             {
+                HexDocumentViewModel vm = tabRef.ViewModel;
+                //    if (FileTabView.SelectedItem is TabViewItem currentTab &&
+                //currentTab.Content is HexEditorView editorView &&
+                //editorView.ViewModel is HexDocumentViewModel vm)
+                //    {
                 // Устанавливаем заголовок с именем активного файла
                 this.Title = $"BinStudio — {vm.FileName}";
             }
@@ -568,7 +619,8 @@ private void MenuGlobalPaste_Click(object sender, RoutedEventArgs e)
             {
                 // 1. Создаем ViewModel данных для переданного пути к файлу
                 var tabViewModel = new HexDocumentViewModel(filePath);
-
+                // ПОДПИСЫВАЕМСЯ ЗДЕСЬ И ВСЕГО ОДИН РАЗ:
+                tabViewModel.PropertyChanged += ViewModel_StatusChanged;
                 // 2. Инициализируем пользовательский интерфейс редактора
                 var editorView = new HexEditorView(tabViewModel);
 
@@ -577,7 +629,8 @@ private void MenuGlobalPaste_Click(object sender, RoutedEventArgs e)
                 {
                     Header = tabViewModel.FileName,
                     Content = editorView,
-                    Tag = tabViewModel
+                    // Кладем в Tag легковесную обертку вместо «тяжелой» ViewModel
+                    Tag = new HexTabReference(tabViewModel)
                 };
 
                 // 4. Добавляем в общую панель и делаем её активной

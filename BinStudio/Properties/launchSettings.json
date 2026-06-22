@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BinStudio (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "BinStudio (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

@@ -1,21 +1,27 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Collections.Specialized; // Добавьте это пространство имен
+using System.IO;
 
 namespace BinViewer
 {
+    using Microsoft.UI.Xaml;
+    using Microsoft.UI.Xaml.Controls;
+    using Microsoft.Windows.ApplicationModel.Resources;
     using System.ComponentModel;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.CompilerServices;
+    using Windows.ApplicationModel.Resources.Core;
 
     public class HexDocumentViewModel : INotifyPropertyChanged
     {
+       //public HexEditorView HexEditorView {  get; set; }
         public string FileName { get; set; }
         public string FullPath { get; set; }
         public VirtualFileBuffer Buffer { get; set; }
         public VirtualHexRowsList Rows { get; set; }
-
+       
 
         private bool _isFirstNibbleEntered = false;
         public bool IsFirstNibbleEntered
@@ -111,6 +117,7 @@ namespace BinViewer
 
         public HexDocumentViewModel(string filePath)
         {
+           
             FullPath = filePath;
             FileName = Path.GetFileName(filePath);
             Buffer = new VirtualFileBuffer();
@@ -129,6 +136,20 @@ namespace BinViewer
             // Теперь OnPropertyChanged вызывается внутри своего класса, что полностью легально
             OnPropertyChanged(nameof(Rows));
         }
+        bool isStartEditorView=true;
+        //public void HexEditorView_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    if (isStartEditorView)
+        //    {
+        //        var hex = sender as HexEditorView;
+        //        if (hex != null) 
+        //        {
+        //            hex.ViewModel = this;
+        //            this.PropertyChanged += hex.ViewModel_PropertyChanged;
+        //        }
+        //    }
+            
+        //}
     }
 
     // Виртуализированный список строк для UI
@@ -198,7 +219,17 @@ namespace BinViewer
         public IEnumerator<HexRow> GetEnumerator() => throw new NotImplementedException();
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
+       
 
+    }
+    // Абсолютно плоский класс. Не имеет свойств, XAML маршалит его мгновенно.
+    public class HexTabReference
+    {
+        public readonly HexDocumentViewModel ViewModel;
 
+        public HexTabReference(HexDocumentViewModel viewModel)
+        {
+            ViewModel = viewModel;
+        }
     }
 }

@@ -35,12 +35,24 @@ namespace BinViewer
         public HexEditorView(HexDocumentViewModel viewModel)
         {
             this.InitializeComponent();
+            //this.ViewModel = viewModel;
+
+            //// Подписываемся на обновление выделения
+            //this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            ////this.DataContext = viewModel;
+            //// ГАРАНТИРОВАННЫЙ перехват клавиш до того, как их заберут внутренние списки
+            //if (HexRepeater != null)
+            //{
+            //    // Это событие срабатывает КАЖДЫЙ РАЗ, когда строка скрывается при прокрутке
+            //    HexRepeater.ElementClearing += HexRepeater_ElementClearing;
+            //}
             this.ViewModel = viewModel;
 
-            // Подписываемся на обновление выделения
-            this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-            // ГАРАНТИРОВАННЫЙ перехват клавиш до того, как их заберут внутренние списки
-          
+            // Привязываем виртуальную коллекцию строк напрямую к ItemsRepeater
+            //HexRepeater.ItemsSource = viewModel.Rows;
+
+            // Включаем принудительную утилизацию скрывшихся контейнеров строк
+            HexRepeater.ElementClearing += HexRepeater_ElementClearing;
         }
         // Коллекция для идеального рендеринга ячеек заголовка
         public string[] HeaderPositions { get; } =
@@ -52,7 +64,18 @@ namespace BinViewer
                 UpdateBordersVisuals();
             }
         }
+        private void HexRepeater_ElementClearing(Microsoft.UI.Xaml.Controls.ItemsRepeater sender, Microsoft.UI.Xaml.Controls.ItemsRepeaterElementClearingEventArgs args)
+        {
+            // 1. Получаем UI-элемент скрывшейся строки (например, Grid или UserControl)
+            var element = args.Element as Microsoft.UI.Xaml.FrameworkElement;
 
+            if (element != null)
+            {
+                // 2. ПОЛНОСТЬЮ ОБНУЛЯЕМ данные строки. 
+                // Это разрывает жесткую связь XAML с вашей VirtualHexCollection!
+                element.DataContext = null;
+            }
+        }
 
         private void UpdateBordersVisuals()
         {

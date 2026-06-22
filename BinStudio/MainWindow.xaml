@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <Window
+    x:Class="BinStudio.MainWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BinStudio"
+    Title="BinStudio"
+ xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
+mc:Ignorable="d">
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Панель инструментов -->
+        <CommandBar Grid.Row="0" HorizontalAlignment="Left" Background="Transparent" IsOpen="False">
+            <AppBarButton Icon="OpenFile" Label="Открыть файл" Click="OpenFile_Click"/>
+        </CommandBar>
+
+        <!-- Вкладки документов -->
+        <TabView x:Name="DocTabView" Grid.Row="1" TabCloseRequested="DocTabView_TabCloseRequested">
+            <TabView.TabItemTemplate>
+                <DataTemplate x:DataType="local:TabContext">
+                    <TabViewItem Header="{x:Bind FileName}">
+
+                        <Grid ColumnDefinitions="*, 20" 
+                              HorizontalAlignment="Stretch" 
+                              VerticalAlignment="Stretch"
+                              Loaded="EditorGrid_Loaded"
+                              SizeChanged="EditorGrid_SizeChanged"
+                              PointerWheelChanged="EditorGrid_PointerWheelChanged"
+                              Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+                            <!-- Главный контейнер видимых строк -->
+                            <!-- Главный контейнер строк (Всего 3 UI-элемента на строку!) -->
+                            <ItemsControl Grid.Column="0" ItemsSource="{x:Bind VisibleRows}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="local:HexRowViewModel">
+                                        <!-- Ловим клик на уровне всей строки, а внутри C# математически вычисляем байт -->
+                                        <Grid ColumnDefinitions="90, 410, 180" Height="24" Background="Transparent" PointerPressed="Row_PointerPressed">
+
+                                            <!-- 1. Смещение -->
+                                            <TextBlock Grid.Column="0" Text="{Binding Address}" FontFamily="Consolas" FontSize="14" Foreground="DarkCyan" VerticalAlignment="Center"/>
+
+                                            <!-- 2. HEX строка (Один легкий элемент) -->
+                                            <TextBlock Grid.Column="1" Text="{Binding HexLine}" FontFamily="Consolas" FontSize="14" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" VerticalAlignment="Center"/>
+
+                                            <!-- 3. ASCII строка (Один легкий элемент) -->
+                                            <TextBlock Grid.Column="2" Text="{Binding AsciiLine}" FontFamily="Consolas" FontSize="14" Foreground="Green" VerticalAlignment="Center"/>
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <!-- Вертикальный скроллбар -->
+                            <ScrollBar Grid.Column="1" 
+                                       Orientation="Vertical"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Stretch"
+                                       Width="16"
+                                       Visibility="Visible"
+                                       Minimum="0" 
+                                       Maximum="{Binding ScrollMax, Mode=OneWay}"
+                                       Value="{Binding ScrollValue, Mode=TwoWay}"
+                                       Scroll="ScrollBar_Scroll"
+                                       IndicatorMode="MouseIndicator"/>
+                        </Grid>
+                    </TabViewItem>
+                </DataTemplate>
+            </TabView.TabItemTemplate>
+        </TabView>
+    </Grid>
+</Window>

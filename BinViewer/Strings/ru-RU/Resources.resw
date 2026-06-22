@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutArch.Text" xml:space="preserve">
+    <value>Архитектурные особенности:</value>
+  </data>
+  <data name="AboutArch1.Text" xml:space="preserve">
+    <value>• Модификации хранятся изолированно в ОЗУ и не повреждают исходный файл до сохранения.</value>
+  </data>
+  <data name="AboutArch2.Text" xml:space="preserve">
+    <value>• Потокобезопасный асинхронный поиск блоками по 64 КБ.</value>
+  </data>
+  <data name="AboutDesc.Text" xml:space="preserve">
+    <value>Высокоскоростной профессиональный шестнадцатеричный редактор, спроектированный для мгновенного открытия файлов любого объема (от нескольких байт до сотен гигабайт). Приложение использует концепцию виртуализации потоков данных и UI элементов, за счет чего экономит ОЗУ и сохраняет максимальный FPS при скроллинге.</value>
+  </data>
+  <data name="AboutDev.Text" xml:space="preserve">
+    <value>Разработчик: YurinKO</value>
+  </data>
+  <data name="AboutDialog.CloseButtonText" xml:space="preserve">
+    <value>Понятно</value>
+  </data>
+  <data name="AboutDialog.Title" xml:space="preserve">
+    <value>Документация и руководство пользователя</value>
+  </data>
+  <data name="AboutTitle.Text" xml:space="preserve">
+    <value>Быстрый HEX Редактор</value>
+  </data>
+  <data name="AboutVersion.Text" xml:space="preserve">
+    <value>Версия: 1.0.0 (Стабильный релиз)</value>
+  </data>
+  <data name="ManualSect1.Text" xml:space="preserve">
+    <value>1. РАБОТА С ФАЙЛАМИ И ВКЛАДКАМИ</value>
+  </data>
+  <data name="ManualSect1_1.Text" xml:space="preserve">
+    <value>• Открытие:</value>
+  </data>
+  <data name="ManualSect1_2.Text" xml:space="preserve">
+    <value>Через меню 'Файл -&gt; Открыть файл...' вы можете выбрать любой документ. Каждый новый файл изолированно открывается в своей индивидуальной вкладке.</value>
+  </data>
+  <data name="ManualSect1_3.Text" xml:space="preserve">
+    <value>• Закрытие:</value>
+  </data>
+  <data name="ManualSect1_4.Text" xml:space="preserve">
+    <value>Нажмите на крестик вкладки. Память дескриптора файла (FileStream) мгновенно освободится для операционной системы.</value>
+  </data>
+  <data name="ManualSect2.Text" xml:space="preserve">
+    <value>2. МНОЖЕСТВЕННОЕ ВЫДЕЛЕНИЕ БАЙТОВ</value>
+  </data>
+  <data name="ManualSect2_1.Text" xml:space="preserve">
+    <value>• Одиночный выбор:</value>
+  </data>
+  <data name="ManualSect2_2.Text" xml:space="preserve">
+    <value>Один клик ЛКМ (Левой Кнопкой Мыши) по ячейке выделяет байт. Его адрес дублируется в нижнем статус-баре.</value>
+  </data>
+  <data name="ManualSect2_3.Text" xml:space="preserve">
+    <value>• Выделение диапазона (Drag &amp; Drop):</value>
+  </data>
+  <data name="ManualSect2_4.Text" xml:space="preserve">
+    <value>Зажмите ЛКМ на начальном байте и, не отпуская, ведите курсор через таблицу вверх или вниз. Сетка плавно подсветит выбранный массив. Правая кнопка мыши заблокирована для защиты от сброса выделения.</value>
+  </data>
+  <data name="ManualSect3.Text" xml:space="preserve">
+    <value>3. ПОБАЙТОВОЕ РЕДАКТИРОВАНИЕ</value>
+  </data>
+  <data name="ManualSect3_1.Text" xml:space="preserve">
+    <value>• Вход в режим редактирования:</value>
+  </data>
+  <data name="ManualSect3_2.Text" xml:space="preserve">
+    <value>Двойной клик (Double Tap) по байту переводит ячейку в фокус ввода.</value>
+  </data>
+  <data name="ManualSect3_3.Text" xml:space="preserve">
+    <value>• Процесс посимвольной печати:</value>
+  </data>
+  <data name="ManualSect3_4.Text" xml:space="preserve">
+    <value>Вводите HEX-символы [0-9] или [A-F]. При нажатии первой клавиши байт перейдет в полу-ввод (например, 'A?'). Второе нажатие запишет байт окончательно, обновит его ASCII-символ справа, подсветит текст КРАСНЫМ цветом и автоматически переведет курсор на следующий шаг.</value>
+  </data>
+  <data name="ManualSect3_5.Text" xml:space="preserve">
+    <value>• Отмена и навигация:</value>
+  </data>
+  <data name="ManualSect3_6.Text" xml:space="preserve">
+    <value>Нажатие клавиши Escape сбрасывает режим редактирования ячейки. Перемещаться между ячейками во время ввода можно стрелочками на клавиатуре.</value>
+  </data>
+  <data name="ManualTitle.Text" xml:space="preserve">
+    <value>Как использовать редактор:</value>
+  </data>
+  <data name="MenuAbout.Text" xml:space="preserve">
+    <value>О программе и руководство...</value>
+  </data>
+  <data name="MenuCopy.Text" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="MenuEdit.Title" xml:space="preserve">
+    <value>Правка</value>
+  </data>
+  <data name="MenuFile.Title" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+  <data name="MenuGoTo.Text" xml:space="preserve">
+    <value>Перейти к адресу...</value>
+  </data>
+  <data name="MenuHelp.Title" xml:space="preserve">
+    <value>Справка</value>
+  </data>
+  <data name="MenuInfo.Text" xml:space="preserve">
+    <value>Информация о файле</value>
+  </data>
+  <data name="MenuOpen.Text" xml:space="preserve">
+    <value>Открыть файл...</value>
+  </data>
+  <data name="MenuPaste.Text" xml:space="preserve">
+    <value>Вставить</value>
+  </data>
+  <data name="MenuSave.Text" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="MenuSearch.Text" xml:space="preserve">
+    <value>Поиск по файлу</value>
+  </data>
+  <data name="MenuView.Title" xml:space="preserve">
+    <value>Вид</value>
+  </data>
+  <data name="PivotAbout.Header" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="PivotManual.Header" xml:space="preserve">
+    <value>Полный справочник функций</value>
+  </data>
+  <data name="StatusBytesText" xml:space="preserve">
+    <value>Выделено: {1} байт</value>
+  </data>
+  <data name="StatusOffsetText" xml:space="preserve">
+    <value>Смещение: {0}</value>
+  </data>
+  <data name="StatusSizeText" xml:space="preserve">
+    <value>Размер: {0:N0} байт</value>
+  </data>
+  <data name="AboutArch3.Text" xml:space="preserve">
+    <value>• Автоматическое создание бэкапа (.bak) перед каждой записью для 100% защиты от потери данных.</value>
+  </data>
+  <data name="SearchPanelTitle.Text" xml:space="preserve">
+    <value>Результаты поиска</value>
+    <comment>Заголовок панели поиска</comment>
+  </data>
+  <data name="SearchPanelClose.Content" xml:space="preserve">
+    <value></value>
+    <comment>Крестик закрытия</comment>
+  </data>
+  <data name="InfoPanelTitle.Text" xml:space="preserve">
+    <value>Информация о файле</value>
+    <comment>Заголовок панели информации</comment>
+  </data>
+  <data name="InfoMetaHeader.Text" xml:space="preserve">
+    <value>Метаданные</value>
+    <comment>Подзаголовок</comment>
+  </data>
+  <data name="InfoFileNameLabel.Text" xml:space="preserve">
+    <value>Имя файла:</value>
+  </data>
+  <data name="InfoFilePathLabel.Text" xml:space="preserve">
+    <value>Полный путь:</value>
+  </data>
+  <data name="InfoInspectHeader.Text" xml:space="preserve">
+    <value>Инспектор данных (Курсор)</value>
+    <comment>Подзаголовок инспектора</comment>
+  </data>
+  <data name="InspectByteLabel.Text" xml:space="preserve">
+    <value>Binary (Byte):</value>
+  </data>
+  <data name="InspectInt16Label.Text" xml:space="preserve">
+    <value>Int16 (Short):</value>
+  </data>
+  <data name="InspectInt32Label.Text" xml:space="preserve">
+    <value>Int32 (Int):</value>
+  </data>
+  <data name="InspectInt64Label.Text" xml:space="preserve">
+    <value>Int64 (Long):</value>
+  </data>
+  <data name="InspectFloatLabel.Text" xml:space="preserve">
+    <value>Float (Single)</value>
+  </data>
+  <data name="SearchOverlayBox.PlaceholderText" xml:space="preserve">
+    <value>Поиск (ASCII/HEX)</value>
+    <comment>Подсказка в поле поиска</comment>
+  </data>
+  <data name="SearchOverlayBtn.Content" xml:space="preserve">
+    <value>Найти</value>
+    <comment>Текст кнопки поиска</comment>
+  </data>
+  <data name="GoToOverlayBox.PlaceholderText" xml:space="preserve">
+    <value>Адрес (HEX)</value>
+    <comment>Подсказка в поле перехода</comment>
+  </data>
+  <data name="GoToOverlayBtn.Content" xml:space="preserve">
+    <value>Перейти</value>
+    <comment>Текст кнопки перехода</comment>
+  </data>
+  <data name="SearchProgressText" xml:space="preserve">
+    <value>Поиск...</value>
+  </data>
+  <data name="RateDialog.Title" xml:space="preserve">
+    <value>Вам нравится BinStudio?</value>
+    <comment>Заголовок диалога</comment>
+  </data>
+  <data name="RateDialog.PrimaryButtonText" xml:space="preserve">
+    <value>Отправить</value>
+    <comment>Кнопка отправки</comment>
+  </data>
+  <data name="RateDialog.CloseButtonText" xml:space="preserve">
+    <value>Позже</value>
+    <comment>Кнопка закрытия</comment>
+  </data>
+  <data name="RateDialogDesc.Text" xml:space="preserve">
+    <value>Мы рады, что вы пользуетесь BinStudio! Пожалуйста, оцените наше приложение, это поможет нам сделать его еще лучше.</value>
+    <comment>Текст описания</comment>
+  </data>
+  <data name="FeedbackBox.PlaceholderText" xml:space="preserve">
+    <value>Что мы могли бы улучшить в программе?</value>
+    <comment>Подсказка в текстовом поле</comment>
+  </data>
+  <data name="NeverShowAgainCheck.Content" xml:space="preserve">
+    <value>Больше не показывать это окно</value>
+    <comment>Текст чекбокса</comment>
+  </data>
+  <data name="ThankYouTitle" xml:space="preserve">
+    <value>Спасибо за ваш отзыв!</value>
+    <comment>Заголовок окна благодарности</comment>
+  </data>
+  <data name="ThankYouDesc" xml:space="preserve">
+    <value>Мы получили ваше сообщение и обязательно исправим указанные недостатки в следующем обновлении.</value>
+    <comment>Текст окна благодарности</comment>
+  </data>
+  <data name="StatusOffsetDefault" xml:space="preserve">
+    <value>Смещение: -</value>
+    <comment>Дефолтный статус-бар</comment>
+  </data>
+  <data name="ManualSect4.Text" xml:space="preserve">
+    <value>4. БУФЕР ОБМЕНА И КОНТЕКСТНОЕ МЕНЮ</value>
+  </data>
+  <data name="ManualSect4_1.Text" xml:space="preserve">
+    <value>• Копирование:</value>
+  </data>
+  <data name="ManualSect4_2.Text" xml:space="preserve">
+    <value>Выделите байты и нажмите Ctrl+C или кликните ПКМ -&gt; 'Копировать'. Данные экспортируются в буфер Windows в виде HEX-строки (например, '41 00 FF').</value>
+  </data>
+  <data name="ManualSect4_3.Text" xml:space="preserve">
+    <value>• Умная вставка:</value>
+  </data>
+  <data name="ManualSect4_4.Text" xml:space="preserve">
+    <value>Нажмите Ctrl+V или кликните ПКМ -&gt; 'Вставить'. Программа скопирует HEX-текст из буфера, автоматически пропустит пробелы/дефисы, распарсит его в массив байт и перезапишет файл начиная с позиции курсора.</value>
+  </data>
+  <data name="ManualSect5.Text" xml:space="preserve">
+    <value>5. ГЛОБАЛЬНЫЙ ПОИСК И ПЕРЕХОД</value>
+  </data>
+  <data name="ManualSect5_1.Text" xml:space="preserve">
+    <value>• Автоматический поиск сигнатур:</value>
+  </data>
+  <data name="ManualSect5_2.Text" xml:space="preserve">
+    <value>Нажмите Ctrl+F или зайдите в 'Вид -&gt; Поиск по файлу'. Введите поисковый запрос. Если вы ввели текст, программа найдет его ASCII-кодировку. Если ввели пары символов (например, '4D5A'), сработает HEX-поиск.</value>
+  </data>
+  <data name="ManualSect5_3.Text" xml:space="preserve">
+    <value>• Интерактивный список результатов:</value>
+  </data>
+  <data name="ManualSect5_4.Text" xml:space="preserve">
+    <value>Все найденные совпадения (до 5000 штук) выводятся в боковую панель справа от таблицы. Клик по любому адресу в этом списке мгновенно скроллит таблицу к нужной строке. Панель закрывается на крестик.</value>
+  </data>
+  <data name="ManualSect5_5.Text" xml:space="preserve">
+    <value>• Прямой переход (Go To Offset):</value>
+  </data>
+  <data name="ManualSect5_6.Text" xml:space="preserve">
+    <value>В меню 'Правка -&gt; Перейти к адресу...' введите адрес в шестнадцатеричном виде (например, '1C0') и нажмите Ввод. Программа выполнит мгновенный переход.</value>
+  </data>
+  <data name="ManualSect6.Text" xml:space="preserve">
+    <value>6. DATA INSPECTOR (ИНСПЕКТОР ТИПОВ)</value>
+  </data>
+  <data name="ManualSect6_1.Text" xml:space="preserve">
+    <value>• Дешифровка структур:</value>
+  </data>
+  <data name="ManualSect6_2.Text" xml:space="preserve">
+    <value>Через меню 'Файл -&gt; Информация о файле' открывается боковая панель метаданных. При перемещении курсора по ячейкам инспектор считывает до 8 смежных байт и мгновенно конвертирует их в человекочитаемые форматы чисел: Binary (1 байт), Int16 Short (2 байта), Int32 Integer (4 байта), Int64 Long (8 байт) и Float с плавающей точкой.</value>
+  </data>
+  <data name="ManualSect7.Text" xml:space="preserve">
+    <value>7. НИЖНЯЯ ИНФОРМАЦИОННАЯ СТРОКА</value>
+  </data>
+  <data name="ManualSect7_1.Text" xml:space="preserve">
+    <value>Отображает статический размер файла в байтах с разделением разрядов тысяч. При выделении одного байта показывает его точные координаты в десятичном и HEX представлении, а при массовом выделении — диапазон границ 'От .. До' и точное число выделенных байтов.</value>
+  </data>
+  <data name="AboutDialogText.CloseButtonText" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>BinStudio — Быстрый HEX Редактор и Просмотрщик Байтов</value>
+  </data>
+</root>
