@@ -15,11 +15,10 @@ namespace BinStudio
     {
         private FileStream _stream;
         private const int BytesPerRow = 16;
-        private const double RowHeight = 24.0;
 
         private double _scrollMax;
         private double _scrollValue;
-        private int _visibleRowsCount = 30;
+        public int VisibleRowsCount { get; } = 35; // Фиксированный размер пула строк
 
         public string FileName { get; set; }
         public ObservableCollection<HexRowViewModel> VisibleRows { get; } = new ObservableCollection<HexRowViewModel>();
@@ -42,38 +41,35 @@ namespace BinStudio
             _stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read, 4096, FileOptions.SequentialScan);
 
             long totalRows = (long)Math.Ceiling((double)_stream.Length / BytesPerRow);
-            ScrollMax = Math.Max(0, totalRows - _visibleRowsCount);
+            ScrollMax = Math.Max(0, totalRows - VisibleRowsCount);
 
+            // ИНИЦИАЛИЗАЦИЯ ПУЛА: Создаем 35 объектов строк один раз на всю жизнь вкладки
+            for (int i = 0; i < VisibleRowsCount; i++)
+            {
+                VisibleRows.Add(new HexRowViewModel());
+            }
+
+            // Загружаем начальные данные
             LoadVisibleData(0);
         }
 
-        public void UpdateViewportSize(double availableHeight)
-        {
-            if (availableHeight <= RowHeight) return;
-
-            int neededRows = (int)Math.Ceiling(availableHeight / RowHeight);
-            if (neededRows != _visibleRowsCount && neededRows > 0)
-            {
-                _visibleRowsCount = neededRows;
-                long totalRows = (long)Math.Ceiling((double)_stream.Length / BytesPerRow);
-                ScrollMax = Math.Max(0, totalRows - _visibleRowsCount);
-                LoadVisibleData((long)ScrollValue);
-            }
-        }
-
+        // БЕЗМИГАТЕЛЬНАЯ ЛЕНИВАЯ ЗАГРУЗКА: Перезаписываем текст внутри существующих объектов
         public void LoadVisibleData(long startRowIndex)
         {
             if (_stream == null) return;
 
-            VisibleRows.Clear();
+            // КРИТИЧЕСКИ ВАЖНО: Больше НЕ вызываем VisibleRows.Clear()!
             byte[] buffer = new byte[BytesPerRow];
             StringBuilder hexBuilder = new StringBuilder(48);
             StringBuilder asciiBuilder = new StringBuilder(16);
 
-            for (int i = 0; i < _visibleRowsCount; i++)
+            for (int i = 0; i < VisibleRowsCount; i++)
             {
                 long currentRowIndex = startRowIndex + i;
                 long offset = currentRowIndex * BytesPerRow;
+
+                // Достаем уже существующий объект из пула строк вместо создания нового через 'new'
+                var rowViewModel = VisibleRows[i];
 
                 if (offset < _stream.Length)
                 {
@@ -83,12 +79,10 @@ namespace BinStudio
                     hexBuilder.Clear();
                     asciiBuilder.Clear();
 
-                    var rowViewModel = new HexRowViewModel
-                    {
-                        Address = offset.ToString("X8"),
-                        RowOffset = offset,
-                        BytesCount = bytesRead
-                    };
+                    // Заполняем внутренние свойства и метаданные существующего объекта
+                    rowViewModel.Address = offset.ToString("X8");
+                    rowViewModel.RowOffset = offset;
+                    rowViewModel.BytesCount = bytesRead;
 
                     for (int j = 0; j < BytesPerRow; j++)
                     {
@@ -108,17 +102,17 @@ namespace BinStudio
 
                     rowViewModel.HexLine = hexBuilder.ToString().TrimEnd();
                     rowViewModel.AsciiLine = asciiBuilder.ToString();
-                    VisibleRows.Add(rowViewModel);
+                }
+                else
+                {
+                    // Если файл закончился, а пул строк еще не заполнен (хвост документа)
+                    rowViewModel.Address = "";
+                    rowViewModel.HexLine = "";
+                    rowViewModel.AsciiLine = "";
+                    rowViewModel.BytesCount = 0;
+                    rowViewModel.RowOffset = 0;
                 }
             }
-        }
-
-        public void SaveByteToFile(long globalOffset, byte newValue)
-        {
-            if (_stream == null) return;
-            _stream.Position = globalOffset;
-            _stream.WriteByte(newValue);
-            _stream.Flush();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
