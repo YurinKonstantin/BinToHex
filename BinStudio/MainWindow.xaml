@@ -24,32 +24,37 @@ mc:Ignorable="d">
                 <DataTemplate x:DataType="local:TabContext">
                     <TabViewItem Header="{x:Bind FileName}">
 
-                        <!-- Перехватываем колесико мыши на уровне всей страницы -->
-                        <Grid RowDefinitions="Auto, *" ColumnDefinitions="*, 16" 
+                        <Grid RowDefinitions="Auto, *" ColumnDefinitions="*, 16" Loaded="{x:Bind EditorGrid_Loaded}"
                               Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
-                              PointerWheelChanged="Editor_PointerWheelChanged">
+                              PointerWheelChanged="{x:Bind Editor_PointerWheelChanged}">
 
                             <!-- ШАПКА ТАБЛИЦЫ -->
-                            <Grid Grid.Row="0" Grid.Column="0" ColumnDefinitions="90, 410, 180" Height="28" Margin="16,5,0,0" Background="{ThemeResource SystemControlBackgroundListLowBrush}" CornerRadius="4">
-                                <TextBlock Grid.Column="0" Text="Смещение" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                                <TextBlock Grid.Column="1" Text="00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F" FontFamily="Consolas" FontSize="13" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center"/>
-                                <TextBlock Grid.Column="2" Text="Текстовый дамп (ASCII)" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center"/>
+                            <Grid Grid.Row="0" Grid.Column="0" ColumnDefinitions="90, 410, 180" Height="28" Margin="12,5,0,0" Background="{ThemeResource SystemControlBackgroundListLowBrush}" CornerRadius="4">
+                                <TextBlock Grid.Column="0" Text="Смещение" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                <TextBlock Grid.Column="1" Text="00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F" FontFamily="Consolas" FontSize="14" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                <TextBlock Grid.Column="2" Text="Текстовый дамп (ASCII)" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center" Margin="5,0,0,0"/>
                             </Grid>
 
                             <!-- ТЕЛО ТАБЛИЦЫ -->
-                            <!-- Отключаем встроенные скроллбары ListView (они больше не будут мешать) -->
-                            <ListView Grid.Row="1" Grid.Column="0"
+                            <!-- Привязываем события к методам TabContext через {Binding} -->
+                            <ListView x:Name="HexListView" Grid.Row="1" Grid.Column="0"
                                       ItemsSource="{x:Bind VisibleRows}" 
                                       SelectionMode="None"
                                       Padding="12,5,0,0"
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                      ScrollViewer.VerticalScrollMode="Disabled">
+                                      ScrollViewer.VerticalScrollMode="Disabled"
+                                      >
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="local:HexRowViewModel">
-                                        <Grid ColumnDefinitions="90, 410, 180" Height="24" Background="Transparent" PointerPressed="Row_PointerPressed">
-                                            <TextBlock Grid.Column="0" Text="{Binding Address}" FontFamily="Consolas" FontSize="14" Foreground="#00B7C3" VerticalAlignment="Center"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding HexLine}" FontFamily="Consolas" FontSize="14" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" VerticalAlignment="Center"/>
-                                            <TextBlock Grid.Column="2" Text="{Binding AsciiLine}" FontFamily="Consolas" FontSize="14" Foreground="#107C41" VerticalAlignment="Center"/>
+                                        <Grid ColumnDefinitions="90, 410, 180" Height="24" Background="Transparent">
+                                            <!-- 1. Смещение (Адрес) -->
+                                            <TextBlock Grid.Column="0" Text="{Binding Address}" FontFamily="Consolas" FontSize="14" Foreground="#00B7C3" VerticalAlignment="Center" Margin="4,0,0,0"/>
+
+                                            <!-- 2. HEX строка с умным побайтовым поведением -->
+                                            <TextBlock Grid.Column="1"  local:HexTextBehavior.RowData="{Binding}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center"/>
+
+                                            <!-- 3. ASCII строка с умным побайтовым поведением -->
+                                            <TextBlock Grid.Column="2" local:HexTextBehavior.AsciiData="{Binding}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
@@ -59,11 +64,12 @@ mc:Ignorable="d">
                                         <Setter Property="Height" Value="24"/>
                                         <Setter Property="Padding" Value="0"/>
                                         <Setter Property="Margin" Value="0"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                                     </Style>
                                 </ListView.ItemContainerStyle>
                             </ListView>
 
-                            <!-- НАСТОЯЩИЙ Скроллбар: Высота привязана ко всему файлу -->
+                            <!-- Вертикальный скроллбар -->
                             <ScrollBar Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" 
                                        Orientation="Vertical"
                                        HorizontalAlignment="Right"

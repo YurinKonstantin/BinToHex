@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
@@ -31,10 +32,27 @@ namespace BinStudio
         public MainWindow()
         {
             this.InitializeComponent();
+            
             DocTabView.TabItemsSource = Tabs;
             this.SystemBackdrop = new Microsoft.UI.Xaml.Media.MicaBackdrop();
         }
-
+        // Вызывается, когда сетка внутри вкладки полностью загружена в UI
+        private void EditorGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is Grid grid && grid.DataContext is TabContext context)
+            {
+                // Находим наш ListView по имени внутри этой конкретной загруженной вкладки
+                var listView = grid.FindName("HexListView") as ListView;
+                if (listView != null)
+                {
+                    // Регистрируем кастомные обработчики PointerEvents с флагом handledEventsToo = true.
+                    // Это заставляет WinUI отдавать левые клики мыши нашему коду в TabContext!
+                    listView.AddHandler(UIElement.PointerPressedEvent, new PointerEventHandler(context.ListView_PointerPressed), true);
+                    listView.AddHandler(UIElement.PointerMovedEvent, new PointerEventHandler(context.ListView_PointerMoved), true);
+                    listView.AddHandler(UIElement.PointerReleasedEvent, new PointerEventHandler(context.ListView_PointerReleased), true);
+                }
+            }
+        }
         private async void OpenFile_Click(object sender, RoutedEventArgs e)
         {
             FileOpenPicker openPicker = new FileOpenPicker();
@@ -52,33 +70,15 @@ namespace BinStudio
             }
         }
 
-        // 1. Скроллинг колесиком мыши (Лениво обновляет ScrollValue и подгружает данные)
-        private void Editor_PointerWheelChanged(object sender, PointerRoutedEventArgs e)
-        {
-            if (sender is Grid grid && grid.DataContext is TabContext context)
-            {
-                var pointerPoint = e.GetCurrentPoint(grid);
-                int delta = pointerPoint.Properties.MouseWheelDelta;
-
-                long step = 3; // Шаг прокрутки
-                long newValue = (long)context.ScrollValue;
-
-                if (delta > 0)
-                    newValue = Math.Max(0, newValue - step);
-                else
-                    newValue = (long)Math.Min(context.ScrollMax, newValue + step);
-
-                context.ScrollValue = newValue; // Обновит ползунок на экране
-                context.LoadVisibleData(newValue); // Обновит байты на экране
-                e.Handled = true;
-            }
-        }
+      
 
         // 2. Скроллинг перетаскиванием ползунка (Критически важно для больших файлов)
         private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
             if (sender is ScrollBar scrollBar && scrollBar.DataContext is TabContext context)
             {
+                
+
                 context.LoadVisibleData((long)e.NewValue);
             }
         }
@@ -90,32 +90,51 @@ namespace BinStudio
                 var point = e.GetCurrentPoint(rowGrid);
                 double x = point.Position.X;
 
-                if (x >= 90 && x < 500)
+                // Извлекаем контекст вкладки, к которой принадлежит текущая строка
+                if (DocTabView.SelectedItem is TabContext context)
                 {
-                    double clickInsideHex = x - 90;
-                    int byteIndex = (int)(clickInsideHex / 24.3);
+                    int rowIndex = context.VisibleRows.IndexOf(row);
+                    if (rowIndex == -1) return;
 
-                    if (byteIndex >= 0 && byteIndex < row.BytesCount)
+                    // Зона HEX (90px - 500px)
+                    if (x >= 90 && x < 500)
                     {
-                        long globalOffset = row.RowOffset + byteIndex;
-                        byte selectedByte = row.RawBytes[byteIndex];
-                        this.Title = $"BinStudio - Смещение: 0x{globalOffset:X8} | Байт: 0x{selectedByte:X2}";
+                        double clickInsideHex = x - 90;
+                        int byteIndex = (int)(clickInsideHex / 24.3); // Ширина "FF " в Consolas 14
+
+                        if(byteIndex >= 0 && byteIndex < row.BytesCount)
+{
+                            long globalOffset = row.RowOffset + byteIndex;
+                            byte selectedByte = row.RawBytes[byteIndex];
+                            this.Title = $"BinStudio - Смещение: 0x{globalOffset:X8} | Байт: 0x{selectedByte:X2}";
+
+                            // ИСПРАВЛЕННАЯ МАТЕМАТИКА КУРСОРA
+                            // Вычисляем точную позицию X без накопления погрешности
+                            double cursorX = 91.0 + (byteIndex * 24.22);
+                            // Центрируем рамку по вертикали внутри строки высотой 24px (высота рамки 18px, значит отступ 3px)
+                            double cursorY = (rowIndex * 24.0) + 3.0;
+
+                            // Записываем идеальные координаты в свойства контекста текущего документа
+                            context.CursorX = cursorX;
+                            context.CursorY = cursorY;
+                            context.CursorVisibility = Visibility.Visible;
+
+                            e.Handled = true;
+                        }
                     }
-                }
-                else if (x >= 500)
-                {
-                    double clickInsideAscii = x - 500;
-                    int byteIndex = (int)(clickInsideAscii / 8.1);
-
-                    if (byteIndex >= 0 && byteIndex < row.BytesCount)
+                    // Кликнули мимо байт — скрываем рамку этого документа
+                    else
                     {
-                        long globalOffset = row.RowOffset + byteIndex;
-                        this.Title = $"BinStudio - ASCII Смещение: 0x{globalOffset:X8}";
+                        context.CursorVisibility = Visibility.Collapsed;
                     }
                 }
             }
         }
+       
 
+
+       
+       
         private void DocTabView_TabCloseRequested(TabView sender, TabViewTabCloseRequestedEventArgs args)
         {
             if (args.Item is TabContext context)
@@ -124,6 +143,118 @@ namespace BinStudio
                 Tabs.Remove(context);
             }
         }
-    }
 
+        
+    }
+    public static class HexTextBehavior
+    {
+        public static readonly DependencyProperty RowDataProperty =
+            DependencyProperty.RegisterAttached("RowData", typeof(HexRowViewModel), typeof(HexTextBehavior), new PropertyMetadata(null, OnRowDataChanged));
+
+        public static readonly DependencyProperty AsciiDataProperty =
+            DependencyProperty.RegisterAttached("AsciiData", typeof(HexRowViewModel), typeof(HexTextBehavior), new PropertyMetadata(null, OnAsciiDataChanged));
+
+        public static void SetRowData(DependencyObject element, HexRowViewModel value) => element.SetValue(RowDataProperty, value);
+        public static HexRowViewModel GetRowData(DependencyObject element) => (HexRowViewModel)element.GetValue(RowDataProperty);
+
+        public static void SetAsciiData(DependencyObject element, HexRowViewModel value) => element.SetValue(AsciiDataProperty, value);
+        public static HexRowViewModel GetAsciiData(DependencyObject element) => (HexRowViewModel)element.GetValue(AsciiDataProperty);
+
+        private static void OnRowDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TextBlock textBlock)
+            {
+                if (e.OldValue is HexRowViewModel oldRow)
+                    oldRow.PropertyChanged -= (s, args) => { if (args.PropertyName == "RefreshInlines") RenderHexInlines(textBlock, oldRow); };
+
+                if (e.NewValue is HexRowViewModel newRow)
+                {
+                    RenderHexInlines(textBlock, newRow);
+                    newRow.PropertyChanged += (s, args) =>
+                    {
+                        if (args.PropertyName == "RefreshInlines" || args.PropertyName == "HexLine")
+                            RenderHexInlines(textBlock, newRow);
+                    };
+                }
+            }
+        }
+
+        private static void OnAsciiDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TextBlock textBlock)
+            {
+                if (e.OldValue is HexRowViewModel oldRow)
+                    oldRow.PropertyChanged -= (s, args) => { if (args.PropertyName == "RefreshInlines") RenderAsciiInlines(textBlock, oldRow); };
+
+                if (e.NewValue is HexRowViewModel newRow)
+                {
+                    RenderAsciiInlines(textBlock, newRow);
+                    newRow.PropertyChanged += (s, args) =>
+                    {
+                        if (args.PropertyName == "RefreshInlines" || args.PropertyName == "AsciiLine")
+                            RenderAsciiInlines(textBlock, newRow);
+                    };
+                }
+            }
+        }
+
+        private static void RenderHexInlines(TextBlock tb, HexRowViewModel row)
+        {
+            tb.Inlines.Clear();
+            if (row == null || string.IsNullOrEmpty(row.HexLine)) return;
+
+            string[] parts = row.HexLine.Split(' ');
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                string textWithSpace = parts[i] + (i < parts.Length - 1 ? " " : "");
+                var run = new Run { Text = textWithSpace };
+
+                long globalOffset = row.RowOffset + i;
+
+                // ДОБАВЛЕНА ЗАЩИТА: проверяем row.ParentContext на null перед вызовом!
+                if (row.ParentContext != null && row.ParentContext.IsByteSelected(globalOffset) && i < row.BytesCount)
+                {
+                    run.Foreground = new SolidColorBrush(Microsoft.UI.Colors.DodgerBlue);
+                    run.FontWeight = Microsoft.UI.Text.FontWeights.Bold;
+                }
+                else
+                {
+                    if (Application.Current.Resources.TryGetValue("ApplicationForegroundThemeBrush", out object brush))
+                        run.Foreground = brush as Brush;
+                    else
+                        run.Foreground = new SolidColorBrush(Microsoft.UI.Colors.White);
+
+                    run.FontWeight = Microsoft.UI.Text.FontWeights.Normal;
+                }
+                tb.Inlines.Add(run);
+            }
+        }
+
+        private static void RenderAsciiInlines(TextBlock tb, HexRowViewModel row)
+        {
+            tb.Inlines.Clear();
+            if (row == null || string.IsNullOrEmpty(row.AsciiLine)) return;
+
+            for (int i = 0; i < row.AsciiLine.Length; i++)
+            {
+                var run = new Run { Text = row.AsciiLine[i].ToString() };
+
+                long globalOffset = row.RowOffset + i;
+
+                // ДОБАВЛЕНА ЗАЩИТА: проверяем row.ParentContext на null перед вызовом!
+                if (row.ParentContext != null && row.ParentContext.IsByteSelected(globalOffset) && i < row.BytesCount)
+                {
+                    run.Foreground = new SolidColorBrush(Microsoft.UI.Colors.DodgerBlue);
+                    run.FontWeight = Microsoft.UI.Text.FontWeights.Bold;
+                }
+                else
+                {
+                    run.Foreground = new SolidColorBrush(Microsoft.UI.Colors.Green);
+                    run.FontWeight = Microsoft.UI.Text.FontWeights.Normal;
+                }
+                tb.Inlines.Add(run);
+            }
+        }
+    }
 }
