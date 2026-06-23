@@ -3,7 +3,8 @@
     x:Class="BinStudio.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:BinStudio">
+    xmlns:local="using:BinStudio"
+    xmlns:converters="using:BinStudio.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -12,7 +13,9 @@
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
             <!-- РЕГИСТРИРУЕМ КОНВЕРТЕР РЕЖИМА ДЛЯ STATUSBAR -->
-            <local:EditModeConverter x:Key="ModeConverter"/>
+            <converters:EditModeConverter x:Key="ModeConverter"/>
+            <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -83,8 +83,8 @@ namespace BinStudio
                     run.Foreground = new SolidColorBrush(Microsoft.UI.Colors.DodgerBlue);
                     run.FontWeight = Microsoft.UI.Text.FontWeights.Bold;
                 }
-                // 2. УСЛОВИЕ ИЗМЕНЕННОГО БАЙТА: Если байт лежит в буфере правок — красим в КРАСНЫЙ
-                else if (row.ParentContext != null && row.ParentContext.ModifiedBytes.ContainsKey(globalOffset))
+                // 2. УСЛОВИЕ ИЗМЕНЕННОГО БАЙТА: Исправлено обращение через BufferService!
+                else if (row.ParentContext != null && row.ParentContext.BufferService.ModifiedBytes.ContainsKey(globalOffset))
                 {
                     run.Foreground = new SolidColorBrush(Microsoft.UI.Colors.Red);
                     run.FontWeight = Microsoft.UI.Text.FontWeights.SemiBold;
@@ -120,8 +120,8 @@ namespace BinStudio
                     run.Foreground = new SolidColorBrush(Microsoft.UI.Colors.DodgerBlue);
                     run.FontWeight = Microsoft.UI.Text.FontWeights.Bold;
                 }
-                // 2. УСЛОВИЕ ИЗМЕНЕННОГО БАЙТА (ASCII) -> КРАСНЫЙ
-                else if (row.ParentContext != null && row.ParentContext.ModifiedBytes.ContainsKey(globalOffset))
+                // 2. УСЛОВИЕ ИЗМЕНЕННОГО БАЙТА (ASCII): Исправлено обращение через BufferService!
+                else if (row.ParentContext != null && row.ParentContext.BufferService.ModifiedBytes.ContainsKey(globalOffset))
                 {
                     run.Foreground = new SolidColorBrush(Microsoft.UI.Colors.Red);
                     run.FontWeight = Microsoft.UI.Text.FontWeights.SemiBold;

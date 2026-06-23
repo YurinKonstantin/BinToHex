@@ -4,6 +4,7 @@
  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BinStudio"
+        xmlns:local2="using:BinStudio.Services"
     Title="BinStudio"
  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -34,7 +35,7 @@ mc:Ignorable="d">
                 <MenuFlyoutItem Text="Копировать" Icon="Copy"/>
                 <MenuFlyoutItem Text="Вставить" Icon="Paste"/>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Найти..." Icon="Find"/>
+                <MenuFlyoutItem Text="Найти..." Icon="Find" Click="OpenSearchPanel_Click"/>
                 <MenuFlyoutItem Text="Заменить..."/>
                 <MenuFlyoutSeparator/>
                 <MenuFlyoutItem Text="Выделить всё"/>
@@ -78,9 +79,9 @@ mc:Ignorable="d">
 
             <!-- Контентная область боковой панели (Сюда мы помещаем наш TabView) -->
             <NavigationView.Content>
-                <Grid Margin="0,12,0,0">
+                <Grid  ColumnDefinitions="*, Auto" Margin="0,12,0,0" DataContext="{Binding ElementName=DocTabView, Path=SelectedItem}">
                     <!-- Вкладки документов -->
-                    <TabView x:Name="DocTabView" TabCloseRequested="DocTabView_TabCloseRequested">
+                    <TabView x:Name="DocTabView" Grid.Column="0" TabCloseRequested="DocTabView_TabCloseRequested">
                         <TabView.TabItemTemplate>
                             <DataTemplate x:DataType="local:TabContext">
                                 <TabViewItem Header="{x:Bind FileName}">
@@ -115,10 +116,10 @@ mc:Ignorable="d">
                                                         <TextBlock Grid.Column="0" Text="{Binding Address}" FontFamily="Consolas" FontSize="14" Foreground="#00B7C3" VerticalAlignment="Center" Margin="4,0,0,0"/>
 
                                                         <!-- 2. HEX строка с умным побайтовым поведением -->
-                                                        <TextBlock Grid.Column="1"  DoubleTapped="{x:Bind ParentContext.TextBlock_DoubleTapped}"  local:HexTextBehavior.RowData="{Binding}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center"/>
+                                                        <TextBlock Grid.Column="1"  local:HexTextBehavior.RowData="{Binding}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center"/>
 
                                                         <!-- 3. ASCII строка с умным побайтовым поведением -->
-                                                        <TextBlock Grid.Column="2"  DoubleTapped="{x:Bind ParentContext.TextBlock_DoubleTapped}" local:HexTextBehavior.AsciiData="{Binding}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                                        <TextBlock Grid.Column="2" local:HexTextBehavior.AsciiData="{Binding}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0"/>
                                                     </Grid>
                                                 </DataTemplate>
                                             </ListView.ItemTemplate>
@@ -150,6 +151,53 @@ mc:Ignorable="d">
                             </DataTemplate>
                         </TabView.TabItemTemplate>
                     </TabView>
+                    <!-- КОЛОНКА 2: БОКОВАЯ ПАНЕЛЬ ПОИСКА (Открывается по меню 'Найти') -->
+                    <!-- Её видимость привязана к свойству IsSearchPanelOpen активной вкладки -->
+                    <Border Grid.Column="1" 
+                Width="320" 
+                Visibility="{Binding IsSearchPanelOpen, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"
+               Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1,0,0,0"
+                Padding="16,12,16,16">
+
+                        <Grid RowDefinitions="Auto, Auto, Auto, *">
+
+                            <!-- 1. Заголовок панели и Кнопка закрытия -->
+                            <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,16">
+                                <TextBlock Grid.Column="0" Text="Поиск по файлу" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <Button Grid.Column="1" Click="CloseSearchPanel_Click" Content="&#xE711;" FontFamily="Segoe MDL2 Assets" Background="Transparent" BorderThickness="0" Width="32" Height="32" Padding="0"/>
+                            </Grid>
+
+                            <!-- 2. Поле ввода и Кнопка действия -->
+                            <Grid Grid.Row="1" ColumnDefinitions="*, Auto" Margin="0,0,0,12">
+                                <TextBox Grid.Column="0" PlaceholderText="Введите текст или HEX (н-р: 41 42)..." FontFamily="Consolas" Margin="0,0,8,0"/>
+                                <Button Grid.Column="1" Content="Найти" Style="{ThemeResource AccentButtonStyle}"/>
+                            </Grid>
+
+                            <!-- 3. Информационный подзаголовок списка результатов -->
+                            <TextBlock Grid.Row="2" Text="Результаты поиска:" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" Margin="0,4,0,8"/>
+
+                            <!-- 4. СВОЙ СПИСОК РЕЗУЛЬТАТОВ (Вывод позиции и краткого содержания) -->
+                            <ListView Grid.Row="3" SelectionMode="Single" Padding="0" Background="Transparent">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <!-- Каждая строка результата: сверху позиция, снизу дамп строки -->
+                                        <StackPanel Padding="0,6" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,0,0,1">
+                                            <Grid ColumnDefinitions="Auto, *">
+                                                <TextBlock Grid.Column="0" Text="Позиция:" FontSize="11" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}"/>
+                                                <!-- Пример вывода позиции в HEX -->
+                                                <TextBlock Grid.Column="1" Text="0x0000A2F4" FontSize="12" FontFamily="Consolas" FontWeight="Bold" Foreground="#00B7C3" Margin="6,0,0,0"/>
+                                            </Grid>
+                                            <!-- Пример вывода краткого содержания строки вокруг найденного байта -->
+                                            <TextBlock Text="41 42 43 [44] 45 46 47 48  |  ABC[D]EFGH" FontSize="12" FontFamily="Consolas" Foreground="{ThemeResource SystemControlPageTextBaseHighBrush}" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+
+                        </Grid>
+                    </Border>
                 </Grid>
             </NavigationView.Content>
         </NavigationView>
