@@ -12,34 +12,93 @@ mc:Ignorable="d">
 
 
 
-    <Grid RowDefinitions="Auto, *">
-        <!-- Панель инструментов -->
-        <CommandBar Grid.Row="0" HorizontalAlignment="Left" Background="Transparent" IsOpen="False">
-            <AppBarButton Icon="OpenFile" Label="Открыть файл" Click="OpenFile_Click"/>
-            <AppBarButton Icon="Save" Label="Сохранить" Click="SaveFile_Click"/>
+    <Grid RowDefinitions="Auto, *, Auto" Background="{ThemeResource SolidBackgroundFillColorBaseBrush}">
+        <!-- ========================================================================= -->
+        <!-- 1. ГЛАВНОЕ МЕНЮ (MenuBar) - Стандартный набор для Hex-редактора            -->
+        <!-- ========================================================================= -->
 
-        </CommandBar>
+        <MenuBar Grid.Row="0" HorizontalAlignment="Left" Margin="4,2,0,2">
+            <MenuBarItem Title="Файл">
+                <MenuFlyoutItem Text="Открыть файл..." Icon="OpenFile" Click="OpenFile_Click"/>
+                <MenuFlyoutItem Text="Сохранить" Icon="Save" Click="SaveFile_Click"/>
+                <MenuFlyoutItem Text="Сохранить как..."/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem Text="Закрыть вкладку"/>
+                <MenuFlyoutItem Text="Выход"/>
+            </MenuBarItem>
+            <MenuBarItem Title="Правка">
+                <MenuFlyoutItem Text="Отменить изменения" Icon="Undo"/>
+                <MenuFlyoutItem Text="Повторить" Icon="Redo"/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem Text="Вырезать" Icon="Cut"/>
+                <MenuFlyoutItem Text="Копировать" Icon="Copy"/>
+                <MenuFlyoutItem Text="Вставить" Icon="Paste"/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem Text="Найти..." Icon="Find"/>
+                <MenuFlyoutItem Text="Заменить..."/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem Text="Выделить всё"/>
+            </MenuBarItem>
+            <MenuBarItem Title="Вид">
+                <ToggleMenuFlyoutItem Text="ASCII панель" IsChecked="True"/>
+                <ToggleMenuFlyoutItem Text="Адресная панель (Offset)" IsChecked="True"/>
+                <MenuFlyoutSeparator/>
+                <RadioMenuFlyoutItem Text="Группировать по 1 байту" GroupName="Grouping"/>
+                <RadioMenuFlyoutItem Text="Группировать по 2 байта" GroupName="Grouping"/>
+                <RadioMenuFlyoutItem Text="Группировать по 4 байта" GroupName="Grouping" IsChecked="True"/>
+            </MenuBarItem>
+            <MenuBarItem Title="Анализ">
+                <MenuFlyoutItem Text="Сравнить файлы..."/>
+                <MenuFlyoutItem Text="Контрольная сумма (Checksum)..."/>
+                <MenuFlyoutItem Text="Статистика энтропии"/>
+            </MenuBarItem>
+            <MenuBarItem Title="Справка">
+                <MenuFlyoutItem Text="Документация"/>
+                <MenuFlyoutItem Text="О программе BinStudio"/>
+            </MenuBarItem>
+        </MenuBar>
 
-        <!-- Вкладки документов -->
-        <TabView x:Name="DocTabView" Grid.Row="1" TabCloseRequested="DocTabView_TabCloseRequested">
-            <TabView.TabItemTemplate>
-                <DataTemplate x:DataType="local:TabContext">
-                    <TabViewItem Header="{x:Bind FileName}">
+        <!-- ========================================================================= -->
+        <!-- 2. БОКОВОЕ МЕНЮ (NavigationView) + КОНТЕНТ                                -->
+        <!-- ========================================================================= -->
+        <NavigationView Grid.Row="1" 
+                        x:Name="MainMenuNavigation"
+                        PaneDisplayMode="Left"
+                        IsBackButtonVisible="Collapsed"
+                        IsSettingsVisible="True"
+                        AlwaysShowHeader="False">
 
-                        <Grid RowDefinitions="Auto, *" ColumnDefinitions="*, 16" Loaded="EditorGrid_Loaded"
+            <!-- Пункты бокового меню -->
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="Редактор" Icon="Document" Tag="editor" IsSelected="True"/>
+                <NavigationViewItem Content="Инспектор данных" Icon="Character" Tag="inspector"/>
+                <NavigationViewItem Content="Поиск по файлу" Icon="Find" Tag="search"/>
+                <NavigationViewItem Content="История правок" Icon="Clock" Tag="history"/>
+            </NavigationView.MenuItems>
+
+            <!-- Контентная область боковой панели (Сюда мы помещаем наш TabView) -->
+            <NavigationView.Content>
+                <Grid Margin="0,12,0,0">
+                    <!-- Вкладки документов -->
+                    <TabView x:Name="DocTabView" TabCloseRequested="DocTabView_TabCloseRequested">
+                        <TabView.TabItemTemplate>
+                            <DataTemplate x:DataType="local:TabContext">
+                                <TabViewItem Header="{x:Bind FileName}">
+
+                                    <Grid RowDefinitions="Auto, *" ColumnDefinitions="*, 16" Loaded="{x:Bind EditorGrid_Loaded}"
                               Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
                               PointerWheelChanged="{x:Bind Editor_PointerWheelChanged}">
 
-                            <!-- ШАПКА ТАБЛИЦЫ -->
-                            <Grid Grid.Row="0" Grid.Column="0" ColumnDefinitions="90, 410, 180" Height="28" Margin="12,5,0,0" Background="{ThemeResource SystemControlBackgroundListLowBrush}" CornerRadius="4">
-                                <TextBlock Grid.Column="0" Text="Смещение" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center" Margin="4,0,0,0"/>
-                                <TextBlock Grid.Column="1" Text="00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F" FontFamily="Consolas" FontSize="14" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center" Margin="0,0,0,0"/>
-                                <TextBlock Grid.Column="2" Text="Текстовый дамп (ASCII)" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                            </Grid>
+                                        <!-- ШАПКА ТАБЛИЦЫ -->
+                                        <Grid Grid.Row="0" Grid.Column="0" ColumnDefinitions="90, 410, 180" Height="28" Margin="12,5,0,0" Background="{ThemeResource SystemControlBackgroundListLowBrush}" CornerRadius="4">
+                                            <TextBlock Grid.Column="0" Text="Смещение" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            <TextBlock Grid.Column="1" Text="00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F" FontFamily="Consolas" FontSize="14" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                                            <TextBlock Grid.Column="2" Text="Текстовый дамп (ASCII)" FontSize="12" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                        </Grid>
 
-                            <!-- ТЕЛО ТАБЛИЦЫ -->
-                            <!-- Привязываем события к методам TabContext через {Binding} -->
-                            <ListView x:Name="HexListView" Grid.Row="1" Grid.Column="0"
+                                        <!-- ТЕЛО ТАБЛИЦЫ -->
+                                        <!-- Привязываем события к методам TabContext через {Binding} -->
+                                        <ListView x:Name="HexListView" Grid.Row="1" Grid.Column="0"
                                       ItemsSource="{x:Bind VisibleRows}" 
                                       SelectionMode="None"
                                       Padding="12,5,0,0"
@@ -49,33 +108,33 @@ mc:Ignorable="d">
                                       
                                       IsTabStop="True"
                                       >
-                                <ListView.ItemTemplate>
-                                    <DataTemplate x:DataType="local:HexRowViewModel">
-                                        <Grid ColumnDefinitions="90, 410, 180" Height="24" Background="Transparent">
-                                            <!-- 1. Смещение (Адрес) -->
-                                            <TextBlock Grid.Column="0" Text="{Binding Address}" FontFamily="Consolas" FontSize="14" Foreground="#00B7C3" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="local:HexRowViewModel">
+                                                    <Grid ColumnDefinitions="90, 410, 180" Height="24" Background="Transparent">
+                                                        <!-- 1. Смещение (Адрес) -->
+                                                        <TextBlock Grid.Column="0" Text="{Binding Address}" FontFamily="Consolas" FontSize="14" Foreground="#00B7C3" VerticalAlignment="Center" Margin="4,0,0,0"/>
 
-                                            <!-- 2. HEX строка с умным побайтовым поведением -->
-                                            <TextBlock Grid.Column="1"  local:HexTextBehavior.RowData="{Binding}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center"/>
+                                                        <!-- 2. HEX строка с умным побайтовым поведением -->
+                                                        <TextBlock Grid.Column="1"  DoubleTapped="{x:Bind ParentContext.TextBlock_DoubleTapped}"  local:HexTextBehavior.RowData="{Binding}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center"/>
 
-                                            <!-- 3. ASCII строка с умным побайтовым поведением -->
-                                            <TextBlock Grid.Column="2" local:HexTextBehavior.AsciiData="{Binding}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                                <ListView.ItemContainerStyle>
-                                    <Style TargetType="ListViewItem">
-                                        <Setter Property="MinHeight" Value="24"/>
-                                        <Setter Property="Height" Value="24"/>
-                                        <Setter Property="Padding" Value="0"/>
-                                        <Setter Property="Margin" Value="0"/>
-                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                    </Style>
-                                </ListView.ItemContainerStyle>
-                            </ListView>
+                                                        <!-- 3. ASCII строка с умным побайтовым поведением -->
+                                                        <TextBlock Grid.Column="2"  DoubleTapped="{x:Bind ParentContext.TextBlock_DoubleTapped}" local:HexTextBehavior.AsciiData="{Binding}" FontFamily="Consolas" FontSize="14" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                            <ListView.ItemContainerStyle>
+                                                <Style TargetType="ListViewItem">
+                                                    <Setter Property="MinHeight" Value="24"/>
+                                                    <Setter Property="Height" Value="24"/>
+                                                    <Setter Property="Padding" Value="0"/>
+                                                    <Setter Property="Margin" Value="0"/>
+                                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                </Style>
+                                            </ListView.ItemContainerStyle>
+                                        </ListView>
 
-                            <!-- Вертикальный скроллбар -->
-                            <ScrollBar Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" 
+                                        <!-- Вертикальный скроллбар -->
+                                        <ScrollBar Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" 
                                        Orientation="Vertical"
                                        HorizontalAlignment="Right"
                                        VerticalAlignment="Stretch"
@@ -86,10 +145,56 @@ mc:Ignorable="d">
                                        Value="{Binding ScrollValue, Mode=TwoWay}"
                                        Scroll="ScrollBar_Scroll"
                                        IndicatorMode="MouseIndicator"/>
-                        </Grid>
-                    </TabViewItem>
-                </DataTemplate>
-            </TabView.TabItemTemplate>
-        </TabView>
+                                    </Grid>
+                                </TabViewItem>
+                            </DataTemplate>
+                        </TabView.TabItemTemplate>
+                    </TabView>
+                </Grid>
+            </NavigationView.Content>
+        </NavigationView>
+        <!-- 3. СТРОКА СОСТОЯНИЯ (STATUS BAR) В СТИЛЕ FLUENT DESIGN -->
+        <!-- Тонкая верхняя граница визуально отделяет её от контента -->
+        <Border Grid.Row="2" 
+        DataContext="{Binding ElementName=DocTabView, Path=SelectedItem}"
+        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+        BorderThickness="0,1,0,0" 
+        Background="{ThemeResource SystemControlBackgroundListLowBrush}" 
+        Height="32" 
+        Padding="16,0">
+
+            <Grid ColumnDefinitions="Auto, *, Auto, Auto, Auto" VerticalAlignment="Center" Height="32">
+
+                <!-- Блок А: Индикатор текущего режима -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="РЕЖИМ:" FontSize="12" FontWeight="Bold" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding IsEditingMode, Converter={StaticResource ModeConverter}, FallbackValue='НАВИГАЦИЯ'}" 
+                       FontSize="12" FontWeight="SemiBold" Foreground="#00B7C3" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Блок Б: Первый вертикальный разделитель -->
+                <Border Grid.Column="2" Width="1" Height="14" Background="{ThemeResource CardStrokeColorDefaultBrush}" Margin="16,0"/>
+
+                <!-- Блок В: Динамический диапазон выделения -->
+                <!-- Добавлен Margin="12,0,0,0" для разрыва с разделителем, текст увеличен до 13 и 14 -->
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
+                    <TextBlock Text="Выделено:" FontSize="13" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding SelectionText, FallbackValue='нет выделения'}" 
+                       FontSize="14" FontFamily="Consolas" FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Блок Г: Второй вертикальный разделитель -->
+                <Border Grid.Column="4" Width="1" Height="14" Background="{ThemeResource CardStrokeColorDefaultBrush}" Margin="16,0"/>
+
+                <!-- Блок Д: Реальный размер файла -->
+                <!-- Добавлен Margin="12,0,0,0" для разрыва с разделителем, текст увеличен до 13 и 14 -->
+                <StackPanel Grid.Column="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="12,0,0,0">
+                    <TextBlock Text="Размер файла:" FontSize="13" Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding FileSizeText, FallbackValue='0 байт'}" 
+                       FontSize="14" FontFamily="Consolas" FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
     </Grid>
 </Window>

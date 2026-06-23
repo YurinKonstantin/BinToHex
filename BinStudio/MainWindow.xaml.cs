@@ -37,27 +37,7 @@ namespace BinStudio
             this.SystemBackdrop = new Microsoft.UI.Xaml.Media.MicaBackdrop();
         }
         // Вызывается, когда сетка внутри вкладки полностью загружена в UI
-        private void EditorGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (_isMouseInitialized) return;
-
-            if (sender is Grid grid && grid.DataContext is TabContext context)
-            {
-                var listView = grid.FindName("HexListView") as ListView;
-                if (listView != null)
-                {
-                    // Пробиваем стандартные фильтры WinUI левой кнопкой мыши (handledEventsToo: true)
-                    listView.AddHandler(UIElement.PointerPressedEvent, new PointerEventHandler(context.ListView_PointerPressed), true);
-                    listView.AddHandler(UIElement.PointerMovedEvent, new PointerEventHandler(context.ListView_PointerMoved), true);
-                    listView.AddHandler(UIElement.PointerReleasedEvent, new PointerEventHandler(context.ListView_PointerReleased), true);
-
-                    // Жестко вешаем двойной клик на сам ListView
-                    listView.AddHandler(UIElement.DoubleTappedEvent, new DoubleTappedEventHandler(context.ListView_DoubleTapped), true);
-
-                    _isMouseInitialized = true;
-                }
-            }
-        }
+     
         private async void OpenFile_Click(object sender, RoutedEventArgs e)
         {
             FileOpenPicker openPicker = new FileOpenPicker();

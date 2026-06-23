@@ -43,23 +43,28 @@ namespace BinStudio
         private bool _isMouseInitialized = false; // Флаг защиты от повторной подписки
 
         // МЕТОД ИНИЦИАЛИЗАЦИИ ИЗ СИСТЕМЫ С КЛИКАМИ
+        // МЕТОД ИНИЦИАЛИЗАЦИИ КЛИКОВ МЫШИ ДЛЯ ТЕКУЩЕГО ДОКУМЕНТА
         public void EditorGrid_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
-            // Если мы уже настроили левую кнопку мыши для этой вкладки — выходим
+            // Если для этой вкладки мышь уже была настроена — ничего не делаем
             if (_isMouseInitialized) return;
 
-            if (sender is Grid grid)
+            if (sender is Microsoft.UI.Xaml.Controls.Grid grid)
             {
-                var listView = grid.FindName("HexListView") as ListView;
+                // Находим ListView по имени внутри этой конкретной вкладки
+                var listView = grid.FindName("HexListView") as Microsoft.UI.Xaml.Controls.ListView;
                 if (listView != null)
                 {
-                    // Регистрируем кастомные обработчики с флагом handledEventsToo = true
-                    listView.AddHandler(Microsoft.UI.Xaml.UIElement.PointerPressedEvent, new PointerEventHandler(ListView_PointerPressed), true);
-                    listView.AddHandler(Microsoft.UI.Xaml.UIElement.PointerMovedEvent, new PointerEventHandler(ListView_PointerMoved), true);
-                    listView.AddHandler(Microsoft.UI.Xaml.UIElement.PointerReleasedEvent, new PointerEventHandler(ListView_PointerReleased), true);
+                    // Принудительно регистрируем кастомные обработчики кликов левой кнопкой мыши (handledEventsToo: true)
+                    listView.AddHandler(Microsoft.UI.Xaml.UIElement.PointerPressedEvent, new Microsoft.UI.Xaml.Input.PointerEventHandler(ListView_PointerPressed), true);
+                    listView.AddHandler(Microsoft.UI.Xaml.UIElement.PointerMovedEvent, new Microsoft.UI.Xaml.Input.PointerEventHandler(ListView_PointerMoved), true);
+                    listView.AddHandler(Microsoft.UI.Xaml.UIElement.PointerReleasedEvent, new Microsoft.UI.Xaml.Input.PointerEventHandler(ListView_PointerReleased), true);
 
-                    _isMouseInitialized = true; // Фиксируем, что подписка выполнена строго один раз!
-                    System.Diagnostics.Debug.WriteLine($"[BinStudio] Левая кнопка мыши успешно привязана один раз для вкладки: {FileName}");
+                    // Также жестко привязываем обработчик двойного клика для входа в редактирование
+                    listView.AddHandler(Microsoft.UI.Xaml.UIElement.DoubleTappedEvent, new Microsoft.UI.Xaml.Input.DoubleTappedEventHandler(ListView_DoubleTapped), true);
+
+                    _isMouseInitialized = true; // Фиксируем успешную подписку
+                    System.Diagnostics.Debug.WriteLine($"[BinStudio] Левая кнопка мыши и DoubleTapped успешно привязаны один раз для вкладки: {FileName}");
                 }
             }
         }
@@ -127,6 +132,12 @@ namespace BinStudio
             FileName = Path.GetFileName(filePath);
             _stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read, 4096, FileOptions.SequentialScan);
 
+            // Форматируем размер файла с разделением тысяч для читаемости
+            long fileLength = _stream.Length;
+            double mbSize = fileLength / (1024.0 * 1024.0);
+            FileSizeText = $"{fileLength:N0} байт ({mbSize:F2} МБ)".Replace(",", " ");
+
+
             long totalRows = (long)Math.Ceiling((double)_stream.Length / BytesPerRow);
             ScrollMax = Math.Max(0, totalRows - VisibleRowsCount);
 
@@ -139,7 +150,31 @@ namespace BinStudio
             // Загружаем начальные данные
             LoadVisibleData(0);
         }
+        // Вспомогательный метод для обновления текста выделенного диапазона
+        public void UpdateSelectionStatusText()
+        {
+            // Если ничего не выделено
+            if (SelectionStartOffset == -1 || SelectionEndOffset == -1)
+            {
+                SelectionText = "нет выделения";
+                return;
+            }
 
+            long min = Math.Min(SelectionStartOffset, SelectionEndOffset);
+            long max = Math.Max(SelectionStartOffset, SelectionEndOffset);
+            long count = max - min + 1;
+
+            if (count == 1)
+            {
+                // Одиночный байт
+                SelectionText = $"0x{min:X8}";
+            }
+            else
+            {
+                // Диапазон байт
+                SelectionText = $"0x{min:X8} - 0x{max:X8} ({count:N0} байт)";
+            }
+        }
         // БЕЗМИГАТЕЛЬНАЯ ЛЕНИВАЯ ЗАГРУЗКА: Перезаписываем текст внутри существующих объектов
         public void LoadVisibleData(long startRowIndex)
         {
@@ -217,6 +252,7 @@ namespace BinStudio
             if (sender is ListView listView)
             {
                 IsEditingMode = false; // Сбрасываем редактирование при обычном клике
+                OnPropertyChanged(nameof(IsEditingMode)); // Сообщаем StatusBar, что режим сменился на Навигацию
                 _isHighNibbleEntered = false;
 
                 double x = pointerPoint.Position.X;
@@ -255,6 +291,7 @@ namespace BinStudio
                         e.Handled = true;
                     }
                 }
+                UpdateSelectionStatusText(); // Обновляем адрес
             }
         }
         // 2. ДВИЖЕНИЕ МЫШИ (Шлейф выделения) — также через GetCharacterIndexAtPoint
@@ -289,6 +326,7 @@ namespace BinStudio
                     if (SelectionEndOffset != currentOffset)
                     {
                         SelectionEndOffset = currentOffset;
+                        UpdateSelectionStatusText(); // Обновляем диапазон при протягивании!
                         RefreshVisibleInlines();
                     }
                 }
@@ -427,6 +465,7 @@ namespace BinStudio
                 {
                     SelectionStartOffset++;
                     SelectionEndOffset = SelectionStartOffset;
+                    UpdateSelectionStatusText(); // Сдвигаем адрес в StatusBar вместе с шагом клавиатуры!
 
                     if (targetByteIndex == 15)
                     {
@@ -503,8 +542,74 @@ namespace BinStudio
                 }
             }
         }
+        private string _fileSizeText = "0 байт";
+        private string _selectionText = "нет выделения";
+        // Свойство текстового представления размера файла (например: "1 048 576 байт (1.00 МБ)")
+        public string FileSizeText
+        {
+            get => _fileSizeText;
+            set { _fileSizeText = value; OnPropertyChanged(); }
+        }
 
-        // ДВОЙНОЙ КЛИК: Переход в режим редактирования
-       
+        // Свойство динамического текста выделения (например: "0x00000010 - 0x0000001F (16 байт)")
+        public string SelectionText
+        {
+            get => _selectionText;
+            set { _selectionText = value; OnPropertyChanged(); }
+        }
+        // ДВОЙНОЙ КЛИК: Точный вход в режим редактирования по ширине символа Consolas (7.7px)
+        public void TextBlock_DoubleTapped(object sender, Microsoft.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+        {
+            if (sender is Microsoft.UI.Xaml.Controls.TextBlock textBlock)
+            {
+                var point = e.GetPosition(textBlock);
+                double x = point.X;
+
+                if (textBlock.DataContext is HexRowViewModel row)
+                {
+                    int byteIndex = -1;
+
+                    // Определяем, в какой колонке кликнули дважды
+                    if (textBlock.Width == 410) // Колонна HEX
+                    {
+                        byteIndex = (int)(x / 23.1); // 3 символа "FF " = 3 * 7.7 = 23.1px
+                    }
+                    else // Колонна ASCII
+                    {
+                        byteIndex = (int)(x / 7.7); // 1 символ ASCII = 7.7px
+                    }
+
+                    if (byteIndex >= 0 && byteIndex < row.BytesCount)
+                    {
+                        IsEditingMode = true;
+                        _isHighNibbleEntered = false; // Сбрасываем шаги ввода полубайтов
+                        OnPropertyChanged(nameof(IsEditingMode)); // Обновляем режим в StatusBar
+
+                        SelectionStartOffset = row.RowOffset + byteIndex;
+                        SelectionEndOffset = SelectionStartOffset;
+
+                        UpdateSelectionStatusText(); // Обновляем адрес в StatusBar
+                        RefreshVisibleInlines();     // Перерисовываем маркеры на экране
+
+                        // Находим родительский ListView и принудительно даем ему фокус, 
+                        // чтобы клавиатура (KeyDown) сразу перехватывала нажатия
+                        DependencyObject parent = textBlock;
+                        while (parent != null && !(parent is Microsoft.UI.Xaml.Controls.ListView))
+                        {
+                            parent = Microsoft.UI.Xaml.Media.VisualTreeHelper.GetParent(parent);
+                        }
+
+                        if (parent is Microsoft.UI.Xaml.Controls.ListView listView)
+                        {
+                            listView.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
+                        }
+
+                        System.Diagnostics.Debug.WriteLine($"[BinStudio] Редактирование ВКЛЮЧЕНО для байта №{byteIndex}, смещение: 0x{SelectionStartOffset:X8}");
+                        e.Handled = true;
+                    }
+                }
+            }
+        }
+
     }
 }

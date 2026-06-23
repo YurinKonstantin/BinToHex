@@ -11,6 +11,8 @@
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
+            <!-- РЕГИСТРИРУЕМ КОНВЕРТЕР РЕЖИМА ДЛЯ STATUSBAR -->
+            <local:EditModeConverter x:Key="ModeConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
