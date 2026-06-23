@@ -16,6 +16,8 @@ mc:Ignorable="d">
         <!-- Панель инструментов -->
         <CommandBar Grid.Row="0" HorizontalAlignment="Left" Background="Transparent" IsOpen="False">
             <AppBarButton Icon="OpenFile" Label="Открыть файл" Click="OpenFile_Click"/>
+            <AppBarButton Icon="Save" Label="Сохранить" Click="SaveFile_Click"/>
+
         </CommandBar>
 
         <!-- Вкладки документов -->
@@ -24,7 +26,7 @@ mc:Ignorable="d">
                 <DataTemplate x:DataType="local:TabContext">
                     <TabViewItem Header="{x:Bind FileName}">
 
-                        <Grid RowDefinitions="Auto, *" ColumnDefinitions="*, 16" Loaded="{x:Bind EditorGrid_Loaded}"
+                        <Grid RowDefinitions="Auto, *" ColumnDefinitions="*, 16" Loaded="EditorGrid_Loaded"
                               Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
                               PointerWheelChanged="{x:Bind Editor_PointerWheelChanged}">
 
@@ -42,7 +44,10 @@ mc:Ignorable="d">
                                       SelectionMode="None"
                                       Padding="12,5,0,0"
                                       ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                      ScrollViewer.VerticalScrollMode="Disabled"
+                                      ScrollViewer.VerticalScrollMode="Disabled" 
+                                      KeyDown="{x:Bind ListView_KeyDown}" 
+                                      
+                                      IsTabStop="True"
                                       >
                                 <ListView.ItemTemplate>
                                     <DataTemplate x:DataType="local:HexRowViewModel">

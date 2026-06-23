@@ -131,5 +131,30 @@ namespace BinStudio
                 }
             }
         }
+        // Метод для мгновенного обновления текстовой строки HEX на экране при вводе полубайтов
+        public void UpdateHexLineFromRaw()
+        {
+            var hexBuilder = new System.Text.StringBuilder(48);
+            var asciiBuilder = new System.Text.StringBuilder(16);
+
+            for (int i = 0; i < 16; i++)
+            {
+                if (i < BytesCount)
+                {
+                    byte b = RawBytes[i];
+                    hexBuilder.Append(b.ToString("X2")).Append(' ');
+                    asciiBuilder.Append(b >= 32 && b <= 126 ? (char)b : '.');
+                }
+                else
+                {
+                    hexBuilder.Append("   ");
+                    asciiBuilder.Append(' ');
+                }
+            }
+
+            HexLine = hexBuilder.ToString().TrimEnd();
+            AsciiLine = asciiBuilder.ToString();
+            TriggerRefresh(); // Перерисовываем синее выделение DodgerBlue
+        }
     }
 }
