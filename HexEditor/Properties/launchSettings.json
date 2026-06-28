@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "HexEditor (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "HexEditor (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
